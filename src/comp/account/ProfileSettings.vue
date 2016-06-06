@@ -40,7 +40,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     import Alert from "../Alert.js"
 
     export default {
@@ -63,15 +63,14 @@
 
         methods: {
             save() {
-                const that = this
                 const copy = Object.assign({}, this.account, this.form)
                 api.accounts.update(copy).then(
-                    function (acc) {
-                        that.account = acc
-                        that.alertSuccess("Profile successfully updated!")
+                    (acc) => {
+                        this.account = acc
+                        this.alertSuccess("Profile successfully updated!")
                     },
-                    function (error) {
-                        that.alertError(error)
+                    (error) => {
+                        this.alertError(error)
                     }
                 )
             },

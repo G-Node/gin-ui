@@ -33,7 +33,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     import Alert from "../Alert.js"
 
     export default {
@@ -50,15 +50,14 @@
 
         methods: {
             save() {
-                const that = this
                 api.accounts.updatePassword(this.username, this.oldPassword, this.newPassword, this.repeatedPassword).then(
-                    function (acc) {
-                        that.reset()
-                        that.alertSuccess("Password successfully changed!")
+                    () => {
+                        this.reset()
+                        this.alertSuccess("Password successfully changed!")
                     },
-                    function (error) {
-                        that.reset()
-                        that.alertError(error)
+                    (error) => {
+                        this.reset()
+                        this.alertError(error)
                     }
                 )
             },

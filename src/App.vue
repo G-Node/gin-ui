@@ -39,7 +39,7 @@
     </div>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
     import Vue       from 'vue'
     import LoginMenu from './comp/LoginMenu.vue'
     import MainMenu  from './comp/MainMenu.vue'
@@ -58,9 +58,9 @@
 
         events: {
             "alert-event": function (message) {
-                const that = this
-                that.alert = message
-                setTimeout(function () { that.alert = null }, 2000)
+                this.alert = message
+
+                setTimeout(() => { this.alert = null }, 4000)
 
                 if (message.level === "danger" || message.level === "warning") {
                     console.error(message.content)

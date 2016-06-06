@@ -41,7 +41,9 @@
     </ul>
 </template>
 
-<script>
+<script type="text/ecmascript-6">
+    import Alert from "./Alert.js"
+
     export default {
 
         data(){
@@ -57,17 +59,18 @@
             account: { twoWay: true, required: true }
         },
 
+        mixins: [ Alert ],
+
         methods: {
 
             login() {
-                const that = this
                 api.accounts.login(this.form.username, this.form.password).then(
-                    function (acc) {
-                        that.form.username = that.form.password = null
-                        that.account = acc
+                    (acc) => {
+                        this.form.username = this.form.password = null
+                        this.account = acc
                     },
-                    function (error) {
-                        console.error(error)
+                    (error) => {
+                        this.alertError(error)
                     }
                 )
             },
