@@ -194,7 +194,14 @@ export class AccountAPI {
 
 export class RepoAPI {
 
-    listPublic() {
-        return data.repos.filter((repo) => { return repo.public })
+    listPublic(searchText=null) {
+        let searchLower = searchText ? searchText.toLowerCase() : ""
+        return new Promise((resolve) => {
+            let found = data.repos.filter((repo) => {
+                let all = (repo.name + repo.description + repo.owner).toLowerCase()
+                return repo.public && (all.search(searchLower) >= 0)
+            })
+            resolve(found)
+        })
     }
 }
