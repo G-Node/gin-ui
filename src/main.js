@@ -1,12 +1,13 @@
 import Vue       from "vue"
 import VueRouter from "vue-router"
 
-import { AccountAPI }   from './data.js'
+import { AccountAPI, RepoAPI }   from './data.js'
 
 import App              from "./App.vue"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
+import PublicRepos      from "./comp/repo/PublicRepos.vue"
 
 import Dummy     from "./comp/Dummy.vue"
 
@@ -15,12 +16,13 @@ Vue.use(VueRouter)
 const app = Vue.extend(App)
 
 window.api = {
-    accounts: new AccountAPI()
+    accounts: new AccountAPI(),
+    repos: new RepoAPI()
 }
 
 window.router = new VueRouter({ history: true })
 router.map({
-    "/repositories": { component: Dummy },
+    "/repositories": { component: PublicRepos, name: "public-repos" },
     "/:username/settings": {
         component: Settings,
         name: "settings",
@@ -31,6 +33,7 @@ router.map({
     },
     "/:username/:repository": {
         component: Dummy,
+        name: "repository",
         subRoutes: {
             "/settings": { component: Dummy },
             "/files/*": { component: Dummy }
