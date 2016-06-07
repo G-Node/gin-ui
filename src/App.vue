@@ -16,7 +16,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!-- navbar branding --> <!-- TODO add g-node logo here -->
-                    <a class="navbar-brand" href="/"><img alt="G-Node" src="/img/gnode.png" height="46"></a>
+                    <a class="navbar-brand" v-link="{ path: '/' }"><img alt="G-Node" src="/img/gnode.png" height="46"></a>
                 </div>
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
