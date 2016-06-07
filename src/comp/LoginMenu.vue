@@ -34,6 +34,7 @@
                 <!-- account info (shown if logged in) -->
                 <li><a v-link="{ name: 'profile-settings', params: { username: account.username }}">Profile Settings</a></li>
                 <li><a v-link="{ name: 'password-settings', params: { username: account.username }}">Change Password</a></li>
+                <li><a v-link="{ name: 'sshkey-settings', params: { username: account.username }}">Manage SSH Keys</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a v-link="{ path: '/' }" @click="logout">Sign Out</a></li>
             </ul>

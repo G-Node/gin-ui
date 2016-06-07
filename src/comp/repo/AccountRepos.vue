@@ -87,7 +87,7 @@
             },
 
             isTabOwnActive() {
-                return this.$route.path.split("/").pop() === "own"
+                return !this.isTabSharedActive()
             },
 
             isTabSharedActive() {

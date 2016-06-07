@@ -25,29 +25,31 @@ window.api = {
 
 window.router = new VueRouter({ history: true })
 router.map({
-    "/repositories": { component: PublicRepos, name: "public-repos" },
-    "/:username/settings": {
+    "/public-repositories": { component: PublicRepos, name: "public-repos" },
+    "/a/:username/settings": {
         component: Settings,
-        name: "settings",
+        name: "profile-settings",
         subRoutes: {
-            "/profile": { component: ProfileSettings, name: "profile-settings" },
-            "/password": { component: PasswordSettings, name: "password-settings" }
+            "/": { component: ProfileSettings },
+            "/password": { component: PasswordSettings, name: "password-settings" },
+            "/sshkey": { component: Dummy, name: "sshkey-settings" }
         }
     },
-    "/:username/repositories": {
+    "/a/:username/repositories": {
         component: AccountRepos,
-        name: "account-page",
+        name: "own-repositories",
         subRoutes: {
-            "/own": { component: ReposOwn, name: "own-repositories" },
+            "/": { component: ReposOwn },
             "/shared": { component: ReposShared, name: "shared-repositories" }
         }
     },
-    "/:username/:repository": {
+    "/r/:username/:repository": {
         component: Dummy,
         name: "repository",
         subRoutes: {
+            "/": { component: Dummy },
             "/settings": { component: Dummy, name: "repository-settings" },
-            "/files/*": { component: Dummy, name: "repository-files" }
+            "/files/*file": { component: Dummy, name: "repository-files" }
         }
     }
 })
