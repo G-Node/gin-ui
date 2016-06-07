@@ -64,7 +64,8 @@
         methods: {
 
             login() {
-                api.accounts.login(this.form.username, this.form.password).then(
+                const promise = api.accounts.login(this.form.username, this.form.password)
+                promise.then(
                     (acc) => {
                         this.form.username = this.form.password = null
                         this.account = acc
@@ -80,8 +81,8 @@
             },
 
             userName() {
-                let fn = this.account.firstName,
-                    ln = this.account.lastName
+                const fn = this.account.firstName,
+                      ln = this.account.lastName
 
                 if (fn && ln) {
                     return fn[0] + ". " + ln

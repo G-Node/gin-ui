@@ -195,11 +195,38 @@ export class AccountAPI {
 export class RepoAPI {
 
     listPublic(searchText=null) {
-        let searchLower = searchText ? searchText.toLowerCase() : ""
+        const searchLower = searchText ? searchText.toLowerCase() : ""
         return new Promise((resolve) => {
-            let found = data.repos.filter((repo) => {
-                let all = (repo.name + repo.description + repo.owner).toLowerCase()
+            const found = data.repos.filter((repo) => {
+                const all = (repo.name + repo.description + repo.owner).toLowerCase()
                 return repo.public && (all.search(searchLower) >= 0)
+            })
+            resolve(found)
+        })
+    }
+
+    listShared(username, viewer) {
+        return new Promise((resolve) => {
+            const publicOnly = username !== viewer
+            const found = data.repos.filter((repo) => {
+                const isOwner  = repo.owner === username,
+                      isShared = repo.shared.find((name) => {return name === username}),
+                      isPublic = repo.public
+
+                return !isOwner && isShared && (publicOnly ? isPublic : true)
+            })
+            resolve(found)
+        })
+    }
+
+    listOwn(username, viewer) {
+        return new Promise((resolve) => {
+            const publicOnly = username !== viewer
+            const found = data.repos.filter((repo) => {
+                const isOwner  = repo.owner === username,
+                      isPublic = repo.public
+
+                return isOwner && (publicOnly ? isPublic : true)
             })
             resolve(found)
         })
