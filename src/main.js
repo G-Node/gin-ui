@@ -7,10 +7,10 @@ import App              from "./App.vue"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
+import Repos            from "./comp/account/Repos.vue"
+import ReposOwn         from "./comp/account/ReposOwn.vue"
+import ReposShared      from "./comp/account/ReposShared.vue"
 import PublicRepos      from "./comp/repo/PublicRepos.vue"
-import AccountRepos     from "./comp/repo/AccountRepos.vue"
-import ReposOwn         from "./comp/repo/ReposOwn.vue"
-import ReposShared      from "./comp/repo/ReposShared.vue"
 
 import Dummy     from "./comp/Dummy.vue"
 
@@ -36,7 +36,7 @@ router.map({
         }
     },
     "/a/:username/repositories": {
-        component: AccountRepos,
+        component: Repos,
         name: "own-repositories",
         subRoutes: {
             "/": { component: ReposOwn },
