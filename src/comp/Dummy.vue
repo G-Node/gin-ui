@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h2>{{ name }}</h2>
+        <h2>{{ path }}</h2>
         <ul>
             <li><strong>name:</strong> {{ name }}</li>
             <li v-for="(k, v) in params"><strong>{{ k }}:</strong> {{ v }}</li>
