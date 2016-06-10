@@ -231,4 +231,21 @@ export class RepoAPI {
             resolve(found)
         })
     }
+    
+    get(username, repository, viewer) {
+        return new Promise((resolve, reject) => {
+            const publicOnly = username !== viewer
+            const found = data.repos.find((repo) => {
+                const isOwner  = repo.owner === username,
+                      isPublic = repo.public
+
+                return isOwner && (publicOnly ? isPublic : true) && repo.owner === username && repo.name === repository
+            })
+            if (found) {
+                resolve(found)
+            } else {
+                reject(Error("Repository does not exist"))
+            }
+        })
+    }
 }
