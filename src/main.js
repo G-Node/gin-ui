@@ -11,6 +11,10 @@ import Repos            from "./comp/account/Repos.vue"
 import ReposOwn         from "./comp/account/ReposOwn.vue"
 import ReposShared      from "./comp/account/ReposShared.vue"
 import PublicRepos      from "./comp/repo/PublicRepos.vue"
+import Repo             from "./comp/repo/Repo.vue"
+import RepoReadme       from "./comp/repo/RepoReadme.vue"
+import RepoFiles        from "./comp/repo/RepoFiles.vue"
+import RepoSettings     from "./comp/repo/RepoSettings.vue"
 
 import Dummy     from "./comp/Dummy.vue"
 
@@ -25,7 +29,6 @@ window.api = {
 
 window.router = new VueRouter({ history: true })
 router.map({
-    "/public-repositories": { component: PublicRepos, name: "public-repos" },
     "/a/:username/settings": {
         component: Settings,
         name: "profile-settings",
@@ -43,13 +46,17 @@ router.map({
             "/shared": { component: ReposShared, name: "shared-repositories" }
         }
     },
+    "/r/public-repositories": {
+        component: PublicRepos,
+        name: "public-repos"
+    },
     "/r/:username/:repository": {
-        component: Dummy,
+        component: Repo,
         name: "repository",
         subRoutes: {
-            "/": { component: Dummy },
-            "/settings": { component: Dummy, name: "repository-settings" },
-            "/files/*file": { component: Dummy, name: "repository-files" }
+            "/": { component: RepoReadme },
+            "/settings": { component: RepoSettings, name: "repository-settings" },
+            "/files/*root": { component: RepoFiles, name: "repository-files" }
         }
     }
 })
