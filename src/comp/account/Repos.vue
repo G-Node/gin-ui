@@ -5,10 +5,10 @@
         <hr />
 
         <ul class="nav nav-tabs">
-            <li role="presentation" :class="{ 'active': isTabOwnActive() }">
+            <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
                 <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn() }}</a>
             </li>
-            <li role="presentation" :class="{ 'active': isTabSharedActive() }">
+            <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
                 <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared() }}</a>
             </li>
         </ul>
@@ -23,25 +23,23 @@
     export default {
         data() {
             const d = {
-                owner: null,
-                path: this.$route.path,
-                params: this.$route.params
+                owner: null
             }
 
             api.accounts.get(this.$route.params.username).then(
-                    (acc) => {
-                        d.owner = acc
-                    },
-                    (error) => {
-                        this.alertError(error)
-                    },
+                (acc) => {
+                    d.owner = acc
+                },
+                (error) => {
+                    this.alertError(error)
+                },
             )
 
             return d
         },
 
         props: {
-            account: { twoWay: false, required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
@@ -84,14 +82,6 @@
 
             isOwnRepository() {
                 return (this.account && this.owner.username === this.account.username)
-            },
-
-            isTabOwnActive() {
-                return !this.isTabSharedActive()
-            },
-
-            isTabSharedActive() {
-                return this.$route.path.split("/").pop() === "shared"
             }
         }
     }
