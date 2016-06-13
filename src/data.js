@@ -23,7 +23,7 @@ function randElem(array) {
     }
 }
 
-function genDirs() {
+function randDirs() {
     const maxDepth = 4,
           maxFiles = 10,
           maxSize  = 1024 * 1024 * 1024,
@@ -36,33 +36,38 @@ function genDirs() {
         const ext = randElem(extensions)
 
         for (let i = 0; i < randInt(1, maxFiles); i++) {
-            let name = prefix + i + ext
-            dir[name] = {
+            let fileName = prefix + i + ext
+            dir.files[fileName] = {
                 type: "file",
-                ext: ext,
-                name: name,
+                name: fileName,
                 size: randInt(1, maxSize)
             }
         }
     }
 
     function mkDirs(dir, name, depth) {
+        dir.name  = name
+        dir.type  = "dir"
+        dir.files = {}
+
         if (depth > 0) {
             for (let i = 0; i < randInt(1, maxDirs); i++) {
-                let childName = randElem(prefixes) + "-" + randElem(suffixes)
-                dir[childName] = mkDirs({}, childName, depth - 1)
+                let dirName = randElem(prefixes) + "-" + randElem(suffixes)
+                dir.files[dirName] = mkDirs({}, dirName, depth - 1)
             }
         }
-
-        dir["name"] = name
-        dir["type"] = "dir"
 
         mkFiles(dir, name)
         return dir
     }
 
-    return mkDirs({}, randElem(prefixes) + "-" + randElem(suffixes), maxDepth)
+    const root = mkDirs({}, randElem(prefixes) + "-" + randElem(suffixes), maxDepth)
+    root.name = ":root"
+
+    return root
 }
+
+window.randdir = randDirs()
 
 var data = {
     accounts: mapOf({
@@ -93,89 +98,39 @@ var data = {
             description: "This is the repository description",
             shared: ["alice"],
             public: true,
-            root: genDirs()
+            root: randDirs()
         },
         "john/johns-private-data": {
             description: "This is the repository description",
             shared: [],
             public: false,
-            root: genDirs()
+            root: randDirs()
         },
         "alice/alice-public-data": {
             description: "This is the repository description",
             shared: ["bob"],
             public: true,
-            root: genDirs()
+            root: randDirs()
         },
         "alice/alice-supplemental-data": {
             description: "This is the repository description",
             shared: [],
             public: true,
-            root: genDirs()
+            root: randDirs()
         },
         "alice/my-private-data": {
             description: "This is the repository description",
             shared: [],
             public: false,
-            root: genDirs()
+            root: randDirs()
         },
         "bob/bobs-data": {
             description: "This is the repository description",
             shared: ["alice", "john"],
             public: true,
-            root: genDirs()
+            root: randDirs()
         }
     })
-    // repos: [
-    //     {
-    //         name: "johns-public-data",
-    //         description: "This is the repository description",
-    //         owner: "john",
-    //         shared: ["alice"],
-    //         public: true,
-    //         files: genDirs()
-    //     },
-    //     {
-    //         name: "johns-private-data",
-    //         description: "This is the repository description",
-    //         owner: "john",
-    //         shared: [],
-    //         public: false,
-    //         files: genDirs()
-    //     },
-    //     {
-    //         name: "alice-public-data",
-    //         description: "This is the repository description",
-    //         owner: "alice",
-    //         shared: ["bob"],
-    //         public: true,
-    //         files: genDirs()
-    //     },
-    //     {
-    //         name: "alice-supplemental-data",
-    //         description: "This is the repository description",
-    //         owner: "alice",
-    //         shared: [],
-    //         public: true,
-    //         files: genDirs()
-    //     },
-    //     {
-    //         name: "my-private-data",
-    //         description: "This is the repository description",
-    //         owner: "alice",
-    //         shared: [],
-    //         public: false,
-    //         files: genDirs()
-    //     },
-    //     {
-    //         name: "bobs-data",
-    //         description: "This is the repository description",
-    //         owner: "bob",
-    //         shared: ["alice", "john"],
-    //         public: true,
-    //         files: genDirs()
-    //     }
-    // ]
 }
 
 function copyAccount(account, username) {
@@ -307,4 +262,9 @@ export class RepoAPI {
             }
         })
     }
+}
+
+export class FileAPI {
+
+
 }
