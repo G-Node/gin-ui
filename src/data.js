@@ -88,56 +88,94 @@ var data = {
             lastName: "Josephson"
         }
     }),
-    repos: [
-        {
-            name: "johns-public-data",
+    repos: mapOf({
+        "john/johns-public-data": {
             description: "This is the repository description",
-            owner: "john",
             shared: ["alice"],
             public: true,
-            files: genDirs()
+            root: genDirs()
         },
-        {
-            name: "johns-private-data",
+        "john/johns-private-data": {
             description: "This is the repository description",
-            owner: "john",
             shared: [],
             public: false,
-            files: genDirs()
+            root: genDirs()
         },
-        {
-            name: "alice-public-data",
+        "alice/alice-public-data": {
             description: "This is the repository description",
-            owner: "alice",
             shared: ["bob"],
             public: true,
-            files: genDirs()
+            root: genDirs()
         },
-        {
-            name: "alice-supplemental-data",
+        "alice/alice-supplemental-data": {
             description: "This is the repository description",
-            owner: "alice",
             shared: [],
             public: true,
-            files: genDirs()
+            root: genDirs()
         },
-        {
-            name: "my-private-data",
+        "alice/my-private-data": {
             description: "This is the repository description",
-            owner: "alice",
             shared: [],
             public: false,
-            files: genDirs()
+            root: genDirs()
         },
-        {
-            name: "bobs-data",
+        "bob/bobs-data": {
             description: "This is the repository description",
-            owner: "bob",
             shared: ["alice", "john"],
             public: true,
-            files: genDirs()
+            root: genDirs()
         }
-    ]
+    })
+    // repos: [
+    //     {
+    //         name: "johns-public-data",
+    //         description: "This is the repository description",
+    //         owner: "john",
+    //         shared: ["alice"],
+    //         public: true,
+    //         files: genDirs()
+    //     },
+    //     {
+    //         name: "johns-private-data",
+    //         description: "This is the repository description",
+    //         owner: "john",
+    //         shared: [],
+    //         public: false,
+    //         files: genDirs()
+    //     },
+    //     {
+    //         name: "alice-public-data",
+    //         description: "This is the repository description",
+    //         owner: "alice",
+    //         shared: ["bob"],
+    //         public: true,
+    //         files: genDirs()
+    //     },
+    //     {
+    //         name: "alice-supplemental-data",
+    //         description: "This is the repository description",
+    //         owner: "alice",
+    //         shared: [],
+    //         public: true,
+    //         files: genDirs()
+    //     },
+    //     {
+    //         name: "my-private-data",
+    //         description: "This is the repository description",
+    //         owner: "alice",
+    //         shared: [],
+    //         public: false,
+    //         files: genDirs()
+    //     },
+    //     {
+    //         name: "bobs-data",
+    //         description: "This is the repository description",
+    //         owner: "bob",
+    //         shared: ["alice", "john"],
+    //         public: true,
+    //         files: genDirs()
+    //     }
+    // ]
 }
 
 function copyAccount(account, username) {
@@ -203,15 +241,24 @@ export class AccountAPI {
     }
 }
 
+function copyRepo(repo, fullName) {
+    const [owner, name] = fullName.split("/")
+    const copy = Object.assign({ owner: owner, name: name }, repo)
+    delete copy.root
+    return copy
+}
+
 export class RepoAPI {
 
     listPublic(searchText=null) {
         const searchLower = searchText ? searchText.toLowerCase() : ""
         return new Promise((resolve) => {
-            const found = data.repos.filter((repo) => {
-                const all = (repo.name + repo.description + repo.owner).toLowerCase()
-                return repo.public && (all.search(searchLower) >= 0)
-            })
+            const found = Array.from(data.repos.entries())
+                .map((entry) => { return copyRepo(entry[1], entry[0]) })
+                .filter((repo) => {
+                    const all = (repo.name + repo.description + repo.owner).toLowerCase()
+                    return repo.public && (all.search(searchLower) >= 0)
+                })
             resolve(found)
         })
     }
@@ -219,13 +266,15 @@ export class RepoAPI {
     listShared(username, viewer) {
         return new Promise((resolve) => {
             const publicOnly = username !== viewer
-            const found = data.repos.filter((repo) => {
-                const isOwner  = repo.owner === username,
-                      isShared = repo.shared.find((name) => {return name === username}),
-                      isPublic = repo.public
+            const found = Array.from(data.repos.entries())
+                .map((entry) => { return copyRepo(entry[1], entry[0]) })
+                .filter((repo) => {
+                    const isOwner  = repo.owner === username,
+                          isShared = repo.shared.find((name) => {return name === username}),
+                          isPublic = repo.public
 
-                return !isOwner && isShared && (publicOnly ? isPublic : true)
-            })
+                    return !isOwner && isShared && (publicOnly ? isPublic : true)
+                })
             resolve(found)
         })
     }
@@ -233,12 +282,14 @@ export class RepoAPI {
     listOwn(username, viewer) {
         return new Promise((resolve) => {
             const publicOnly = username !== viewer
-            const found = data.repos.filter((repo) => {
-                const isOwner  = repo.owner === username,
-                      isPublic = repo.public
+            const found = Array.from(data.repos.entries())
+                .map((entry) => { return copyRepo(entry[1], entry[0]) })
+                .filter((repo) => {
+                    const isOwner  = repo.owner === username,
+                          isPublic = repo.public
 
-                return isOwner && (publicOnly ? isPublic : true)
-            })
+                    return isOwner && (publicOnly ? isPublic : true)
+                })
             resolve(found)
         })
     }
@@ -246,14 +297,11 @@ export class RepoAPI {
     get(username, repository, viewer) {
         return new Promise((resolve, reject) => {
             const publicOnly = username !== viewer
-            const found = data.repos.find((repo) => {
-                const isOwner  = repo.owner === username,
-                      isPublic = repo.public
+            const fullName = [username, repository].join("/")
+            const repo = data.repos.get(fullName)
 
-                return isOwner && (publicOnly ? isPublic : true) && repo.owner === username && repo.name === repository
-            })
-            if (found) {
-                resolve(found)
+            if (repo && (publicOnly ? repo.public : true)) {
+                resolve(copyRepo(repo, fullName))
             } else {
                 reject(Error("Repository does not exist"))
             }
