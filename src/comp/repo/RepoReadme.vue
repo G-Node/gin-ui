@@ -7,11 +7,7 @@
 <script type="text/ecmascript-6">
     export default {
         data() {
-            return {
-                path: this.$route.path,
-                params: this.$route.params,
-                name: this.$route.name
-            }
+            return {}
         }
     }
 </script>
