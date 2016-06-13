@@ -19,7 +19,7 @@
             </li>
         </ul>
 
-        <router-view v-bind:account="account" v-bind:owner="owner" v-bind:repository="repository"></router-view>
+        <router-view v-if="repository" v-bind:account="account" v-bind:owner="owner" v-bind:repository="repository"></router-view>
     </div>
 </template>
 
