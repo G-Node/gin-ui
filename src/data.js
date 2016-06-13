@@ -67,7 +67,6 @@ function genDirs() {
 var data = {
     accounts: mapOf({
         "bob": {
-            username: "bob",
             password: "testtest",
             email: "bob@example.com",
             title: "Dr.",
@@ -75,7 +74,6 @@ var data = {
             lastName: "Baker"
         },
         "alice": {
-            username: "alice",
             password: "testtest",
             email: null,
             title: "Mrs.",
@@ -83,7 +81,6 @@ var data = {
             lastName: "Goodchild"
         },
         "john": {
-            username: "john",
             password: "testtest",
             email: "jj@example.com",
             title: "Mr.",
@@ -143,13 +140,19 @@ var data = {
     ]
 }
 
+function copyAccount(account, username) {
+    const copy = Object.assign({username: username}, account)
+    delete copy.password
+    return copy
+}
+
 export class AccountAPI {
 
     login(username, password) {
         return new Promise((resolve, reject) => {
             let acc = data.accounts.get(username)
             if (acc && acc.password === password) {
-                resolve(acc)
+                resolve(copyAccount(acc, username))
             } else {
                 reject(Error("Invalid user name or password"))
             }
@@ -160,7 +163,7 @@ export class AccountAPI {
         return new Promise((resolve, reject) => {
             let acc = data.accounts.get(username)
             if (acc) {
-                resolve(acc)
+                resolve(copyAccount(acc, username))
             } else {
                 reject(Error("Account does not exist"))
             }
@@ -168,27 +171,35 @@ export class AccountAPI {
     }
 
     update(account) {
-        return this.get(account.username).then(
-            () => {
-                data.accounts.set(account.username, account)
-                return account
+        return new Promise((resolve, reject) => {
+            let acc = data.accounts.get(account.username)
+            if (acc) {
+                acc = Object.assign(acc, account)
+                delete acc.username
+                data.accounts.set(account.username, acc)
+                resolve(account)
+            } else {
+                reject(Error("Account does not exist"))
             }
-        )
+        })
     }
     
     updatePassword(username, oldPassword, newPassword, repeatedPassword) {
-        return this.get(username).then(
-            (acc) => {
+        return new Promise((resolve, reject) => {
+            let acc = data.accounts.get(username)
+            if (acc) {
                 if (acc.password !== oldPassword) {
-                    return Promise.reject(Error("Old password does not match"))
+                    reject(Error("Old password does not match"))
                 } else if (newPassword !== repeatedPassword) {
-                    return Promise.reject(Error("Repeated password does not match"))
+                    reject(Error("Repeated password does not match"))
                 } else {
                     acc.password = newPassword
-                    return acc
+                    resolve(copyAccount(acc, username))
                 }
+            } else {
+                reject(Error("Account does not exist"))
             }
-        )
+        })
     }
 }
 
