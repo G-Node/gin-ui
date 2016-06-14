@@ -33,7 +33,7 @@
                 repository: null
             }
 
-            this.update(data)
+            this.update(this.$route.params, null, data)
 
             return data
         },
@@ -45,29 +45,46 @@
         mixins: [ Alert ],
 
         methods: {
-            update(obj=null) {
-                const updated = obj || this
-                const username = this.account ? this.account.username : null
+            update(params, old, target=null) {
+                target = target || this
 
-                let promise = api.repos.get(this.$route.params.username, this.$route.params.repository, username)
-                promise.then(
-                    (repo) => {
-                        updated.repository = repo
-                    },
-                    (error) => {
-                        this.alertError(error)
-                    }
-                )
+                const login = this.account ? this.account.username : null
+                const sameOwner = old && old.username === params.username
+                const sameRepo  = old && old.repository === params.repository
 
-                promise = api.accounts.get(this.$route.params.username)
-                promise.then(
-                    (acc) => {
-                        updated.owner = acc
-                    },
-                    (error) => {
-                        this.alertError(error)
-                    }
-                )
+                if (!sameOwner) {
+                    console.log("updating owner")
+
+                    const promise = api.accounts.get(params.username)
+                    promise.then(
+                            (acc) => {
+                                target.owner = acc
+                            },
+                            (error) => {
+                                this.alertError(error)
+                            }
+                    )
+                }
+
+                if (!sameRepo || !sameOwner) {
+                    console.log("updating repo")
+
+                    const promise = api.repos.get(params.username, params.repository, login)
+                    promise.then(
+                            (repo) => {
+                                target.repository = repo
+                            },
+                            (error) => {
+                                this.alertError(error)
+                            }
+                    )
+                }
+            }
+        },
+
+        watch: {
+            "$route.params": function (params, old) {
+                this.update(params, old)
             }
         }
     }

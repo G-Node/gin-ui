@@ -1,7 +1,7 @@
 import Vue       from "vue"
 import VueRouter from "vue-router"
 
-import { AccountAPI, RepoAPI }   from './data.js'
+import { AccountAPI, RepoAPI, FileAPI }   from './data.js'
 
 import App              from "./App.vue"
 import Settings         from "./comp/account/Settings.vue"
@@ -16,15 +16,18 @@ import RepoReadme       from "./comp/repo/RepoReadme.vue"
 import RepoFiles        from "./comp/repo/RepoFiles.vue"
 import RepoSettings     from "./comp/repo/RepoSettings.vue"
 
-import Dummy     from "./comp/Dummy.vue"
+import Dummy        from "./comp/Dummy.vue"
+import { filesize } from "./filters"
 
+Vue.filter("filesize", filesize)
 Vue.use(VueRouter)
 
 const app = Vue.extend(App)
 
 window.api = {
     accounts: new AccountAPI(),
-    repos: new RepoAPI()
+    repos: new RepoAPI(),
+    files: new FileAPI()
 }
 
 window.router = new VueRouter({ history: true })

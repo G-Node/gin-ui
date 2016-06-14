@@ -58,6 +58,9 @@ function randDirs() {
         }
 
         mkFiles(dir, name)
+
+        dir.size = Object.keys(dir.files).length
+        
         return dir
     }
 
@@ -264,7 +267,84 @@ export class RepoAPI {
     }
 }
 
+function lastDir(parent, dir, path) {
+    if (path.length === 0) {
+        if (dir.type === "dir") {
+            return [dir, path]
+        } else if (parent && parent.type === "dir") {
+            return [parent, [dir.name]]
+        } else {
+            return [null, path]
+        }
+    } else {
+        const subName = path[0]
+        if (dir.files.hasOwnProperty(subName)) {
+            return lastDir(dir, dir.files[subName], path.slice(1))
+        } else {
+            return [null, path]
+        }
+    }
+}
+
+function copyFile(file) {
+    const copy = Object.assign({}, file)
+
+    if (file.type === "dir") {
+        copy.files = {}
+        for (let name of Object.keys(file.files)) {
+            if (file.files.hasOwnProperty(name)) {
+                let copySub = Object.assign({}, file.files[name])
+                delete copySub.files
+                copy.files[name] = copySub
+            }
+        }
+    }
+
+    return copy
+}
+
 export class FileAPI {
 
+    getDir(username, repository, path, viewer) {
+        return new Promise((resolve, reject) => {
+            const publicOnly = username !== viewer
+            const fullName = [username, repository].join("/")
+            const repo = data.repos.get(fullName)
+
+            if (repo && (publicOnly ? repo.public : true)) {
+                const pathComp = path ? path.split("/") : []
+                const [dir, p] = lastDir(null, repo.root, pathComp)
+
+                if (dir) {
+                    resolve(copyFile(dir))
+                } else {
+                    reject(Error("File does not exist"))
+                }
+            } else {
+                reject(Error("Repository does not exist"))
+            }
+        })
+    }
+
+    getFile(username, repository, path, viewer) {
+        return new Promise((resolve, reject) => {
+            const publicOnly = username !== viewer
+            const fullName = [username, repository].join("/")
+            const repo = data.repos.get(fullName)
+
+            if (repo && (publicOnly ? repo.public : true)) {
+                const pathComp = path ? path.split("/") : []
+                const [dir, p] = lastDir(null, repo.root, pathComp)
+
+                if (dir && dir.file.hasOwnProperty(p[0])) {
+                    resolve(copyFile(dir[p[0]]))
+                } else {
+                    reject(Error("File does not exist"))
+                }
+            } else {
+                reject(Error("Repository does not exist"))
+            }
+        })
+    }
 
 }
