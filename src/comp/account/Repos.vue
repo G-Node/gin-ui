@@ -1,15 +1,15 @@
 <template>
     <div v-if="owner">
-        <h2>{{ header() }}</h2>
+        <h2>{{ header }}</h2>
 
         <hr />
 
         <ul class="nav nav-tabs">
             <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
-                <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn() }}</a>
+                <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn }}</a>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
-                <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared() }}</a>
+                <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
             </li>
         </ul>
 
@@ -22,20 +22,62 @@
 
     export default {
         data() {
-            const d = {
-                owner: null
+            const data = { owner: null }
+
+            this.update(this.$route.params, null, data)
+
+            return data
+        },
+
+        computed: {
+            ownerName: {
+                get() {
+                    const fn = this.owner ? this.owner.firstName : null
+                    const ln = this.owner ? this.owner.lastName : null
+
+                    if (fn && ln) {
+                        return fn[0] + ". " + ln
+                    }
+
+                    return this.owner.username
+                }
+            },
+
+            header: {
+                get() {
+                    if (this.isOwnRepository) {
+                        return "Your Data"
+                    } else {
+                        return this.ownerName + "'s Data"
+                    }
+                }
+            },
+
+            headerOwn: {
+                get() {
+                    if (this.isOwnRepository) {
+                        return "Repositories owned by You"
+                    } else {
+                        return "Repositories owned by " + this.ownerName
+                    }
+                }
+            },
+
+            headerShared: {
+                get() {
+                    if (this.isOwnRepository) {
+                        return "Repositories shared with You"
+                    } else {
+                        return "Repositories shared with " + this.ownerName
+                    }
+                }
+            },
+
+            isOwnRepository: {
+                get() {
+                    return this.account && this.owner.username === this.account.username
+                }
             }
-
-            api.accounts.get(this.$route.params.username).then(
-                (acc) => {
-                    d.owner = acc
-                },
-                (error) => {
-                    this.alertError(error)
-                },
-            )
-
-            return d
         },
 
         props: {
@@ -45,43 +87,28 @@
         mixins: [ Alert ],
 
         methods: {
-            ownerName() {
-                const fn = this.owner ? this.owner.firstName : null,
-                        ln = this.owner ? this.owner.lastName : null
+            update(params, old, target=null) {
+                target = target || this
 
-                if (fn && ln) {
-                    return fn[0] + ". " + ln
+                const sameAccount = old && old.username === params.username
+
+                if (!sameAccount) {
+                    const promise = api.accounts.get(params.username)
+                    promise.then(
+                        (acc) => {
+                            target.owner = acc
+                        },
+                        (error) => {
+                            this.alertError(error)
+                        },
+                    )
                 }
+            }
+        },
 
-                return this.owner.username
-            },
-
-            header() {
-                if (this.isOwnRepository()) {
-                    return "Your Data"
-                } else {
-                    return this.ownerName() + "'s Data"
-                }
-            },
-
-            headerOwn() {
-                if (this.isOwnRepository()) {
-                    return "Repositories owned by You"
-                } else {
-                    return "Repositories owned by " + this.ownerName()
-                }
-            },
-
-            headerShared() {
-                if (this.isOwnRepository()) {
-                    return "Repositories shared with You"
-                } else {
-                    return "Repositories shared with " + this.ownerName()
-                }
-            },
-
-            isOwnRepository() {
-                return (this.account && this.owner.username === this.account.username)
+        watch: {
+            "$route.params": function (params, old) {
+                this.update(params, old)
             }
         }
     }

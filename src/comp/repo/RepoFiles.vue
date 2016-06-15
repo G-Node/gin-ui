@@ -9,27 +9,25 @@
             </span>
         </div>
 
-        <div class="panel-body" style="padding: 0">
-            <table v-if="dir" class="table table-striped">
-                <colgroup>
-                    <col style="width: 2em">
-                    <col>
-                    <col>
-                </colgroup>
-                <tbody>
-                    <tr v-for="file in dirList">
-                        <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
-                        <td><a v-link="{ name: 'repository-files', params: { root: path + '/' + file.name }}">{{ file.name }}</a></td>
-                        <td class="text-right">{{ file.size }}</td>
-                    </tr>
-                    <tr v-for="file in fileList">
-                        <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
-                        <td>{{ file.name }}</td>
-                        <td class="text-right">{{ file.size | filesize }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <table v-if="dir" class="table table-striped">
+            <colgroup>
+                <col style="width: 2em">
+                <col>
+                <col>
+            </colgroup>
+            <tbody>
+                <tr v-for="file in dirList">
+                    <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
+                    <td><a v-link="{ name: 'repository-files', params: { root: path + '/' + file.name }}">{{ file.name }}</a></td>
+                    <td class="text-right">{{ file.size }}</td>
+                </tr>
+                <tr v-for="file in fileList">
+                    <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
+                    <td>{{ file.name }}</td>
+                    <td class="text-right">{{ file.size | filesize }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 

@@ -7,7 +7,7 @@
 <template>
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ account ? userName() : "Sign In"}} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ account ? userName : "Sign In"}} <span class="caret"></span></a>
 
             <ul class="dropdown-menu" v-if="!account" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
@@ -56,6 +56,20 @@
             }
         },
 
+        computed: {
+            userName: {
+                get() {
+                    const fn = this.account.firstName, ln = this.account.lastName
+
+                    if (fn && ln) {
+                        return fn[0] + ". " + ln
+                    }
+
+                    return this.account.username
+                }
+            }
+        },
+
         props: {
             account: { twoWay: true, required: true }
         },
@@ -79,17 +93,6 @@
 
             logout() {
                 this.account = null
-            },
-
-            userName() {
-                const fn = this.account.firstName,
-                      ln = this.account.lastName
-
-                if (fn && ln) {
-                    return fn[0] + ". " + ln
-                }
-
-                return this.account.username
             }
         }
     }

@@ -86,7 +86,7 @@
         },
 
         watch: {
-            account() {
+            "account": function () {
                 this.form = {
                     title: this.account.title,
                     firstName: this.account.firstName,
