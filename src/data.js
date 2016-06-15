@@ -221,9 +221,9 @@ export class RepoAPI {
         })
     }
 
-    listShared(username, viewer) {
+    listShared(username, loginName) {
         return new Promise((resolve) => {
-            const publicOnly = username !== viewer
+            const publicOnly = username !== loginName
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
@@ -237,9 +237,9 @@ export class RepoAPI {
         })
     }
 
-    listOwn(username, viewer) {
+    listOwn(username, loginName) {
         return new Promise((resolve) => {
-            const publicOnly = username !== viewer
+            const publicOnly = username !== loginName
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
@@ -252,9 +252,9 @@ export class RepoAPI {
         })
     }
     
-    get(username, repository, viewer) {
+    get(username, repository, loginName) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== viewer
+            const publicOnly = username !== loginName
             const fullName = [username, repository].join("/")
             const repo = data.repos.get(fullName)
 
@@ -305,9 +305,9 @@ function copyFile(file) {
 
 export class FileAPI {
 
-    getDir(username, repository, path, viewer) {
+    getDir(username, repository, path, loginName) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== viewer
+            const publicOnly = username !== loginName
             const fullName = [username, repository].join("/")
             const repo = data.repos.get(fullName)
 
@@ -326,9 +326,9 @@ export class FileAPI {
         })
     }
 
-    getFile(username, repository, path, viewer) {
+    getFile(username, repository, path, loginName) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== viewer
+            const publicOnly = username !== loginName
             const fullName = [username, repository].join("/")
             const repo = data.repos.get(fullName)
 
