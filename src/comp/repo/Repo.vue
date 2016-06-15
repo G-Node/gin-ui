@@ -19,7 +19,7 @@
             </li>
         </ul>
 
-        <router-view v-if="repository" v-bind:account="account" v-bind:owner="owner" v-bind:repository="repository"></router-view>
+        <router-view v-if="repository" v-bind:login="login" v-bind:owner="owner" v-bind:repository="repository"></router-view>
     </div>
 </template>
 
@@ -39,7 +39,7 @@
         },
 
         props: {
-            account: { required: true }
+            login: { required: true }
         },
 
         mixins: [ Alert ],
@@ -48,7 +48,7 @@
             update(params, old, target=null) {
                 target = target || this
 
-                const login = this.account ? this.account.username : null
+                const login = this.login ? this.login.username : null
                 const sameOwner = old && old.username === params.username
                 const sameRepo  = old && old.repository === params.repository
 

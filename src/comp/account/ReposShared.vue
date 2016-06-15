@@ -20,13 +20,13 @@
         data() {
             const data = { repositories: null }
 
-            this.update({ owner: this.owner, account: this.account }, data)
+            this.update({ owner: this.owner, login: this.login }, data)
 
             return data
         },
 
         props: {
-            account: { required: true },
+            login: { required: true },
             owner: { required: true }
         },
 
@@ -34,7 +34,7 @@
             update(accounts, target=null) {
                 target = target || this
 
-                const loginName = accounts.account.username ? accounts.account.username : null
+                const loginName = accounts.login.username ? accounts.login.username : null
                 const promise  = api.repos.listShared(accounts.owner.username, loginName)
                 promise.then(
                     (repos) => {
@@ -49,7 +49,7 @@
         },
 
         watch: {
-            "{owner: owner, account: account}": function (accounts) {
+            "{owner: owner, login: login}": function (accounts) {
                 this.update(accounts)
             }
         }

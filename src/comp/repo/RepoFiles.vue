@@ -1,3 +1,9 @@
+<style>
+    th {
+        width: 2em
+    }
+</style>
+
 <template>
     <div class="panel panel-default" style="margin-top: 1em">
         <div class="panel-heading">
@@ -10,11 +16,6 @@
         </div>
 
         <table v-if="dir" class="table table-striped">
-            <colgroup>
-                <col style="width: 2em">
-                <col>
-                <col>
-            </colgroup>
             <tbody>
                 <tr v-for="file in dirList">
                     <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
@@ -110,7 +111,7 @@
         },
 
         props: {
-            account: { required: true }
+            login: { required: true }
         },
 
         methods: {
@@ -118,8 +119,8 @@
                 target = target || this
                 target.path = cleanPath(params.root)
 
-                const login = this.account ? this.account.username : null
-                const promise = api.files.getDir(params.username, params.repository, target.path, login)
+                const loginName = this.login ? this.login.username : null
+                const promise = api.files.getDir(params.username, params.repository, target.path, loginName)
                 promise.then(
                     (dir) => {
                         this.dir = dir

@@ -7,9 +7,9 @@
 <template>
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ account ? userName : "Sign In"}} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ login ? userName : "Sign In"}} <span class="caret"></span></a>
 
-            <ul class="dropdown-menu" v-if="!account" style="padding: 1em">
+            <ul class="dropdown-menu" v-if="!login" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
                 <li>
                     <div>
@@ -20,7 +20,7 @@
                             <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password">
                         </div>
                         <div class="form-group">
-                            <button type="button" class="btn btn-primary btn-block" @click="login">Login</button>
+                            <button type="button" class="btn btn-primary btn-block" @click="signIn">Login</button>
                         </div>
                     </div>
                 </li>
@@ -30,13 +30,13 @@
                 </li>
             </ul>
 
-            <ul class="dropdown-menu" v-if="account">
-                <!-- account info (shown if logged in) -->
-                <li><a v-link="{ name: 'profile-settings', params: { username: account.username }}">Profile Settings</a></li>
-                <li><a v-link="{ name: 'password-settings', params: { username: account.username }}">Change Password</a></li>
-                <li><a v-link="{ name: 'sshkey-settings', params: { username: account.username }}">Manage SSH Keys</a></li>
+            <ul class="dropdown-menu" v-if="login">
+                <!-- login info (shown if logged in) -->
+                <li><a v-link="{ name: 'profile-settings', params: { username: login.username }}">Profile Settings</a></li>
+                <li><a v-link="{ name: 'password-settings', params: { username: login.username }}">Change Password</a></li>
+                <li><a v-link="{ name: 'sshkey-settings', params: { username: login.username }}">Manage SSH Keys</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a v-link="{ path: '/' }" @click="logout">Sign Out</a></li>
+                <li><a v-link="{ path: '/' }" @click="signOut">Sign Out</a></li>
             </ul>
         </li>
     </ul>
@@ -59,31 +59,31 @@
         computed: {
             userName: {
                 get() {
-                    const fn = this.account.firstName, ln = this.account.lastName
+                    const fn = this.login.firstName
+                    const ln = this.login.lastName
 
                     if (fn && ln) {
                         return fn[0] + ". " + ln
                     }
 
-                    return this.account.username
+                    return this.login.username
                 }
             }
         },
 
         props: {
-            account: { twoWay: true, required: true }
+            login: { twoWay: true, required: true }
         },
 
         mixins: [ Alert ],
 
         methods: {
-
-            login() {
+            signIn() {
                 const promise = api.accounts.login(this.form.username, this.form.password)
                 promise.then(
                     (acc) => {
                         this.form.username = this.form.password = null
-                        this.account = acc
+                        this.login = acc
                     },
                     (error) => {
                         this.alertError(error)
@@ -91,8 +91,8 @@
                 )
             },
 
-            logout() {
-                this.account = null
+            signOut() {
+                this.login = null
             }
         }
     }

@@ -13,7 +13,7 @@
             </li>
         </ul>
 
-        <router-view v-bind:account="account" v-bind:owner="owner"></router-view>
+        <router-view v-bind:login="login" v-bind:owner="owner"></router-view>
     </div>
 </template>
 
@@ -75,13 +75,13 @@
 
             isOwnRepository: {
                 get() {
-                    return this.account && this.owner.username === this.account.username
+                    return this.login && this.owner.username === this.login.username
                 }
             }
         },
 
         props: {
-            account: { required: true }
+            login: { required: true }
         },
 
         mixins: [ Alert ],
