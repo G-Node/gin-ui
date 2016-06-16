@@ -72,7 +72,7 @@ function randDirs() {
 
 window.randdir = randDirs()
 
-var data = {
+window.data = {
     accounts: mapOf({
         "bob": {
             password: "testtest",
@@ -96,6 +96,32 @@ var data = {
             lastName: "Josephson"
         }
     }),
+
+    keys: mapOf({
+        "bob": [
+            {
+                fingerprint: "x9nS_Siw6cUy0qemb10V0dSK8YQYS2BKvV5KFowitUw",
+                description: "Bobs work key"
+            }
+        ],
+        "alice": [
+            {
+                fingerprint: "YiyshecHIHhJo5gP2gl/0zfdutuWYob+1lbdFdCqIUw",
+                description: "Alice work key"
+            },
+            {
+                fingerprint: "A3tkBXFQWkjU6rzhkofY55G7tPR_Lmna4B-WEGVFXOQ",
+                description: "Alice home key"
+            }
+        ],
+        "john": [
+            {
+                fingerprint: "+2gCRHNg0LSAs3xhk+UYpZ33UFUj9GKK5C/i2LQp0fA",
+                description: "This is my only key"
+            }
+        ]
+    }),
+
     repos: mapOf({
         "john/johns-public-data": {
             description: "This is the repository description",
@@ -191,6 +217,92 @@ export class AccountAPI {
                 } else {
                     acc.password = newPassword
                     resolve(copyAccount(acc, username))
+                }
+            } else {
+                reject(Error("Account does not exist"))
+            }
+        })
+    }
+}
+
+function copyKey(username, key) {
+    return Object.assign({ login: username }, key)
+}
+
+export class SSHKeyAPI {
+    list(username) {
+        return new Promise((resolve, reject) => {
+            const keys = data.keys.get(username)
+            if (keys) {
+                resolve(keys.map((key) => copyKey(username, key)))
+            } else {
+                reject(Error("Account does not exist"))
+            }
+        })
+    }
+
+    get(username, fingerprint) {
+        return new Promise((resolve, reject) => {
+            const keys = data.keys.get(username)
+            if (keys) {
+                const keyFound = keys.find((k) => k.fingerprint === fingerprint)
+                if (keyFound) {
+                    resolve(copyKey(username, keyFound))
+                } else {
+                    reject(Error("Key does not exist"))
+                }
+            } else {
+                reject(Error("Account does not exist"))
+            }
+        })
+    }
+
+    create(key) {
+        return new Promise((resolve, reject) => {
+            let keys = data.keys.get(key.login)
+            if (keys) {
+                const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
+                if (!keyFound) {
+                    keys = keys.concat({fingerprint: key.fingerprint, description: key.description})
+                    data.keys.set(key.login, keys)
+                    resolve(copyKey(key.login, key))
+                } else {
+                    reject(Error("Key already exists"))
+                }
+            } else {
+                reject(Error("Account does not exist"))
+            }
+        })
+    }
+
+    update(key) {
+        return new Promise((resolve, reject) => {
+            const keys = data.keys.get(key.login)
+            if (keys) {
+                const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
+                if (keyFound) {
+                    keyFound.fingerprint = key.fingerprint
+                    keyFound.description = key.description
+                    resolve(copyKey(key.login, keyFound))
+                } else {
+                    reject(Error("Key does not exist"))
+                }
+            } else {
+                reject(Error("Account does not exist"))
+            }
+        })
+    }
+
+    remove(key) {
+        return new Promise((resolve, reject) => {
+            const keys = data.keys.get(key.login)
+            if (keys) {
+                const newKeys = keys.filter((k) => k.fingerprint !== key.fingerprint)
+                if (newKeys.length < keys.length) {
+                    data.keys.set(key.login, newKeys)
+                    resolve(copyKey(key.login, key))
+                } else {
+                    reject(Error("Key does not exist"))
                 }
             } else {
                 reject(Error("Account does not exist"))

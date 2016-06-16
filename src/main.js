@@ -1,7 +1,7 @@
 import Vue       from "vue"
 import VueRouter from "vue-router"
 
-import { AccountAPI, RepoAPI, FileAPI }   from './data.js'
+import { AccountAPI, SSHKeyAPI, RepoAPI, FileAPI }   from './data.js'
 
 import App              from "./App.vue"
 import Settings         from "./comp/account/Settings.vue"
@@ -26,6 +26,7 @@ const app = Vue.extend(App)
 
 window.api = {
     accounts: new AccountAPI(),
+    keys: new SSHKeyAPI(),
     repos: new RepoAPI(),
     files: new FileAPI()
 }
