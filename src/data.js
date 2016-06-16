@@ -364,13 +364,70 @@ export class RepoAPI {
         })
     }
     
-    get(username, repository, loginName) {
+    get(username, repoName, loginName) {
         return new Promise((resolve, reject) => {
             const publicOnly = username !== loginName
-            const fullName = [username, repository].join("/")
+            const fullName = [username, repoName].join("/")
             const repo = data.repos.get(fullName)
 
             if (repo && (publicOnly ? repo.public : true)) {
+                resolve(copyRepo(repo, fullName))
+            } else {
+                reject(Error("Repository does not exist"))
+            }
+        })
+    }
+
+    create(repository) {
+        const fullName = [repository.owner, repository.name].join("/")
+
+        return new Promise((resolve, reject) => {
+            if (!data.accounts.has(repository.owner)) {
+                reject(Error("Account does not exist"))
+                return
+            }
+
+            if (data.repos.has(fullName)) {
+                reject(Error("Repository already exists"))
+                return
+            }
+
+            delete repository.owner
+            delete repository.name
+            repository.root = randDirs()
+
+            data.repos.set(fullName, repository)
+            resolve(copyRepo(repository, fullName))
+        })
+    }
+
+
+    update(repository) {
+        const fullName = [repository.owner, repository.name].join("/")
+
+        return new Promise((resolve, reject) => {
+            const repo = data.repos.get(fullName)
+
+            if (repo) {
+                repo.description = repository.description
+                repo.shared = repository.shared
+                repo.public = repository.public
+
+                resolve(copyRepo(repo, fullName))
+            } else {
+                reject(Error("Repository does not exist"))
+            }
+        })
+    }
+
+    remove(repository) {
+        const fullName = [repository.owner, repository.name].join("/")
+
+        return new Promise((resolve, reject) => {
+            const repo = data.repos.get(fullName)
+
+            if (repo) {
+                data.repos.delete(fullName)
                 resolve(copyRepo(repo, fullName))
             } else {
                 reject(Error("Repository does not exist"))
@@ -417,10 +474,10 @@ function copyFile(file) {
 
 export class FileAPI {
 
-    getDir(username, repository, path, loginName) {
+    getDir(username, repoName, path, loginName) {
         return new Promise((resolve, reject) => {
             const publicOnly = username !== loginName
-            const fullName = [username, repository].join("/")
+            const fullName = [username, repoName].join("/")
             const repo = data.repos.get(fullName)
 
             if (repo && (publicOnly ? repo.public : true)) {
@@ -438,10 +495,10 @@ export class FileAPI {
         })
     }
 
-    getFile(username, repository, path, loginName) {
+    getFile(username, repoName, path, loginName) {
         return new Promise((resolve, reject) => {
             const publicOnly = username !== loginName
-            const fullName = [username, repository].join("/")
+            const fullName = [username, repoName].join("/")
             const repo = data.repos.get(fullName)
 
             if (repo && (publicOnly ? repo.public : true)) {
