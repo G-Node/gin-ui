@@ -5,7 +5,7 @@
 </style>
 
 <template>
-    <div class="panel panel-default" style="margin-top: 1em">
+    <div class="panel panel-default">
         <div class="panel-heading">
             <span>
                 <a v-link="{ name: 'repository-files', params: { root: ':root' }}">root</a>
@@ -15,7 +15,7 @@
             </span>
         </div>
 
-        <table v-if="dir" class="table table-striped">
+        <table v-if="dir" class="table">
             <tbody>
                 <tr v-for="file in dirList">
                     <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>

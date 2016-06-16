@@ -170,7 +170,7 @@ export class AccountAPI {
 
     login(username, password) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(username)
+            const acc = data.accounts.get(username)
             if (acc && acc.password === password) {
                 resolve(copyAccount(acc, username))
             } else {
@@ -181,12 +181,24 @@ export class AccountAPI {
 
     get(username) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(username)
+            const acc = data.accounts.get(username)
             if (acc) {
                 resolve(copyAccount(acc, username))
             } else {
                 reject(Error("Account does not exist"))
             }
+        })
+    }
+
+    search(text) {
+        let result = []
+        return new Promise((resolve, reject) => {
+            if (text && text.length >= 1) {
+                result = Array.from(data.accounts.entries())
+                    .filter((entry) => entry[0].indexOf(text) >= 0)
+                    .map((entry) => copyAccount(entry[1], entry[0]))
+            }
+            resolve(result)
         })
     }
 
@@ -206,7 +218,7 @@ export class AccountAPI {
     
     updatePassword(username, oldPassword, newPassword, repeatedPassword) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(username)
+            const acc = data.accounts.get(username)
             if (acc) {
                 if (acc.password !== oldPassword) {
                     reject(Error("Old password does not match"))
