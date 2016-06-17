@@ -4,14 +4,22 @@
 
         <hr />
 
-        <ul class="nav nav-tabs">
-            <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
-                <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn }}</a>
-            </li>
-            <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
-                <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
-            </li>
-        </ul>
+        <di>
+            <ul class="nav pull-right">
+                <li role="presentation">
+                    <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: login.username }}">New Repository</button>
+                </li>
+            </ul>
+
+            <ul class="nav nav-tabs">
+                <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
+                    <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn }}</a>
+                </li>
+                <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
+                    <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
+                </li>
+            </ul>
+        </di>
 
         <router-view v-bind:login="login" v-bind:owner="owner"></router-view>
     </div>
