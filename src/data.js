@@ -14,23 +14,23 @@ function randInt(min, max) {
 
 function randElem(array) {
     switch(array.length) {
-        case 0:
-            return null
-        case 1:
-            return array[0]
-        default:
-            return array[randInt(0, array.length - 1)]
+    case 0:
+        return null
+    case 1:
+        return array[0]
+    default:
+        return array[randInt(0, array.length - 1)]
     }
 }
 
 function randDirs() {
-    const maxDepth = 4,
-          maxFiles = 10,
-          maxSize  = 1024 * 1024 * 1024,
-          maxDirs  = 5,
-          prefixes = ["monkey", "mouse", "fish", "patient"],
-          suffixes = ["data", "metadata", "info", "recording"],
-          extensions = [".odml", ".h5", ".xml", ".yml", ".json", ".nix"]
+    const maxDepth = 4
+    const maxFiles = 10
+    const maxSize  = 1024 * 1024 * 1024
+    const maxDirs  = 5
+    const prefixes = ["monkey", "mouse", "fish", "patient"]
+    const suffixes = ["data", "metadata", "info", "recording"]
+    const extensions = [".odml", ".h5", ".xml", ".yml", ".json", ".nix"]
 
     function mkFiles(dir, prefix) {
         const ext = randElem(extensions)
@@ -70,9 +70,7 @@ function randDirs() {
     return root
 }
 
-window.randdir = randDirs()
-
-window.data = {
+const data = {
     accounts: mapOf({
         "bob": {
             password: "testtest",
@@ -339,9 +337,9 @@ export class RepoAPI {
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username,
-                          isShared = repo.shared.find((name) => {return name === username}),
-                          isPublic = repo.public
+                    const isOwner  = repo.owner === username
+                    const isShared = repo.shared.find((name) => {return name === username})
+                    const isPublic = repo.public
 
                     return !isOwner && isShared && (publicOnly ? isPublic : true)
                 })
@@ -355,8 +353,8 @@ export class RepoAPI {
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username,
-                          isPublic = repo.public
+                    const isOwner  = repo.owner === username
+                    const isPublic = repo.public
 
                     return isOwner && (publicOnly ? isPublic : true)
                 })
@@ -482,7 +480,7 @@ export class FileAPI {
 
             if (repo && (publicOnly ? repo.public : true)) {
                 const pathComp = path ? path.split("/") : []
-                const [dir, p] = lastDir(null, repo.root, pathComp)
+                let [dir, _p] = lastDir(null, repo.root, pathComp)
 
                 if (dir) {
                     resolve(copyFile(dir))

@@ -1,7 +1,7 @@
 import Vue       from "vue"
 import VueRouter from "vue-router"
 
-import { AccountAPI, SSHKeyAPI, RepoAPI, FileAPI }   from './data.js'
+import { AccountAPI, SSHKeyAPI, RepoAPI, FileAPI }   from "./data.js"
 
 import App              from "./App.vue"
 import Settings         from "./comp/account/Settings.vue"
@@ -32,7 +32,7 @@ window.api = {
 }
 
 window.router = new VueRouter({ history: true })
-router.map({
+window.router.map({
     "/a/:username/settings": {
         component: Settings,
         name: "profile-settings",
@@ -65,4 +65,4 @@ router.map({
     }
 })
 
-router.start(app, "#main")
+window.router.start(app, "#main")
