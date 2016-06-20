@@ -23,6 +23,15 @@ function randElem(array) {
     }
 }
 
+function randStr(length) {
+    let letters = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
+    let res = ""
+    for (let i = 0; i < length; i++) {
+        res = res + randElem(letters)
+    }
+    return res
+}
+
 function randDirs() {
     const maxDepth = 4
     const maxFiles = 10
@@ -267,20 +276,29 @@ export class SSHKeyAPI {
         })
     }
 
-    create(key) {
+    create(username, key) {
         return new Promise((resolve, reject) => {
-            let keys = data.keys.get(key.login)
-            if (keys) {
-                const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
-                if (!keyFound) {
-                    keys = keys.concat({fingerprint: key.fingerprint, description: key.description})
-                    data.keys.set(key.login, keys)
-                    resolve(copyKey(key.login, key))
+            let keys = data.keys.get(username)
+            if (key.description === null || key.description === "") {
+                reject(Error("Key description is missing"))
+            }
+            else if (key.key === null || key.key === "") {
+                reject(Error("Public key is missing"))
+            }
+            else {
+                key.fingerprint = randStr(20)
+                if (keys) {
+                    const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
+                    if (!keyFound) {
+                        keys = keys.concat({fingerprint: key.fingerprint, description: key.description})
+                        data.keys.set(username, keys)
+                        resolve(copyKey(username, key))
+                    } else {
+                        reject(Error("Key already exists"))
+                    }
                 } else {
-                    reject(Error("Key already exists"))
+                    reject(Error("Account does not exist"))
                 }
-            } else {
-                reject(Error("Account does not exist"))
             }
         })
     }
