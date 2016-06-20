@@ -2,6 +2,10 @@
     .navbar-brand {
         padding-top: 2px;
     }
+
+    .nav-tabs {
+        margin-bottom: 1.6em;
+    }
 </style>
 
 <template>

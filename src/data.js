@@ -14,23 +14,23 @@ function randInt(min, max) {
 
 function randElem(array) {
     switch(array.length) {
-        case 0:
-            return null
-        case 1:
-            return array[0]
-        default:
-            return array[randInt(0, array.length - 1)]
+    case 0:
+        return null
+    case 1:
+        return array[0]
+    default:
+        return array[randInt(0, array.length - 1)]
     }
 }
 
 function randDirs() {
-    const maxDepth = 4,
-          maxFiles = 10,
-          maxSize  = 1024 * 1024 * 1024,
-          maxDirs  = 5,
-          prefixes = ["monkey", "mouse", "fish", "patient"],
-          suffixes = ["data", "metadata", "info", "recording"],
-          extensions = [".odml", ".h5", ".xml", ".yml", ".json", ".nix"]
+    const maxDepth = 4
+    const maxFiles = 10
+    const maxSize  = 1024 * 1024 * 1024
+    const maxDirs  = 5
+    const prefixes = ["monkey", "mouse", "fish", "patient"]
+    const suffixes = ["data", "metadata", "info", "recording"]
+    const extensions = [".odml", ".h5", ".xml", ".yml", ".json", ".nix"]
 
     function mkFiles(dir, prefix) {
         const ext = randElem(extensions)
@@ -70,9 +70,7 @@ function randDirs() {
     return root
 }
 
-window.randdir = randDirs()
-
-window.data = {
+const data = {
     accounts: mapOf({
         "bob": {
             password: "testtest",
@@ -172,7 +170,7 @@ export class AccountAPI {
 
     login(username, password) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(username)
+            const acc = data.accounts.get(username)
             if (acc && acc.password === password) {
                 resolve(copyAccount(acc, username))
             } else {
@@ -183,12 +181,24 @@ export class AccountAPI {
 
     get(username) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(username)
+            const acc = data.accounts.get(username)
             if (acc) {
                 resolve(copyAccount(acc, username))
             } else {
                 reject(Error("Account does not exist"))
             }
+        })
+    }
+
+    search(text) {
+        let result = []
+        return new Promise((resolve, reject) => {
+            if (text && text.length >= 1) {
+                result = Array.from(data.accounts.entries())
+                    .filter((entry) => entry[0].indexOf(text) >= 0)
+                    .map((entry) => copyAccount(entry[1], entry[0]))
+            }
+            resolve(result)
         })
     }
 
@@ -208,7 +218,7 @@ export class AccountAPI {
     
     updatePassword(username, oldPassword, newPassword, repeatedPassword) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(username)
+            const acc = data.accounts.get(username)
             if (acc) {
                 if (acc.password !== oldPassword) {
                     reject(Error("Old password does not match"))
@@ -339,9 +349,9 @@ export class RepoAPI {
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username,
-                          isShared = repo.shared.find((name) => {return name === username}),
-                          isPublic = repo.public
+                    const isOwner  = repo.owner === username
+                    const isShared = repo.shared.find((name) => {return name === username})
+                    const isPublic = repo.public
 
                     return !isOwner && isShared && (publicOnly ? isPublic : true)
                 })
@@ -355,8 +365,8 @@ export class RepoAPI {
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username,
-                          isPublic = repo.public
+                    const isOwner  = repo.owner === username
+                    const isPublic = repo.public
 
                     return isOwner && (publicOnly ? isPublic : true)
                 })
@@ -364,13 +374,70 @@ export class RepoAPI {
         })
     }
     
-    get(username, repository, loginName) {
+    get(username, repoName, loginName) {
         return new Promise((resolve, reject) => {
             const publicOnly = username !== loginName
-            const fullName = [username, repository].join("/")
+            const fullName = [username, repoName].join("/")
             const repo = data.repos.get(fullName)
 
             if (repo && (publicOnly ? repo.public : true)) {
+                resolve(copyRepo(repo, fullName))
+            } else {
+                reject(Error("Repository does not exist"))
+            }
+        })
+    }
+
+    create(repository) {
+        const fullName = [repository.owner, repository.name].join("/")
+
+        return new Promise((resolve, reject) => {
+            if (!data.accounts.has(repository.owner)) {
+                reject(Error("Account does not exist"))
+                return
+            }
+
+            if (data.repos.has(fullName)) {
+                reject(Error("Repository already exists"))
+                return
+            }
+
+            delete repository.owner
+            delete repository.name
+            repository.root = randDirs()
+
+            data.repos.set(fullName, repository)
+            resolve(copyRepo(repository, fullName))
+        })
+    }
+
+
+    update(repository) {
+        const fullName = [repository.owner, repository.name].join("/")
+
+        return new Promise((resolve, reject) => {
+            const repo = data.repos.get(fullName)
+
+            if (repo) {
+                repo.description = repository.description
+                repo.shared = repository.shared
+                repo.public = repository.public
+
+                resolve(copyRepo(repo, fullName))
+            } else {
+                reject(Error("Repository does not exist"))
+            }
+        })
+    }
+
+    remove(repository) {
+        const fullName = [repository.owner, repository.name].join("/")
+
+        return new Promise((resolve, reject) => {
+            const repo = data.repos.get(fullName)
+
+            if (repo) {
+                data.repos.delete(fullName)
                 resolve(copyRepo(repo, fullName))
             } else {
                 reject(Error("Repository does not exist"))
@@ -417,15 +484,15 @@ function copyFile(file) {
 
 export class FileAPI {
 
-    getDir(username, repository, path, loginName) {
+    getDir(username, repoName, path, loginName) {
         return new Promise((resolve, reject) => {
             const publicOnly = username !== loginName
-            const fullName = [username, repository].join("/")
+            const fullName = [username, repoName].join("/")
             const repo = data.repos.get(fullName)
 
             if (repo && (publicOnly ? repo.public : true)) {
                 const pathComp = path ? path.split("/") : []
-                const [dir, p] = lastDir(null, repo.root, pathComp)
+                let [dir, _p] = lastDir(null, repo.root, pathComp)
 
                 if (dir) {
                     resolve(copyFile(dir))
@@ -438,10 +505,10 @@ export class FileAPI {
         })
     }
 
-    getFile(username, repository, path, loginName) {
+    getFile(username, repoName, path, loginName) {
         return new Promise((resolve, reject) => {
             const publicOnly = username !== loginName
-            const fullName = [username, repository].join("/")
+            const fullName = [username, repoName].join("/")
             const repo = data.repos.get(fullName)
 
             if (repo && (publicOnly ? repo.public : true)) {

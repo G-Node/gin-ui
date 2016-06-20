@@ -14,12 +14,13 @@
             <li role="presentation" :class="{ 'active': $route.name === 'repository-files' }">
                 <a v-link="{ name: 'repository-files', params: { username: owner.username, repository: repository.name }}">Files</a>
             </li>
-            <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }">
+            <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }" v-if="isRepositoryWriteable">
                 <a v-link="{ name: 'repository-settings', params: { username: owner.username, repository: repository.name }}">Settings</a>
             </li>
         </ul>
 
-        <router-view v-if="repository" v-bind:login="login" v-bind:owner="owner" v-bind:repository="repository"></router-view>
+
+        <router-view v-if="repository" v-bind:login="login" v-bind:owner="owner" v-bind:is-repository-writeable="isRepositoryWriteable" v-bind:repository.sync="repository"></router-view>
     </div>
 </template>
 
@@ -36,6 +37,17 @@
             this.update(this.$route.params, null, data)
 
             return data
+        },
+
+        computed: {
+            isRepositoryWriteable: {
+                get() {
+                    const name = this.login ? this.login.username : null
+                    const repo = this.repository
+
+                    return !!(name && (repo.owner === name || repo.shared.indexOf(name) >= 0));
+                }
+            }
         },
 
         props: {

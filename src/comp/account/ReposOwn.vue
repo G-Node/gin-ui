@@ -1,5 +1,5 @@
 <template>
-    <div style="margin-top: 1em">
+    <div>
         <ul class="list-unstyled">
             <li v-for="repo in repositories">
                 <div class="panel panel-default">
