@@ -4,7 +4,7 @@
 
         <hr />
 
-        <di>
+        <div>
             <ul class="nav pull-right">
                 <li role="presentation">
                     <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: login.username }}">New Repository</button>
@@ -19,7 +19,7 @@
                     <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
                 </li>
             </ul>
-        </di>
+        </div>
 
         <router-view v-bind:login="login" v-bind:owner="owner"></router-view>
     </div>
