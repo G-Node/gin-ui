@@ -41,7 +41,7 @@
                         <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
                         <div class="col-sm-9">
                             <div class="dropdown">
-                                <input type="text" class="form-control" id="select" name="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" v-model="share.selected" debounce="100">
+                                <input type="text" class="form-control" id="select" name="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" v-model="share.selected" debounce="100" @keypress.enter="addShare(share.selected)">
                                 <ul v-if="share.available.length > 0" class="dropdown-menu" aria-labelledby="select">
                                     <li ><a v-for="name in share.available" @click="selectShare(name)">{{ name }}</a></li>
                                 </ul>
