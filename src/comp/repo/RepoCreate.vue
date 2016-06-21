@@ -4,7 +4,7 @@
             New Repository
         </div>
         <div class="panel-body">
-            <div class="form-horizontal">
+            <div class="form-horizontal" @keypress.enter="save">
                 <div class="form-group">
                     <label for="name" class="col-sm-2 control-label">Name</label>
                     <div class="col-sm-10">
