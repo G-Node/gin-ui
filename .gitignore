@@ -11,3 +11,6 @@ dist/
 
 # tmp
 *~
+
+# log files
+*.log
