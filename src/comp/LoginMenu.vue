@@ -12,12 +12,12 @@
             <ul class="dropdown-menu" v-if="!login" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
                 <li>
-                    <div>
+                    <div @keypress.enter="signIn">
                         <div class="form-group">
-                            <input type="text" class="form-control" id="login" placeholder="G-Node Login" v-model="form.username" @keypress.enter="signIn">
+                            <input type="text" class="form-control" id="login" placeholder="G-Node Login" v-model="form.username">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password" @keypress.enter="signIn">
+                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password">
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn btn-primary btn-block" @click="signIn">Login</button>
