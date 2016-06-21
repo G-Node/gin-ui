@@ -392,8 +392,14 @@ export class RepoAPI {
         const fullName = [username, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
-            if (!repository.name.match(/^[a-zA-Z0-9_\-]{2,20}$/)) {
+            let name = repository.name
+            if (!name.match(/^[a-zA-Z0-9_\-]*$/)) {
                 reject(Error("Repository name must only contain alphanumeric characters"))
+                return
+            }
+
+            if (name.length < 2 || name.length > 20) {
+                reject(Error("Repository name must be between 2 and 20 characters long"))
                 return
             }
 
