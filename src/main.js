@@ -16,6 +16,7 @@ import Repo             from "./comp/repo/Repo.vue"
 import RepoReadme       from "./comp/repo/RepoReadme.vue"
 import RepoFiles        from "./comp/repo/RepoFiles.vue"
 import RepoSettings     from "./comp/repo/RepoSettings.vue"
+import RepoCreate       from "./comp/repo/RepoCreate.vue"
 
 import Dummy        from "./comp/Dummy.vue"
 import { filesize } from "./filters"
@@ -50,6 +51,10 @@ window.router.map({
             "/": { component: ReposOwn },
             "/shared": { component: ReposShared, name: "shared-repositories" }
         }
+    },
+    "/a/:username/repository-create": {
+        component: RepoCreate,
+        name: "repository-create"
     },
     "/r/public-repositories": {
         component: PublicRepos,
