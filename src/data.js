@@ -411,6 +411,9 @@ export class RepoAPI {
 
         return new Promise((resolve, reject) => {
             let name = repository.name
+            if (name == null) {
+                name = ""
+            }
             if (!name.match(/^[a-zA-Z0-9_\-]*$/)) {
                 reject(Error("Repository name must only contain alphanumeric characters"))
                 return
