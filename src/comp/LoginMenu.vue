@@ -14,10 +14,10 @@
                 <li>
                     <div>
                         <div class="form-group">
-                            <input type="text" class="form-control" id="login" placeholder="G-Node Login" v-model="form.username" @keyup.enter="signIn">
+                            <input type="text" class="form-control" id="login" placeholder="G-Node Login" v-model="form.username" @keypress.enter="signIn">
                         </div>
                         <div class="form-group">
-                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password" @keyup.enter="signIn">
+                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password" @keypress.enter="signIn">
                         </div>
                         <div class="form-group">
                             <button type="button" class="btn btn-primary btn-block" @click="signIn">Login</button>

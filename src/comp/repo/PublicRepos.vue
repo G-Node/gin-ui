@@ -5,7 +5,7 @@
         <div class="form-inline row">
             <div class="form-group col-sm-9 col-sm-offset-1">
                 <label class="sr-only" for="search">Search</label>
-                <input type="text" class="form-control" id="search" placeholder="Search Text" v-model="searchText" style="width: 100%" @keyup.enter="search">
+                <input type="text" class="form-control" id="search" placeholder="Search Text" v-model="searchText" style="width: 100%" @keypress.enter="search">
             </div>
             <div class="form-group col-sm-1">
                 <button type="submit" class="btn btn-default" @click="search">Search</button>
