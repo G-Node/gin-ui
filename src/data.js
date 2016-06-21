@@ -406,11 +406,22 @@ export class RepoAPI {
         })
     }
 
-    create(repository) {
-        const fullName = [repository.owner, repository.name].join("/")
+    create(username, repository) {
+        const fullName = [username, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
-            if (!data.accounts.has(repository.owner)) {
+            let name = repository.name
+            if (!name.match(/^[a-zA-Z0-9_\-]*$/)) {
+                reject(Error("Repository name must only contain alphanumeric characters"))
+                return
+            }
+
+            if (name.length < 2 || name.length > 20) {
+                reject(Error("Repository name must be between 2 and 20 characters long"))
+                return
+            }
+
+            if (!data.accounts.has(username)) {
                 reject(Error("Account does not exist"))
                 return
             }
@@ -420,8 +431,8 @@ export class RepoAPI {
                 return
             }
 
-            delete repository.owner
             delete repository.name
+            repository.shared = []
             repository.root = randDirs()
 
             data.repos.set(fullName, repository)
