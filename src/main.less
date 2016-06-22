@@ -1,3 +1,154 @@
+/*
+ * Colors
+ */
+
+@bg-color: white;
+@bg-color-main: rgb(247, 247, 247);
+
+@bg-blue: rgb(85, 123, 185);
+@bg-blue-darker: rgb(80, 115, 180);
+@bg-blue-light: rgb(234, 238, 247);
+
+@fg-bright: rgb(230, 240, 255);
+@fg-dark: rgb(68, 68, 68);
+@fg-blue-dark: rgb(39, 94, 142);
+
+@lighter: rgba(0, 0, 200, .05);
+@darker: rgba(240, 240, 255, .1);
+
+/*
+ * Global Settings
+ */
+
 body {
+  color: @fg-dark;
+  background-color: @bg-color-main;
   padding-top: 70px;
+}
+
+.main-container {
+  border-radius: 1em;
+  padding: 2em;
+  background-color: @bg-color;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 970px;
+  }
+
+  .main-container {
+    min-height: 750px;
+  }
+}
+
+a {
+  color: @fg-blue-dark;
+}
+
+/*
+ * Navbar
+ */
+
+.navbar-gin {
+  background-color: @bg-blue;
+  box-shadow: inset 0 -2px 5px rgba(0, 0, 0, .1);
+
+  li a {
+    color: @fg-bright;
+    font-size: 1.2em;
+  }
+
+  .dropdown-menu {
+    a {
+      color: @fg-blue-dark;
+      font-size: 1em;
+    }
+    a:hover {
+      color: @fg-blue-dark;
+      background-color: @bg-blue-light;
+    }
+  }
+
+  li a:hover, li a.v-link-active, .open>a, .open>a:hover, .open>a:focus {
+    background-color: @darker;
+  }
+
+  button.navbar-toggle {
+    background-color: rgba(240, 240, 255, .5);
+    .icon-bar {
+      background-color: @bg-blue;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar-gin {
+
+    a, li a {
+      color: @fg-blue-dark;
+      //background-color: @bg-color;
+    }
+
+    .navbar-collapse {
+      background-color: @bg-color;
+    }
+
+    li a:hover, .open>a, .open>a:hover, .open>a:focus {
+      color: @fg-dark;
+    }
+  }
+}
+
+/*
+ * Panels
+ */
+
+.panel {
+  .panel-heading {
+    padding: 8px 15px;
+    font-size: 1.2em;
+    background-color: @bg-blue-light;
+  }
+}
+
+/*
+ * Tabs
+ */
+
+.nav-tabs {
+  li a {
+    padding: 8px 15px;
+    font-size: 1.2em;
+  }
+
+  li a:hover {
+    background-color: @bg-blue-light;
+  }
+}
+
+/**
+ * Nav Pills
+ */
+
+.nav-pills li {
+  a:hover, a:focus {
+    background-color: @bg-blue-light;
+  }
+}
+
+/*
+ * Buttons
+ */
+
+.btn-default:hover {
+  background-color: @bg-blue-light;
+}
+
+.btn-primary {
+  background-color: @bg-blue;
+}
+
+.btn-primary:hover {
+  background-color: @bg-blue-darker;
 }
