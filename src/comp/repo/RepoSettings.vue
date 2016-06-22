@@ -39,15 +39,16 @@
                     </div>
                     <div class="form-group">
                         <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-8">
                             <div class="dropdown">
-                                <input type="text" class="form-control" id="select" name="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" v-model="share.selected" debounce="100" @keypress.enter="addShare(share.selected)">
+                                <input type="text" class="form-control" id="select" name="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                       v-model="share.selected" debounce="100" @keypress.enter="addShare(share.selected)">
                                 <ul v-if="share.available.length > 0" class="dropdown-menu" aria-labelledby="select">
                                     <li ><a v-for="name in share.available" @click="selectShare(name)">{{ name }}</a></li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="col-sm-1">
+                        <div class="col-sm-2">
                             <button class="btn btn-primary btn-block" @click="addShare(share.selected)">Add</button>
                         </div>
                     </div>

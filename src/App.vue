@@ -10,7 +10,7 @@
 
 <template>
     <div>
-        <nav class="navbar navbar-default navbar-fixed-top">
+        <nav class="navbar navbar-gin navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <!-- collapsed menu button -->
@@ -32,7 +32,7 @@
             </div>
         </nav>
 
-        <div class="container">
+        <div class="container main-container">
             <div class="alert" role="alert" v-if="alert" :class="[alert ? 'alert-' + alert.level : '']">
                 {{ alert.content }}
             </div>

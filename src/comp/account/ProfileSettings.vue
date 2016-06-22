@@ -32,7 +32,7 @@
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-9">
                         <button type="submit" class="btn btn-default" @click="reset">Reset</button>
-                        <button type="submit" class="btn btn-default" @click="save">Save</button>
+                        <button type="submit" class="btn btn-primary" @click="save">Save</button>
                     </div>
                 </div>
             </div>

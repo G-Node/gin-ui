@@ -18,8 +18,9 @@ import RepoFiles        from "./comp/repo/RepoFiles.vue"
 import RepoSettings     from "./comp/repo/RepoSettings.vue"
 import RepoCreate       from "./comp/repo/RepoCreate.vue"
 
-import Dummy        from "./comp/Dummy.vue"
 import { filesize } from "./filters"
+
+import {_main} from "./main.less"
 
 Vue.filter("filesize", filesize)
 Vue.use(VueRouter)
