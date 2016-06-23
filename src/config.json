@@ -1,0 +1,9 @@
+{
+  "auth": {
+    "host": "auth.gin.g-node.org",
+    "redirect": "/login"
+  },
+  "repo": {
+    "host": "repo.gin.g-node.org"
+  }
+}

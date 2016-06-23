@@ -18,15 +18,17 @@ import RepoFiles        from "./comp/repo/RepoFiles.vue"
 import RepoSettings     from "./comp/repo/RepoSettings.vue"
 import RepoCreate       from "./comp/repo/RepoCreate.vue"
 
+import config from "./config.json"
 import { filesize } from "./filters"
+import _main from "./main.less"
 
-import {_main} from "./main.less"
 
 Vue.filter("filesize", filesize)
 Vue.use(VueRouter)
 
 const app = Vue.extend(App)
 
+window.config = config
 window.api = {
     accounts: new AccountAPI(),
     keys: new SSHKeyAPI(),
