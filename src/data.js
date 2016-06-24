@@ -233,12 +233,17 @@ class AccountAPI {
 
     get(username) {
         return new Promise((resolve, reject) => {
-            const acc = data.accounts.get(username)
-            if (acc) {
-                resolve(copyAccount(acc, username))
-            } else {
-                reject(Error("Account does not exist"))
+            if (!this.config.token) {
+                reject({ error: "Not Authorized", "message": "You are not logged in"})
             }
+            $.ajax({
+                url: `${this.config.authURL}/api/accounts/${this.config.token.login}`,
+                type: "GET",
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
+                dataType: "json",
+                success: (acc) => resolve(acc),
+                error: (error) => reject(error)
+            })
         })
     }
 
