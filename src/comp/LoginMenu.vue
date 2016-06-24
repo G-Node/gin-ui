@@ -12,17 +12,7 @@
             <ul class="dropdown-menu" v-if="!login" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
                 <li>
-                    <div @keypress.enter="signIn">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="login" placeholder="G-Node Login" v-model="form.username">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password">
-                        </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-primary btn-block" @click="signIn">Login</button>
-                        </div>
-                    </div>
+                    <a href="#" @click="signIn">Sign In</a>
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
@@ -43,18 +33,7 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Alert from "./Alert.js"
-
     export default {
-
-        data(){
-            return {
-                form: {
-                    username: null,
-                    password: null
-                }
-            }
-        },
 
         computed: {
             userName: {
@@ -72,23 +51,21 @@
         },
 
         props: {
-            login: { twoWay: true, required: true }
+            login: { required: true }
         },
-
-        mixins: [ Alert ],
 
         methods: {
             signIn() {
-                const promise = api.accounts.login(this.form.username, this.form.password)
-                promise.then(
-                    (acc) => {
-                        this.form.username = this.form.password = null
-                        this.login = acc
-                    },
-                    (error) => {
-                        this.alertError(error)
-                    }
-                )
+                const url = window.config.auth.url + "/oauth/authorize?"
+                const params = [
+                    ["response_type", "token"],
+                    ["client_id", "gin"],
+                    ["redirect_uri", window.location.origin + "/oauth/login"],
+                    ["scope", "account-read account-write repo-read repo-write"],
+                    ["state", "foo"]
+                ]
+                const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+                window.location.replace(url + query)
             },
 
             signOut() {

@@ -37,7 +37,7 @@
                 {{ alert.content }}
             </div>
             <div>
-                <router-view v-bind:login.sync="login"></router-view>
+                <router-view v-bind:login.sync="login" v-bind:token.sync="token"></router-view>
             </div>
         </div>
     </div>
@@ -56,7 +56,8 @@
         data() {
             return {
                 alert: null,
-                login: null
+                login: null,
+                token: null
             }
         },
 

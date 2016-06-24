@@ -4,6 +4,7 @@ import VueRouter from "vue-router"
 import { AccountAPI, SSHKeyAPI, RepoAPI, FileAPI }   from "./data.js"
 
 import App              from "./App.vue"
+import OAuthLogin       from "./comp/oauth/Login.vue"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
@@ -18,9 +19,11 @@ import RepoFiles        from "./comp/repo/RepoFiles.vue"
 import RepoSettings     from "./comp/repo/RepoSettings.vue"
 import RepoCreate       from "./comp/repo/RepoCreate.vue"
 
-import config from "./config.json"
-import { filesize } from "./filters"
-import _main from "./main.less"
+import config           from "./config.json"
+import { filesize }     from "./filters"
+
+// imports only needed for webpack
+import _main            from "./main.less"
 
 
 Vue.filter("filesize", filesize)
@@ -30,7 +33,7 @@ const app = Vue.extend(App)
 
 window.config = config
 window.api = {
-    accounts: new AccountAPI(),
+    accounts: new AccountAPI(config.auth.url),
     keys: new SSHKeyAPI(),
     repos: new RepoAPI(),
     files: new FileAPI()
@@ -38,6 +41,10 @@ window.api = {
 
 window.router = new VueRouter({ history: true })
 window.router.map({
+    "/oauth/login": {
+        component: OAuthLogin,
+        name: "oauth-login"
+    },
     "/a/:username/settings": {
         component: Settings,
         name: "profile-settings",

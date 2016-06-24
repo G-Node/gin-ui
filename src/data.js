@@ -176,6 +176,10 @@ function copyAccount(account, username) {
 }
 
 export class AccountAPI {
+    
+    constructor(baseURL) {
+        this.baseURL = baseURL
+    }
 
     login(username, password) {
         return new Promise((resolve, reject) => {
@@ -185,6 +189,18 @@ export class AccountAPI {
             } else {
                 reject(Error("Invalid user name or password"))
             }
+        })
+    }
+    
+    validate(token) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.baseURL}/oauth/validate/${token}`,
+                type: "GET",
+                dataType: "json",
+                success: (token) => resolve(token),
+                error: (error) => reject(error)
+            })
         })
     }
 
