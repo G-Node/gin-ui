@@ -1,27 +1,29 @@
 <template>
-    <div v-if="owner">
-        <h2>{{ header }}</h2>
+    <div>
+        <div v-if="owner">
+            <h2>{{ header }}</h2>
 
-        <hr />
+            <hr />
 
-        <div>
-            <ul class="nav pull-right">
-                <li role="presentation">
-                    <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: login.username }}">New Repository</button>
-                </li>
-            </ul>
+            <div>
+                <ul class="nav pull-right">
+                    <li role="presentation">
+                        <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: account.username }}">New Repository</button>
+                    </li>
+                </ul>
 
-            <ul class="nav nav-tabs">
-                <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
-                    <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn }}</a>
-                </li>
-                <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
-                    <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
-                </li>
-            </ul>
+                <ul class="nav nav-tabs">
+                    <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
+                        <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn }}</a>
+                    </li>
+                    <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
+                        <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <router-view v-bind:account="account" v-bind:owner="owner"></router-view>
         </div>
-
-        <router-view v-bind:login="login" v-bind:owner="owner"></router-view>
     </div>
 </template>
 
@@ -83,13 +85,13 @@
 
             isOwnRepository: {
                 get() {
-                    return this.login && this.owner.username === this.login.username
+                    return this.account && this.owner.username === this.account.username
                 }
             }
         },
 
         props: {
-            login: { required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],

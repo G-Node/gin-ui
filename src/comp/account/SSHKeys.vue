@@ -54,22 +54,22 @@
                     key: null
                 }
             }
-            this.update(this.login.username, data)
+            this.update(this.account.username, data)
             return data
         },
 
         props: {
-            login: { required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
 
         methods: {
             save() {
-                let promise = api.keys.create(this.login.username, this.form)
+                let promise = api.keys.create(this.account.username, this.form)
                 promise.then(
                         () => {
-                            this.update(this.login.username)
+                            this.update(this.account.username)
                             this.form.description = null
                             this.form.key = null
                         },
@@ -89,7 +89,7 @@
                 let promise = api.keys.remove(key)
                 promise.then(
                     () => {
-                        this.update(this.login.username)
+                        this.update(this.account.username)
                     },
                     (error) => {
                         this.alertError(error)

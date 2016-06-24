@@ -25,9 +25,9 @@
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
                     <!-- left hand side navigation items -->
-                    <main-menu v-bind:login="login"></main-menu>
+                    <main-menu v-bind:account="account"></main-menu>
                     <!-- right hand side navigation items -->
-                    <login-menu v-bind:login.sync="login"></login-menu>
+                    <login-menu v-bind:account.sync="account"></login-menu>
                 </div>
             </div>
         </nav>
@@ -37,7 +37,7 @@
                 {{ alert.content }}
             </div>
             <div>
-                <router-view v-bind:login.sync="login" v-bind:token.sync="token"></router-view>
+                <router-view v-bind:account.sync="account" v-bind:token.sync="token"></router-view>
             </div>
         </div>
     </div>
@@ -56,7 +56,7 @@
         data() {
             return {
                 alert: null,
-                login: null,
+                account: null,
                 token: null
             }
         },

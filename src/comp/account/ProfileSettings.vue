@@ -47,26 +47,26 @@
         data() {
             return {
                 form: {
-                    title: this.login.title,
-                    firstName: this.login.firstName,
-                    lastName: this.login.lastName,
-                    email: this.login.email
+                    title: this.account.title,
+                    firstName: this.account.firstName,
+                    lastName: this.account.lastName,
+                    email: this.account.email
                 }
             }
         },
 
         props: {
-            login: { twoWay: true, required: true }
+            account: { twoWay: true, required: true }
         },
 
         mixins: [ Alert ],
 
         methods: {
             save() {
-                const copy = Object.assign({}, this.login, this.form)
+                const copy = Object.assign({}, this.account, this.form)
                 api.accounts.update(copy).then(
                     (acc) => {
-                        this.login = acc
+                        this.account = acc
                         this.alertSuccess("Profile successfully updated!")
                     },
                     (error) => {
@@ -77,21 +77,21 @@
 
             reset() {
                 this.form = {
-                    title: this.login.title,
-                    firstName: this.login.firstName,
-                    lastName: this.login.lastName,
-                    email: this.login.email
+                    title: this.account.title,
+                    firstName: this.account.firstName,
+                    lastName: this.account.lastName,
+                    email: this.account.email
                 }
             }
         },
 
         watch: {
-            "login": function () {
+            "account": function () {
                 this.form = {
-                    title: this.login.title,
-                    firstName: this.login.firstName,
-                    lastName: this.login.lastName,
-                    email: this.login.email
+                    title: this.account.title,
+                    firstName: this.account.firstName,
+                    lastName: this.account.lastName,
+                    email: this.account.email
                 }
             }
         }

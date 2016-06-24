@@ -28,7 +28,7 @@
                 }
             ).then(
                 (account) => {
-                    this.login = account
+                    this.account = account
                     this.$router.go({path: "/"})
                 },
                 (error) => {
@@ -41,7 +41,7 @@
         },
 
         props: {
-            login: { twoWay: true, required: true },
+            account: { twoWay: true, required: true },
             token: { twoWay: true, required: true }
         }
     }

@@ -111,7 +111,7 @@
         },
 
         props: {
-            login: { required: true }
+            account: { required: true }
         },
 
         methods: {
@@ -119,8 +119,8 @@
                 target = target || this
                 target.path = cleanPath(params.root)
 
-                const loginName = this.login ? this.login.username : null
-                const promise = api.files.getDir(params.username, params.repository, target.path, loginName)
+                const loginName = this.account ? this.account.username : null
+                const promise = window.api.files.getDir(params.username, params.repository, target.path, loginName)
                 promise.then(
                     (dir) => {
                         this.dir = dir

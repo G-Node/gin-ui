@@ -20,7 +20,7 @@
         </ul>
 
 
-        <router-view v-if="repository" v-bind:login="login" v-bind:owner="owner" v-bind:is-repository-writeable="isRepositoryWriteable" v-bind:repository.sync="repository"></router-view>
+        <router-view v-if="repository" v-bind:account="account" v-bind:owner="owner" v-bind:is-repository-writeable="isRepositoryWriteable" v-bind:repository.sync="repository"></router-view>
     </div>
 </template>
 
@@ -42,7 +42,7 @@
         computed: {
             isRepositoryWriteable: {
                 get() {
-                    const name = this.login ? this.login.username : null
+                    const name = this.account ? this.account.username : null
                     const repo = this.repository
 
                     return !!(name && (repo.owner === name || repo.shared.indexOf(name) >= 0));
@@ -51,7 +51,7 @@
         },
 
         props: {
-            login: { required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
@@ -60,7 +60,7 @@
             update(params, old, target=null) {
                 target = target || this
 
-                const login = this.login ? this.login.username : null
+                const loginName = this.account ? this.account.username : null
                 const sameOwner = old && old.username === params.username
                 const sameRepo  = old && old.repository === params.repository
 
@@ -81,7 +81,7 @@
                 if (!sameRepo || !sameOwner) {
                     console.log("updating repo")
 
-                    const promise = api.repos.get(params.username, params.repository, login)
+                    const promise = api.repos.get(params.username, params.repository, loginName)
                     promise.then(
                             (repo) => {
                                 target.repository = repo
