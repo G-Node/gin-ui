@@ -20,13 +20,8 @@
                 error: null
             }
 
-            let promise = window.api.accounts.validate(this.$route.query["access_token"])
+            let promise = window.api.login(this.$route.query["access_token"])
             promise.then(
-                (token) => {
-                    this.token = token
-                    return window.api.accounts.get(token.login)
-                }
-            ).then(
                 (account) => {
                     this.account = account
                     this.$router.go({path: "/"})
@@ -41,8 +36,7 @@
         },
 
         props: {
-            account: { twoWay: true, required: true },
-            token: { twoWay: true, required: true }
+            account: { twoWay: true, required: true }
         }
     }
 </script>

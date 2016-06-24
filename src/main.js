@@ -1,7 +1,7 @@
 import Vue       from "vue"
 import VueRouter from "vue-router"
 
-import { AccountAPI, SSHKeyAPI, RepoAPI, FileAPI }   from "./data.js"
+import API              from "./data.js"
 
 import App              from "./App.vue"
 import OAuthLogin       from "./comp/oauth/Login.vue"
@@ -31,14 +31,7 @@ Vue.use(VueRouter)
 
 const app = Vue.extend(App)
 
-window.config = config
-window.api = {
-    accounts: new AccountAPI(config.auth.url),
-    keys: new SSHKeyAPI(),
-    repos: new RepoAPI(),
-    files: new FileAPI()
-}
-
+window.api = new API(config.authURL, config.repoURL)
 window.router = new VueRouter({ history: true })
 window.router.map({
     "/oauth/login": {

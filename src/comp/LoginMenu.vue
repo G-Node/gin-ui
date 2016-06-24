@@ -56,19 +56,11 @@
 
         methods: {
             signIn() {
-                const url = window.config.auth.url + "/oauth/authorize?"
-                const params = [
-                    ["response_type", "token"],
-                    ["client_id", "gin"],
-                    ["redirect_uri", `${window.location.origin}/oauth/login`],
-                    ["scope", "account-read account-write repo-read repo-write"],
-                    ["state", "foo"]
-                ]
-                const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
-                window.location.replace(url + query)
+                window.api.authorize()
             },
 
             signOut() {
+                window.api.logout()
                 this.account = null
             }
         }

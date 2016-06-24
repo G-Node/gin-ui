@@ -169,39 +169,66 @@ const data = {
     })
 }
 
+export default class API {
+
+    constructor(authURL, repoURL) {
+        this.config   = { authURL: authURL, repoURL: repoURL, token: null }
+        this.accounts = new AccountAPI(this.config)
+        this.keys     = new SSHKeyAPI(this.config)
+        this.repos    = new RepoAPI(this.config)
+        this.files    = new FileAPI(this.config)
+    }
+
+    authorize() {
+        const url = this.config.authURL + "/oauth/authorize?"
+        const params = [
+            ["response_type", "token"],
+            ["client_id", "gin"],
+            ["redirect_uri", `${window.location.origin}/oauth/login`],
+            ["scope", "account-read account-write repo-read repo-write"],
+            ["state", "foo"]
+        ]
+        const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        window.location.replace(url + query)
+    }
+    
+    login(tokenStr) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.authURL}/oauth/validate/${tokenStr}`,
+                type: "GET",
+                dataType: "json",
+                success: (token) => {
+                    this.config.token = token
+                    resolve(token)
+                },
+                error: (error) => {
+                    this.logout()
+                    reject(error)
+                }
+            })
+        }).then(
+            (token) => {
+                return this.accounts.get(token.login)   
+            }
+        )
+    }
+
+    logout() {
+        this.config.token = null
+    }
+}
+
 function copyAccount(account, username) {
     const copy = Object.assign({username: username}, account)
     delete copy.password
     return copy
 }
 
-export class AccountAPI {
+class AccountAPI {
     
-    constructor(baseURL) {
-        this.baseURL = baseURL
-    }
-
-    login(username, password) {
-        return new Promise((resolve, reject) => {
-            const acc = data.accounts.get(username)
-            if (acc && acc.password === password) {
-                resolve(copyAccount(acc, username))
-            } else {
-                reject(Error("Invalid user name or password"))
-            }
-        })
-    }
-    
-    validate(token) {
-        return new Promise((resolve, reject) => {
-            $.ajax({
-                url: `${this.baseURL}/oauth/validate/${token}`,
-                type: "GET",
-                dataType: "json",
-                success: (token) => resolve(token),
-                error: (error) => reject(error)
-            })
-        })
+    constructor(config) {
+        this.config = config
     }
 
     get(username) {
@@ -264,7 +291,12 @@ function copyKey(username, key) {
     return Object.assign({ login: username }, key)
 }
 
-export class SSHKeyAPI {
+class SSHKeyAPI {
+
+    constructor(config) {
+        this.config = config
+    }
+    
     list(username) {
         return new Promise((resolve, reject) => {
             const keys = data.keys.get(username)
@@ -362,7 +394,11 @@ function copyRepo(repo, fullName) {
     return copy
 }
 
-export class RepoAPI {
+class RepoAPI {
+
+    constructor(config) {
+        this.config = config
+    }
 
     listPublic(searchText=null) {
         const searchLower = searchText ? searchText.toLowerCase() : ""
@@ -527,7 +563,11 @@ function copyFile(file) {
     return copy
 }
 
-export class FileAPI {
+class FileAPI {
+
+    constructor(config) {
+        this.config = config
+    }
 
     getDir(username, repoName, path, loginName) {
         return new Promise((resolve, reject) => {
