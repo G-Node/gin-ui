@@ -7,20 +7,20 @@
 
         <hr />
 
-        <ul class="nav nav-tabs" v-if="repository">
+        <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
-                <a v-link="{ name: 'repository', params: { username: owner.username, repository: repository.name }}">Info</a>
+                <a v-link="{ name: 'repository', params: { username: owner.login, repository: repository.name }}">Info</a>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-files' }">
-                <a v-link="{ name: 'repository-files', params: { username: owner.username, repository: repository.name }}">Files</a>
+                <a v-link="{ name: 'repository-files', params: { username: owner.login, repository: repository.name }}">Files</a>
             </li>
-            <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }" v-if="isRepositoryWriteable">
-                <a v-link="{ name: 'repository-settings', params: { username: owner.username, repository: repository.name }}">Settings</a>
+            <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }" v-if="is_repo_writeable">
+                <a v-link="{ name: 'repository-settings', params: { username: owner.login, repository: repository.name }}">Settings</a>
             </li>
         </ul>
 
 
-        <router-view v-if="repository" v-bind:account="account" v-bind:owner="owner" v-bind:is-repository-writeable="isRepositoryWriteable" v-bind:repository.sync="repository"></router-view>
+        <router-view v-if="repository && owner" v-bind:account="account" v-bind:owner="owner" v-bind:is_repo_writeable="is_repo_writeable" v-bind:repository.sync="repository"></router-view>
     </div>
 </template>
 
@@ -40,9 +40,9 @@
         },
 
         computed: {
-            isRepositoryWriteable: {
+            is_repo_writeable: {
                 get() {
-                    const name = this.account ? this.account.username : null
+                    const name = this.account ? this.account.login : null
                     const repo = this.repository
 
                     return !!(name && (repo.owner === name || repo.shared.indexOf(name) >= 0));
@@ -60,11 +60,11 @@
             update(params, old, target=null) {
                 target = target || this
 
-                const loginName = this.account ? this.account.username : null
-                const sameOwner = old && old.username === params.username
-                const sameRepo  = old && old.repository === params.repository
+                const login_name = this.account ? this.account.login : null
+                const same_owner = old && old.username === params.username
+                const same_repo  = old && old.repository === params.repository
 
-                if (!sameOwner) {
+                if (!same_owner) {
                     console.log("updating owner")
 
                     const promise = api.accounts.get(params.username)
@@ -78,10 +78,10 @@
                     )
                 }
 
-                if (!sameRepo || !sameOwner) {
+                if (!same_repo || !same_owner) {
                     console.log("updating repo")
 
-                    const promise = api.repos.get(params.username, params.repository, loginName)
+                    const promise = api.repos.get(params.username, params.repository, login_name)
                     promise.then(
                             (repo) => {
                                 target.repository = repo

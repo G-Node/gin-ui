@@ -14,13 +14,13 @@
                 <div class="form-group">
                     <label for="first-name" class="col-sm-3 control-label">First Name</label>
                     <div class="col-sm-9">
-                        <input class="form-control" id="first-name" placeholder="First Name" v-model="form.firstName">
+                        <input class="form-control" id="first-name" placeholder="First Name" v-model="form.first_name">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="last-name" class="col-sm-3 control-label">Last Name</label>
                     <div class="col-sm-9">
-                        <input class="form-control" id="last-name" placeholder="Last Name" v-model="form.lastName">
+                        <input class="form-control" id="last-name" placeholder="Last Name" v-model="form.last_name">
                     </div>
                 </div>
                 <div class="form-group">
@@ -48,8 +48,8 @@
             return {
                 form: {
                     title: this.account.title,
-                    firstName: this.account.firstName,
-                    lastName: this.account.lastName,
+                    first_name: this.account.first_name,
+                    last_name: this.account.last_name,
                     email: this.account.email
                 }
             }
@@ -78,8 +78,8 @@
             reset() {
                 this.form = {
                     title: this.account.title,
-                    firstName: this.account.firstName,
-                    lastName: this.account.lastName,
+                    first_name: this.account.first_name,
+                    last_name: this.account.last_name,
                     email: this.account.email
                 }
             }
@@ -89,8 +89,8 @@
             "account": function () {
                 this.form = {
                     title: this.account.title,
-                    firstName: this.account.firstName,
-                    lastName: this.account.lastName,
+                    first_name: this.account.first_name,
+                    last_name: this.account.last_name,
                     email: this.account.email
                 }
             }

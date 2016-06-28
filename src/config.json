@@ -1,4 +1,4 @@
 {
-  "authURL": "https://auth.gin.g-node.org",
-  "repoURL": "https://repo.gin.g-node.org"
+  "auth_url": "http://localhost:8081",
+  "repo_url": "http://localhost:8081"
 }

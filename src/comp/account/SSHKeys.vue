@@ -54,7 +54,7 @@
                     key: null
                 }
             }
-            this.update(this.account.username, data)
+            this.update(this.account.login, data)
             return data
         },
 
@@ -66,10 +66,10 @@
 
         methods: {
             save() {
-                let promise = api.keys.create(this.account.username, this.form)
+                let promise = api.keys.create(this.account.login, this.form)
                 promise.then(
                         () => {
-                            this.update(this.account.username)
+                            this.update(this.account.login)
                             this.form.description = null
                             this.form.key = null
                         },
@@ -89,7 +89,7 @@
                 let promise = api.keys.remove(key)
                 promise.then(
                     () => {
-                        this.update(this.account.username)
+                        this.update(this.account.login)
                     },
                     (error) => {
                         this.alertError(error)
@@ -108,7 +108,8 @@
                     (error) => {
                         target.keys = []
                         console.log(error)
-                    })
+                    }
+                )
             }
         }
     }

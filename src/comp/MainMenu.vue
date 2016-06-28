@@ -1,7 +1,7 @@
 <template>
     <ul class="nav navbar-nav">
         <li><a v-link="{ name: 'public-repos' }">Public Data</a></li>
-        <li v-if="account"><a v-link="{ name: 'own-repositories', params: { username: account.username }}">Your Data</a></li>
+        <li v-if="account"><a v-link="{ name: 'own-repositories', params: { username: account.login }}">Your Data</a></li>
     </ul>
 </template>
 

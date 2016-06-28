@@ -10,19 +10,19 @@
             <span>
                 <a v-link="{ name: 'repository-files', params: { root: ':root' }}">root</a>
             </span>
-            <span v-for="(n, p) in pathComp">
+            <span v-for="(n, p) in path_components">
                 / <a v-link="{ name: 'repository-files', params: { root: p }}">{{ n }}</a>
             </span>
         </div>
 
         <table v-if="dir" class="table">
             <tbody>
-                <tr v-for="file in dirList">
+                <tr v-for="file in dir_list">
                     <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
                     <td><a v-link="{ name: 'repository-files', params: { root: path + '/' + file.name }}">{{ file.name }}</a></td>
                     <td class="text-right">{{ file.size }}</td>
                 </tr>
-                <tr v-for="file in fileList">
+                <tr v-for="file in file_list">
                     <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
                     <td>{{ file.name }}</td>
                     <td class="text-right">{{ file.size | filesize }}</td>
@@ -60,7 +60,7 @@
         },
 
         computed: {
-            pathComp: {
+            path_components: {
                 get() {
                     const parts = this.path ? this.path.split("/") : []
                     const comp  = {}
@@ -73,7 +73,7 @@
                 }
             },
 
-            dirList: {
+            dir_list: {
                 get() {
                     let dirs = []
 
@@ -91,7 +91,7 @@
                 }
             },
 
-            fileList: {
+            file_list: {
                 get() {
                     let files = []
 
@@ -119,8 +119,8 @@
                 target = target || this
                 target.path = cleanPath(params.root)
 
-                const loginName = this.account ? this.account.username : null
-                const promise = window.api.files.getDir(params.username, params.repository, target.path, loginName)
+                const login_name = this.account ? this.account.login : null
+                const promise = window.api.files.getDir(params.username, params.repository, target.path, login_name)
                 promise.then(
                     (dir) => {
                         this.dir = dir

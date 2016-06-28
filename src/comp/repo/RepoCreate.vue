@@ -60,11 +60,11 @@
 
         methods: {
             save() {
-                let promise = api.repos.create(this.account.username, this.form)
+                let promise = api.repos.create(this.account.login, this.form)
                 promise.then(
                     (repo) => {
                         this.alertSuccess("Repository successfully created")
-                        this.$router.go({name: "own-repositories", params: { "username": this.account.username }})
+                        this.$router.go({name: "own-repositories", params: { "username": this.account.login }})
                     },
                     (error) => {
                         this.alertError(error)

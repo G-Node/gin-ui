@@ -31,7 +31,7 @@ Vue.use(VueRouter)
 
 const app = Vue.extend(App)
 
-window.api = new API(config.authURL, config.repoURL)
+window.api = new API(config.auth_url, config.repo_url)
 window.router = new VueRouter({ history: true })
 window.router.map({
     "/oauth/login": {

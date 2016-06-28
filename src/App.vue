@@ -37,7 +37,7 @@
                 {{ alert.content }}
             </div>
             <div>
-                <router-view v-bind:account.sync="account" v-bind:token.sync="token"></router-view>
+                <router-view v-bind:account.sync="account"></router-view>
             </div>
         </div>
     </div>
@@ -57,7 +57,6 @@
             return {
                 alert: null,
                 account: null,
-                token: null
             }
         },
 

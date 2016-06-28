@@ -1,9 +1,7 @@
 function mapOf(obj) {
     const map = new Map()
-    for (let k in obj) {
-        if (obj.hasOwnProperty(k)) {
-            map.set(k, obj[k])
-        }
+    for (let k of Object.keys(obj)) {
+        map.set(k, obj[k])
     }
     return map
 }
@@ -33,10 +31,10 @@ function randStr(length) {
 }
 
 function randDirs() {
-    const maxDepth = 4
-    const maxFiles = 10
-    const maxSize  = 1024 * 1024 * 1024
-    const maxDirs  = 5
+    const max_depth = 4
+    const max_files = 10
+    const max_size  = 1024 * 1024 * 1024
+    const max_dirs  = 5
     const prefixes = ["monkey", "mouse", "fish", "patient"]
     const suffixes = ["data", "metadata", "info", "recording"]
     const extensions = [".odml", ".h5", ".xml", ".yml", ".json", ".nix"]
@@ -44,12 +42,12 @@ function randDirs() {
     function mkFiles(dir, prefix) {
         const ext = randElem(extensions)
 
-        for (let i = 0; i < randInt(1, maxFiles); i++) {
-            let fileName = prefix + i + ext
-            dir.files[fileName] = {
+        for (let i = 0; i < randInt(1, max_files); i++) {
+            let file_name = prefix + i + ext
+            dir.files[file_name] = {
                 type: "file",
-                name: fileName,
-                size: randInt(1, maxSize)
+                name: file_name,
+                size: randInt(1, max_size)
             }
         }
     }
@@ -60,9 +58,9 @@ function randDirs() {
         dir.files = {}
 
         if (depth > 0) {
-            for (let i = 0; i < randInt(1, maxDirs); i++) {
-                let dirName = randElem(prefixes) + "-" + randElem(suffixes)
-                dir.files[dirName] = mkDirs({}, dirName, depth - 1)
+            for (let i = 0; i < randInt(1, max_dirs); i++) {
+                let dir_name = randElem(prefixes) + "-" + randElem(suffixes)
+                dir.files[dir_name] = mkDirs({}, dir_name, depth - 1)
             }
         }
 
@@ -73,7 +71,7 @@ function randDirs() {
         return dir
     }
 
-    const root = mkDirs({}, randElem(prefixes) + "-" + randElem(suffixes), maxDepth)
+    const root = mkDirs({}, randElem(prefixes) + "-" + randElem(suffixes), max_depth)
     root.name = ":root"
 
     return root
@@ -85,22 +83,22 @@ const data = {
             password: "testtest",
             email: "bob@example.com",
             title: "Dr.",
-            firstName: "Bob",
-            lastName: "Baker"
+            first_name: "Bob",
+            last_name: "Baker"
         },
         "alice": {
             password: "testtest",
             email: null,
             title: "Mrs.",
-            firstName: "Alice",
-            lastName: "Goodchild"
+            first_name: "Alice",
+            last_name: "Goodchild"
         },
         "john": {
             password: "testtest",
             email: "jj@example.com",
             title: "Mr.",
-            firstName: "John",
-            lastName: "Josephson"
+            first_name: "John",
+            last_name: "Josephson"
         }
     }),
 
@@ -171,8 +169,8 @@ const data = {
 
 export default class API {
 
-    constructor(authURL, repoURL) {
-        this.config   = { authURL: authURL, repoURL: repoURL, token: null }
+    constructor(auth_url, repo_url) {
+        this.config   = { auth_url: auth_url, repo_url: repo_url, token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
         this.repos    = new RepoAPI(this.config)
@@ -180,7 +178,7 @@ export default class API {
     }
 
     authorize() {
-        const url = this.config.authURL + "/oauth/authorize?"
+        const url = this.config.auth_url + "/oauth/authorize?"
         const params = [
             ["response_type", "token"],
             ["client_id", "gin"],
@@ -192,10 +190,10 @@ export default class API {
         window.location.replace(url + query)
     }
     
-    login(tokenStr) {
+    login(token_str) {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: `${this.config.authURL}/oauth/validate/${tokenStr}`,
+                url: `${this.config.auth_url}/oauth/validate/${token_str}`,
                 type: "GET",
                 dataType: "json",
                 success: (token) => {
@@ -219,8 +217,8 @@ export default class API {
     }
 }
 
-function copyAccount(account, username) {
-    const copy = Object.assign({username: username}, account)
+function copyAccount(account, login_name) {
+    const copy = Object.assign({login: login_name}, account)
     delete copy.password
     return copy
 }
@@ -233,17 +231,17 @@ class AccountAPI {
 
     get(username) {
         return new Promise((resolve, reject) => {
-            if (!this.config.token) {
-                reject({ error: "Not Authorized", "message": "You are not logged in"})
-            }
-            $.ajax({
-                url: `${this.config.authURL}/api/accounts/${this.config.token.login}`,
+            const request = {
+                url: `${this.config.auth_url}/api/accounts/${username}`,
                 type: "GET",
-                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
                 success: (acc) => resolve(acc),
                 error: (error) => reject(error)
-            })
+            }
+            if (this.config.token) {
+                request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+            $.ajax(request)
         })
     }
 
@@ -261,11 +259,11 @@ class AccountAPI {
 
     update(account) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(account.username)
+            let acc = data.accounts.get(account.login)
             if (acc) {
                 acc = Object.assign(acc, account)
-                delete acc.username
-                data.accounts.set(account.username, acc)
+                delete acc.login
+                data.accounts.set(account.login, acc)
                 resolve(account)
             } else {
                 reject(Error("Account does not exist"))
@@ -273,16 +271,16 @@ class AccountAPI {
         })
     }
     
-    updatePassword(username, oldPassword, newPassword, repeatedPassword) {
+    updatePassword(username, old_password, new_password, repeated_password) {
         return new Promise((resolve, reject) => {
             const acc = data.accounts.get(username)
             if (acc) {
-                if (acc.password !== oldPassword) {
+                if (acc.password !== old_password) {
                     reject(Error("Old password does not match"))
-                } else if (newPassword !== repeatedPassword) {
+                } else if (new_password !== repeated_password) {
                     reject(Error("Repeated password does not match"))
                 } else {
-                    acc.password = newPassword
+                    acc.password = new_password
                     resolve(copyAccount(acc, username))
                 }
             } else {
@@ -341,8 +339,8 @@ class SSHKeyAPI {
             else {
                 key.fingerprint = randStr(20)
                 if (keys) {
-                    const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
-                    if (!keyFound) {
+                    const key_found = keys.find((k) => k.fingerprint === key.fingerprint)
+                    if (!key_found) {
                         keys = keys.concat({fingerprint: key.fingerprint, description: key.description})
                         data.keys.set(username, keys)
                         resolve(copyKey(username, key))
@@ -360,11 +358,11 @@ class SSHKeyAPI {
         return new Promise((resolve, reject) => {
             const keys = data.keys.get(key.login)
             if (keys) {
-                const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
-                if (keyFound) {
-                    keyFound.fingerprint = key.fingerprint
-                    keyFound.description = key.description
-                    resolve(copyKey(key.login, keyFound))
+                const key_found = keys.find((k) => k.fingerprint === key.fingerprint)
+                if (key_found) {
+                    key_found.fingerprint = key.fingerprint
+                    key_found.description = key.description
+                    resolve(copyKey(key.login, key_found))
                 } else {
                     reject(Error("Key does not exist"))
                 }
@@ -378,9 +376,9 @@ class SSHKeyAPI {
         return new Promise((resolve, reject) => {
             const keys = data.keys.get(key.login)
             if (keys) {
-                const newKeys = keys.filter((k) => k.fingerprint !== key.fingerprint)
-                if (newKeys.length < keys.length) {
-                    data.keys.set(key.login, newKeys)
+                const new_keys = keys.filter((k) => k.fingerprint !== key.fingerprint)
+                if (new_keys.length < keys.length) {
+                    data.keys.set(key.login, new_keys)
                     resolve(copyKey(key.login, key))
                 } else {
                     reject(Error("Key does not exist"))
@@ -392,8 +390,8 @@ class SSHKeyAPI {
     }
 }
 
-function copyRepo(repo, fullName) {
-    const [owner, name] = fullName.split("/")
+function copyRepo(repo, full_name) {
+    const [owner, name] = full_name.split("/")
     const copy = Object.assign({ owner: owner, name: name }, repo)
     delete copy.root
     return copy
@@ -405,58 +403,58 @@ class RepoAPI {
         this.config = config
     }
 
-    listPublic(searchText=null) {
-        const searchLower = searchText ? searchText.toLowerCase() : ""
+    listPublic(search_text=null) {
+        const search_lower = search_text ? search_text.toLowerCase() : ""
         return new Promise((resolve) => {
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
                     const all = (repo.name + repo.description + repo.owner).toLowerCase()
-                    return repo.public && (all.search(searchLower) >= 0)
+                    return repo.public && (all.search(search_lower) >= 0)
                 })
             resolve(found)
         })
     }
 
-    listShared(username, loginName) {
+    listShared(username, login_name) {
         return new Promise((resolve) => {
-            const publicOnly = username !== loginName
+            const public_only = username !== login_name
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username
-                    const isShared = repo.shared.find((name) => {return name === username})
-                    const isPublic = repo.public
+                    const is_owner  = repo.owner === username
+                    const is_shared = repo.shared.find((name) => {return name === username})
+                    const is_public = repo.public
 
-                    return !isOwner && isShared && (publicOnly ? isPublic : true)
+                    return !is_owner && is_shared && (public_only ? is_public : true)
                 })
             resolve(found)
         })
     }
 
-    listOwn(username, loginName) {
+    listOwn(username, login_name) {
         return new Promise((resolve) => {
-            const publicOnly = username !== loginName
+            const public_only = username !== login_name
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username
-                    const isPublic = repo.public
+                    const is_owner  = repo.owner === username
+                    const is_public = repo.public
 
-                    return isOwner && (publicOnly ? isPublic : true)
+                    return is_owner && (public_only ? is_public : true)
                 })
             resolve(found)
         })
     }
     
-    get(username, repoName, loginName) {
+    get(username, repo_name, login_name) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== loginName
-            const fullName = [username, repoName].join("/")
-            const repo = data.repos.get(fullName)
+            const public_only = username !== login_name
+            const full_name = [username, repo_name].join("/")
+            const repo = data.repos.get(full_name)
 
-            if (repo && (publicOnly ? repo.public : true)) {
-                resolve(copyRepo(repo, fullName))
+            if (repo && (public_only ? repo.public : true)) {
+                resolve(copyRepo(repo, full_name))
             } else {
                 reject(Error("Repository does not exist"))
             }
@@ -464,7 +462,7 @@ class RepoAPI {
     }
 
     create(username, repository) {
-        const fullName = [username, repository.name].join("/")
+        const full_name = [username, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
             let name = repository.name || ""
@@ -483,7 +481,7 @@ class RepoAPI {
                 return
             }
 
-            if (data.repos.has(fullName)) {
+            if (data.repos.has(full_name)) {
                 reject(Error("Repository already exists"))
                 return
             }
@@ -492,24 +490,24 @@ class RepoAPI {
             repository.shared = []
             repository.root = randDirs()
 
-            data.repos.set(fullName, repository)
-            resolve(copyRepo(repository, fullName))
+            data.repos.set(full_name, repository)
+            resolve(copyRepo(repository, full_name))
         })
     }
 
 
     update(repository) {
-        const fullName = [repository.owner, repository.name].join("/")
+        const full_name = [repository.owner, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
-            const repo = data.repos.get(fullName)
+            const repo = data.repos.get(full_name)
 
             if (repo) {
                 repo.description = repository.description
                 repo.shared = repository.shared
                 repo.public = repository.public
 
-                resolve(copyRepo(repo, fullName))
+                resolve(copyRepo(repo, full_name))
             } else {
                 reject(Error("Repository does not exist"))
             }
@@ -517,14 +515,14 @@ class RepoAPI {
     }
 
     remove(repository) {
-        const fullName = [repository.owner, repository.name].join("/")
+        const full_name = [repository.owner, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
-            const repo = data.repos.get(fullName)
+            const repo = data.repos.get(full_name)
 
             if (repo) {
-                data.repos.delete(fullName)
-                resolve(copyRepo(repo, fullName))
+                data.repos.delete(full_name)
+                resolve(copyRepo(repo, full_name))
             } else {
                 reject(Error("Repository does not exist"))
             }
@@ -542,9 +540,9 @@ function lastDir(parent, dir, path) {
             return [null, path]
         }
     } else {
-        const subName = path[0]
-        if (dir.files.hasOwnProperty(subName)) {
-            return lastDir(dir, dir.files[subName], path.slice(1))
+        const sub_name = path[0]
+        if (dir.files.hasOwnProperty(sub_name)) {
+            return lastDir(dir, dir.files[sub_name], path.slice(1))
         } else {
             return [null, path]
         }
@@ -557,11 +555,9 @@ function copyFile(file) {
     if (file.type === "dir") {
         copy.files = {}
         for (let name of Object.keys(file.files)) {
-            if (file.files.hasOwnProperty(name)) {
-                let copySub = Object.assign({}, file.files[name])
-                delete copySub.files
-                copy.files[name] = copySub
-            }
+            let copy_sub = Object.assign({}, file.files[name])
+            delete copy_sub.files
+            copy.files[name] = copy_sub
         }
     }
 
@@ -574,15 +570,15 @@ class FileAPI {
         this.config = config
     }
 
-    getDir(username, repoName, path, loginName) {
+    getDir(username, repo_name, path, login_name) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== loginName
-            const fullName = [username, repoName].join("/")
-            const repo = data.repos.get(fullName)
+            const public_only = username !== login_name
+            const full_name = [username, repo_name].join("/")
+            const repo = data.repos.get(full_name)
 
-            if (repo && (publicOnly ? repo.public : true)) {
-                const pathComp = path ? path.split("/") : []
-                let [dir, _p] = lastDir(null, repo.root, pathComp)
+            if (repo && (public_only ? repo.public : true)) {
+                const path_components = path ? path.split("/") : []
+                let [dir, _p] = lastDir(null, repo.root, path_components)
 
                 if (dir) {
                     resolve(copyFile(dir))
@@ -595,15 +591,15 @@ class FileAPI {
         })
     }
 
-    getFile(username, repoName, path, loginName) {
+    getFile(username, repo_name, path, login_name) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== loginName
-            const fullName = [username, repoName].join("/")
-            const repo = data.repos.get(fullName)
+            const public_only = username !== login_name
+            const full_name = [username, repo_name].join("/")
+            const repo = data.repos.get(full_name)
 
-            if (repo && (publicOnly ? repo.public : true)) {
-                const pathComp = path ? path.split("/") : []
-                const [dir, p] = lastDir(null, repo.root, pathComp)
+            if (repo && (public_only ? repo.public : true)) {
+                const path_components = path ? path.split("/") : []
+                const [dir, p] = lastDir(null, repo.root, path_components)
 
                 if (dir && dir.file.hasOwnProperty(p[0])) {
                     resolve(copyFile(dir[p[0]]))

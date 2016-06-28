@@ -8,19 +8,19 @@
                 <div class="form-group">
                     <label for="old-password" class="col-sm-3 control-label">Old Password</label>
                     <div class="col-sm-9">
-                        <input type=password class="form-control" id="old-password" placeholder="Old Password" v-model="oldPassword">
+                        <input type=password class="form-control" id="old-password" placeholder="Old Password" v-model="old_password">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="new-password" class="col-sm-3 control-label">New Password</label>
                     <div class="col-sm-9">
-                        <input type="password" class="form-control" id="new-password" placeholder="New Password" v-model="newPassword">
+                        <input type="password" class="form-control" id="new-password" placeholder="New Password" v-model="new_password">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="repeated-password" class="col-sm-3 control-label">Repeat Password</label>
                     <div class="col-sm-9">
-                        <input type="password" class="form-control" id="repeated-password" placeholder="Repeat the new Password" v-model="repeatedPassword">
+                        <input type="password" class="form-control" id="repeated-password" placeholder="Repeat the new Password" v-model="repeated_password">
                     </div>
                 </div>
                 <div class="form-group">
@@ -39,10 +39,10 @@
     export default {
         data() {
             return {
-                username: this.$route.params.username,
-                oldPassword: null,
-                newPassword: null,
-                repeatedPassword: null
+                username: this.$route.params.login,
+                old_password: null,
+                new_password: null,
+                repeated_password: null
             }
         },
 
@@ -50,7 +50,8 @@
 
         methods: {
             save() {
-                api.accounts.updatePassword(this.username, this.oldPassword, this.newPassword, this.repeatedPassword).then(
+                const promise = api.accounts.updatePassword(this.login, this.old_password, this.new_password, this.repeated_password)
+                promise.then(
                     () => {
                         this.reset()
                         this.alertSuccess("Password successfully changed!")
@@ -63,9 +64,9 @@
             },
 
             reset() {
-                this.oldPassword = null
-                this.newPassword = null
-                this.repeatedPassword = null
+                this.old_password = null
+                this.new_password = null
+                this.repeated_password = null
             }
         }
     }

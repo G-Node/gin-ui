@@ -7,7 +7,7 @@
 <template>
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ account ? userName : "Sign In"}} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ account ? display_name : "Sign In"}} <span class="caret"></span></a>
 
             <ul class="dropdown-menu" v-if="!account" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
@@ -36,16 +36,16 @@
     export default {
 
         computed: {
-            userName: {
+            display_name: {
                 get() {
-                    const fn = this.account.firstName
-                    const ln = this.account.lastName
+                    const fn = this.account.first_name
+                    const ln = this.account.last_name
 
                     if (fn && ln) {
                         return fn[0] + ". " + ln
                     }
 
-                    return this.account.username
+                    return this.account.login
                 }
             }
         },

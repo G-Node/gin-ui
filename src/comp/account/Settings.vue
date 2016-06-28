@@ -7,9 +7,9 @@
                 </div>
                 <div class="panel-body">
                     <ul class="nav nav-pills  nav-stacked">
-                        <li role="presentation"><a v-link="{ name: 'profile-settings', params: { username: account.username }}">Profile</a></li>
-                        <li role="presentation"><a v-link="{ name: 'password-settings', params: { username: account.username }}">Password</a></li>
-                        <li role="presentation"><a v-link="{ name: 'sshkey-settings', params: { username: account.username }}">SSH Keys</a></li>
+                        <li role="presentation"><a v-link="{ name: 'profile-settings', params: { username: account.login }}">Profile</a></li>
+                        <li role="presentation"><a v-link="{ name: 'password-settings', params: { username: account.login }}">Password</a></li>
+                        <li role="presentation"><a v-link="{ name: 'sshkey-settings', params: { username: account.login }}">SSH Keys</a></li>
                     </ul>
                 </div>
             </div>

@@ -34,8 +34,8 @@
             update(accounts, target=null) {
                 target = target || this
 
-                const loginName = accounts.account ? accounts.account.username : null
-                const promise  = api.repos.listOwn(accounts.owner.username, loginName)
+                const login_name = accounts.account ? accounts.account.login : null
+                const promise  = api.repos.listOwn(accounts.owner.login, login_name)
                 promise.then(
                     (repos) => {
                         target.repositories = repos

@@ -6,18 +6,18 @@
             <hr />
 
             <div>
-                <ul class="nav pull-right">
+                <ul class="nav pull-right" v-if="account_is_owner">
                     <li role="presentation">
-                        <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: account.username }}">New Repository</button>
+                        <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: owner.login }}">New Repository</button>
                     </li>
                 </ul>
 
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
-                        <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn }}</a>
+                        <a v-link="{ name: 'own-repositories', params: { username: owner.login }}">{{ heading_own }}</a>
                     </li>
                     <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
-                        <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
+                        <a v-link="{ name: 'shared-repositories', params: { username: owner.login }}">{{ heading_shared }}</a>
                     </li>
                 </ul>
             </div>
@@ -40,52 +40,52 @@
         },
 
         computed: {
-            ownerName: {
+            owner_name: {
                 get() {
-                    const fn = this.owner ? this.owner.firstName : null
-                    const ln = this.owner ? this.owner.lastName : null
+                    const fn = this.owner ? this.owner.first_name : null
+                    const ln = this.owner ? this.owner.last_name : null
 
                     if (fn && ln) {
                         return fn[0] + ". " + ln
                     }
 
-                    return this.owner.username
+                    return this.owner.login
                 }
             },
 
             header: {
                 get() {
-                    if (this.isOwnRepository) {
+                    if (this.account_is_owner) {
                         return "Your Data"
                     } else {
-                        return this.ownerName + "'s Data"
+                        return this.owner_name + "'s Data"
                     }
                 }
             },
 
-            headerOwn: {
+            heading_own: {
                 get() {
-                    if (this.isOwnRepository) {
+                    if (this.account_is_owner) {
                         return "Repositories owned by You"
                     } else {
-                        return "Repositories owned by " + this.ownerName
+                        return "Repositories owned by " + this.owner_name
                     }
                 }
             },
 
-            headerShared: {
+            heading_shared: {
                 get() {
-                    if (this.isOwnRepository) {
+                    if (this.account_is_owner) {
                         return "Repositories shared with You"
                     } else {
-                        return "Repositories shared with " + this.ownerName
+                        return "Repositories shared with " + this.owner_name
                     }
                 }
             },
 
-            isOwnRepository: {
+            account_is_owner: {
                 get() {
-                    return this.account && this.owner.username === this.account.username
+                    return this.account && this.owner.login === this.account.login
                 }
             }
         },
@@ -100,9 +100,9 @@
             update(params, old, target=null) {
                 target = target || this
 
-                const sameAccount = old && old.username === params.username
+                const is_same_account = old && old.username === params.username
 
-                if (!sameAccount) {
+                if (!is_same_account) {
                     const promise = api.accounts.get(params.username)
                     promise.then(
                         (acc) => {
