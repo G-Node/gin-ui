@@ -1,21 +1,24 @@
 <template>
-    <div class="row">
-        <div class="col-md-3">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    Personal Settings
-                </div>
-                <div class="panel-body">
-                    <ul class="nav nav-pills  nav-stacked">
-                        <li role="presentation"><a v-link="{ name: 'profile-settings', params: { username: account.login }}">Profile</a></li>
-                        <li role="presentation"><a v-link="{ name: 'password-settings', params: { username: account.login }}">Password</a></li>
-                        <li role="presentation"><a v-link="{ name: 'sshkey-settings', params: { username: account.login }}">SSH Keys</a></li>
-                    </ul>
+    <div>
+        <div class="row" v-if="account">
+            <div class="col-md-3">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        Personal Settings
+                    </div>
+                    <div class="panel-body">
+                        <ul class="nav nav-pills  nav-stacked">
+                            <li role="presentation"><a v-link="{ name: 'profile-settings', params: { username: account.login }}">Profile</a></li>
+                            <li role="presentation"><a v-link="{ name: 'affiliation-settings', params: { username: account.login }}">Affiliation</a></li>
+                            <li role="presentation"><a v-link="{ name: 'password-settings', params: { username: account.login }}">Password</a></li>
+                            <li role="presentation"><a v-link="{ name: 'sshkey-settings', params: { username: account.login }}">SSH Keys</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-9">
-            <router-view v-bind:account.sync="account"></router-view>
+            <div class="col-md-9">
+                <router-view v-bind:account.sync="account"></router-view>
+            </div>
         </div>
     </div>
 </template>
