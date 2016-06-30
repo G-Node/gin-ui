@@ -6,18 +6,18 @@
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
-                    <div class="form-group" :class="{ 'has-error': form.reasons.description }">
+                    <div class="form-group" :class="{ 'has-error': reasons.description }">
                         <label for="description" class="col-sm-3 control-label">Description</label>
                         <div class="col-sm-9">
                             <input class="form-control" id="description" placeholder="Description" v-model="form.description">
-                            <span class="help-block" v-if="form.reasons.description">{{ form.reasons.description }}</span>
+                            <span class="help-block" v-if="reasons.description">{{ reasons.description }}</span>
                         </div>
                     </div>
-                    <div class="form-group" :class="{ 'has-error': form.reasons.key }">
+                    <div class="form-group" :class="{ 'has-error': reasons.key }">
                         <label for="key" class="col-sm-3 control-label">Public Key</label>
                         <div class="col-sm-9">
                             <textarea class="form-control" id="key" placeholder="Public Key" v-model="form.key" rows="3"></textarea>
-                            <span class="help-block" v-if="form.reasons.key">{{ form.reasons.key }}</span>
+                            <span class="help-block" v-if="reasons.key">{{ reasons.key }}</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -53,9 +53,9 @@
                 keys: [],
                 form: {
                     description: null,
-                    key: null,
-                    reasons: {}
-                }
+                    key: null
+                },
+                reasons: {}
             }
             this.update(this.account.login, data)
             return data
@@ -89,7 +89,7 @@
             reset () {
                 this.form.description = null
                 this.form.key = null
-                this.form.reasons = {}
+                this.reasons = {}
             },
 
             remove(key) {
