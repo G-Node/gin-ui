@@ -1,9 +1,7 @@
 function mapOf(obj) {
     const map = new Map()
-    for (let k in obj) {
-        if (obj.hasOwnProperty(k)) {
-            map.set(k, obj[k])
-        }
+    for (let k of Object.keys(obj)) {
+        map.set(k, obj[k])
     }
     return map
 }
@@ -33,10 +31,10 @@ function randStr(length) {
 }
 
 function randDirs() {
-    const maxDepth = 4
-    const maxFiles = 10
-    const maxSize  = 1024 * 1024 * 1024
-    const maxDirs  = 5
+    const max_depth = 4
+    const max_files = 10
+    const max_size  = 1024 * 1024 * 1024
+    const max_dirs  = 5
     const prefixes = ["monkey", "mouse", "fish", "patient"]
     const suffixes = ["data", "metadata", "info", "recording"]
     const extensions = [".odml", ".h5", ".xml", ".yml", ".json", ".nix"]
@@ -44,12 +42,12 @@ function randDirs() {
     function mkFiles(dir, prefix) {
         const ext = randElem(extensions)
 
-        for (let i = 0; i < randInt(1, maxFiles); i++) {
-            let fileName = prefix + i + ext
-            dir.files[fileName] = {
+        for (let i = 0; i < randInt(1, max_files); i++) {
+            let file_name = prefix + i + ext
+            dir.files[file_name] = {
                 type: "file",
-                name: fileName,
-                size: randInt(1, maxSize)
+                name: file_name,
+                size: randInt(1, max_size)
             }
         }
     }
@@ -60,9 +58,9 @@ function randDirs() {
         dir.files = {}
 
         if (depth > 0) {
-            for (let i = 0; i < randInt(1, maxDirs); i++) {
-                let dirName = randElem(prefixes) + "-" + randElem(suffixes)
-                dir.files[dirName] = mkDirs({}, dirName, depth - 1)
+            for (let i = 0; i < randInt(1, max_dirs); i++) {
+                let dir_name = randElem(prefixes) + "-" + randElem(suffixes)
+                dir.files[dir_name] = mkDirs({}, dir_name, depth - 1)
             }
         }
 
@@ -73,62 +71,13 @@ function randDirs() {
         return dir
     }
 
-    const root = mkDirs({}, randElem(prefixes) + "-" + randElem(suffixes), maxDepth)
+    const root = mkDirs({}, randElem(prefixes) + "-" + randElem(suffixes), max_depth)
     root.name = ":root"
 
     return root
 }
 
 const data = {
-    accounts: mapOf({
-        "bob": {
-            password: "testtest",
-            email: "bob@example.com",
-            title: "Dr.",
-            firstName: "Bob",
-            lastName: "Baker"
-        },
-        "alice": {
-            password: "testtest",
-            email: null,
-            title: "Mrs.",
-            firstName: "Alice",
-            lastName: "Goodchild"
-        },
-        "john": {
-            password: "testtest",
-            email: "jj@example.com",
-            title: "Mr.",
-            firstName: "John",
-            lastName: "Josephson"
-        }
-    }),
-
-    keys: mapOf({
-        "bob": [
-            {
-                fingerprint: "x9nS_Siw6cUy0qemb10V0dSK8YQYS2BKvV5KFowitUw",
-                description: "Bobs work key"
-            }
-        ],
-        "alice": [
-            {
-                fingerprint: "YiyshecHIHhJo5gP2gl/0zfdutuWYob+1lbdFdCqIUw",
-                description: "Alice work key"
-            },
-            {
-                fingerprint: "A3tkBXFQWkjU6rzhkofY55G7tPR_Lmna4B-WEGVFXOQ",
-                description: "Alice home key"
-            }
-        ],
-        "john": [
-            {
-                fingerprint: "+2gCRHNg0LSAs3xhk+UYpZ33UFUj9GKK5C/i2LQp0fA",
-                description: "This is my only key"
-            }
-        ]
-    }),
-
     repos: mapOf({
         "john/johns-public-data": {
             description: "This is the repository description",
@@ -169,237 +118,257 @@ const data = {
     })
 }
 
-function copyAccount(account, username) {
-    const copy = Object.assign({username: username}, account)
-    delete copy.password
-    return copy
+export default class API {
+
+    constructor(auth_url, repo_url) {
+        this.config   = { auth_url: auth_url, repo_url: repo_url, token: null }
+        this.accounts = new AccountAPI(this.config)
+        this.keys     = new SSHKeyAPI(this.config)
+        this.repos    = new RepoAPI(this.config)
+        this.files    = new FileAPI(this.config)
+    }
+
+    authorize() {
+        const url = this.config.auth_url + "/oauth/authorize?"
+        const params = [
+            ["response_type", "token"],
+            ["client_id", "gin"],
+            ["redirect_uri", `${window.location.origin}/oauth/login`],
+            ["scope", "account-read account-write repo-read repo-write"],
+            ["state", "foo"]
+        ]
+        const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        window.location.replace(url + query)
+    }
+    
+    login(token_str) {
+        this.logout()
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.auth_url}/oauth/validate/${token_str}`,
+                type: "GET",
+                dataType: "json",
+                success: (token) => {
+                    resolve(token)
+                },
+                error: (error) => {
+                    reject(error.responseJSON)
+                }
+            })
+        }).then(
+            (token) => {
+                this.config.token = token
+                localStorage.setItem("token", JSON.stringify(token))
+                return this.accounts.get(token.login)   
+            }
+        )
+    }
+
+    logout() {
+        localStorage.removeItem("token")
+        this.config.token = null
+    }
+
+    restore() {
+        return new Promise((resolve, reject) => {
+            let token = localStorage.getItem("token")
+            if (!token) {
+                reject(Error("No token in local storage"))
+                return
+            }
+            token = JSON.parse(token)
+            let expires = new Date(token.exp)
+            if (expires < Date.now()) {
+                reject(Error("Token was expired"))
+                return
+            }
+            resolve(token)
+        }).then((token) => {
+            this.config.token = token
+            return this.accounts.get(token.login)
+        })
+    }
 }
 
-export class AccountAPI {
-
-    login(username, password) {
-        return new Promise((resolve, reject) => {
-            const acc = data.accounts.get(username)
-            if (acc && acc.password === password) {
-                resolve(copyAccount(acc, username))
-            } else {
-                reject(Error("Invalid user name or password"))
-            }
-        })
+class AccountAPI {
+    
+    constructor(config) {
+        this.config = config
     }
 
     get(username) {
         return new Promise((resolve, reject) => {
-            const acc = data.accounts.get(username)
-            if (acc) {
-                resolve(copyAccount(acc, username))
-            } else {
-                reject(Error("Account does not exist"))
+            const request = {
+                url: `${this.config.auth_url}/api/accounts/${username}`,
+                dataType: "json",
+                success: (acc) => resolve(acc),
+                error: (error) => reject(error.responseJSON)
             }
+            if (this.config.token) {
+                request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+            $.ajax(request)
         })
     }
 
     search(text) {
-        let result = []
         return new Promise((resolve, reject) => {
-            if (text && text.length >= 1) {
-                result = Array.from(data.accounts.entries())
-                    .filter((entry) => entry[0].indexOf(text) >= 0)
-                    .map((entry) => copyAccount(entry[1], entry[0]))
+            const request = {
+                url: `${this.config.auth_url}/api/accounts`,
+                data: {q: text},
+                dataType: "json",
+                success: (accounts) => resolve(accounts),
+                error: (error) => reject(error.responseJSON)
             }
-            resolve(result)
+            if (this.config.token) {
+                request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+            $.ajax(request)
         })
     }
 
     update(account) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(account.username)
-            if (acc) {
-                acc = Object.assign(acc, account)
-                delete acc.username
-                data.accounts.set(account.username, acc)
-                resolve(account)
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${account.login}`,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                headers: { Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(account),
+                dataType: "json",
+                success: (acc) => resolve(acc),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
     
-    updatePassword(username, oldPassword, newPassword, repeatedPassword) {
+    updatePassword(username, password_old, password_new, password_new_repeat) {
         return new Promise((resolve, reject) => {
-            const acc = data.accounts.get(username)
-            if (acc) {
-                if (acc.password !== oldPassword) {
-                    reject(Error("Old password does not match"))
-                } else if (newPassword !== repeatedPassword) {
-                    reject(Error("Repeated password does not match"))
-                } else {
-                    acc.password = newPassword
-                    resolve(copyAccount(acc, username))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${username}/password`,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                headers: { Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify({password_old, password_new, password_new_repeat}),
+                success: () => resolve("ok"),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 }
 
-function copyKey(username, key) {
-    return Object.assign({ login: username }, key)
-}
+class SSHKeyAPI {
 
-export class SSHKeyAPI {
+    constructor(config) {
+        this.config = config
+    }
+    
     list(username) {
         return new Promise((resolve, reject) => {
-            const keys = data.keys.get(username)
-            if (keys) {
-                resolve(keys.map((key) => copyKey(username, key)))
-            } else {
-                reject(Error("Account does not exist"))
-            }
-        })
-    }
-
-    get(username, fingerprint) {
-        return new Promise((resolve, reject) => {
-            const keys = data.keys.get(username)
-            if (keys) {
-                const keyFound = keys.find((k) => k.fingerprint === fingerprint)
-                if (keyFound) {
-                    resolve(copyKey(username, keyFound))
-                } else {
-                    reject(Error("Key does not exist"))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${username}/keys`,
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
+                dataType: "json",
+                success: (keys) => resolve(keys),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 
     create(username, key) {
         return new Promise((resolve, reject) => {
-            let keys = data.keys.get(username)
-            if (key.description === null || key.description === "") {
-                reject(Error("Key description is missing"))
-            }
-            else if (key.key === null || key.key === "") {
-                reject(Error("Public key is missing"))
-            }
-            else {
-                key.fingerprint = randStr(20)
-                if (keys) {
-                    const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
-                    if (!keyFound) {
-                        keys = keys.concat({fingerprint: key.fingerprint, description: key.description})
-                        data.keys.set(username, keys)
-                        resolve(copyKey(username, key))
-                    } else {
-                        reject(Error("Key already exists"))
-                    }
-                } else {
-                    reject(Error("Account does not exist"))
-                }
-            }
-        })
-    }
-
-    update(key) {
-        return new Promise((resolve, reject) => {
-            const keys = data.keys.get(key.login)
-            if (keys) {
-                const keyFound = keys.find((k) => k.fingerprint === key.fingerprint)
-                if (keyFound) {
-                    keyFound.fingerprint = key.fingerprint
-                    keyFound.description = key.description
-                    resolve(copyKey(key.login, keyFound))
-                } else {
-                    reject(Error("Key does not exist"))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${username}/keys`,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                headers: { Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(key),
+                dataType: "json",
+                success: (key) => resolve(key),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 
     remove(key) {
         return new Promise((resolve, reject) => {
-            const keys = data.keys.get(key.login)
-            if (keys) {
-                const newKeys = keys.filter((k) => k.fingerprint !== key.fingerprint)
-                if (newKeys.length < keys.length) {
-                    data.keys.set(key.login, newKeys)
-                    resolve(copyKey(key.login, key))
-                } else {
-                    reject(Error("Key does not exist"))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/keys/${key.fingerprint}`,
+                type: "DELETE",
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
+                dataType: "json",
+                success: (key) => resolve(key),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 }
 
-function copyRepo(repo, fullName) {
-    const [owner, name] = fullName.split("/")
+function copyRepo(repo, full_name) {
+    const [owner, name] = full_name.split("/")
     const copy = Object.assign({ owner: owner, name: name }, repo)
     delete copy.root
     return copy
 }
 
-export class RepoAPI {
+class RepoAPI {
 
-    listPublic(searchText=null) {
-        const searchLower = searchText ? searchText.toLowerCase() : ""
+    constructor(config) {
+        this.config = config
+    }
+
+    listPublic(search_text=null) {
+        const search_lower = search_text ? search_text.toLowerCase() : ""
         return new Promise((resolve) => {
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
                     const all = (repo.name + repo.description + repo.owner).toLowerCase()
-                    return repo.public && (all.search(searchLower) >= 0)
+                    return repo.public && (all.search(search_lower) >= 0)
                 })
             resolve(found)
         })
     }
 
-    listShared(username, loginName) {
+    listShared(username, login_name) {
         return new Promise((resolve) => {
-            const publicOnly = username !== loginName
+            const public_only = username !== login_name
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username
-                    const isShared = repo.shared.find((name) => {return name === username})
-                    const isPublic = repo.public
+                    const is_owner  = repo.owner === username
+                    const is_shared = repo.shared.find((name) => {return name === username})
+                    const is_public = repo.public
 
-                    return !isOwner && isShared && (publicOnly ? isPublic : true)
+                    return !is_owner && is_shared && (public_only ? is_public : true)
                 })
             resolve(found)
         })
     }
 
-    listOwn(username, loginName) {
+    listOwn(username, login_name) {
         return new Promise((resolve) => {
-            const publicOnly = username !== loginName
+            const public_only = username !== login_name
             const found = Array.from(data.repos.entries())
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
-                    const isOwner  = repo.owner === username
-                    const isPublic = repo.public
+                    const is_owner  = repo.owner === username
+                    const is_public = repo.public
 
-                    return isOwner && (publicOnly ? isPublic : true)
+                    return is_owner && (public_only ? is_public : true)
                 })
             resolve(found)
         })
     }
     
-    get(username, repoName, loginName) {
+    get(username, repo_name, login_name) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== loginName
-            const fullName = [username, repoName].join("/")
-            const repo = data.repos.get(fullName)
+            const public_only = username !== login_name
+            const full_name = [username, repo_name].join("/")
+            const repo = data.repos.get(full_name)
 
-            if (repo && (publicOnly ? repo.public : true)) {
-                resolve(copyRepo(repo, fullName))
+            if (repo && (public_only ? repo.public : true)) {
+                resolve(copyRepo(repo, full_name))
             } else {
                 reject(Error("Repository does not exist"))
             }
@@ -407,7 +376,7 @@ export class RepoAPI {
     }
 
     create(username, repository) {
-        const fullName = [username, repository.name].join("/")
+        const full_name = [username, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
             let name = repository.name || ""
@@ -426,7 +395,7 @@ export class RepoAPI {
                 return
             }
 
-            if (data.repos.has(fullName)) {
+            if (data.repos.has(full_name)) {
                 reject(Error("Repository already exists"))
                 return
             }
@@ -435,24 +404,24 @@ export class RepoAPI {
             repository.shared = []
             repository.root = randDirs()
 
-            data.repos.set(fullName, repository)
-            resolve(copyRepo(repository, fullName))
+            data.repos.set(full_name, repository)
+            resolve(copyRepo(repository, full_name))
         })
     }
 
 
     update(repository) {
-        const fullName = [repository.owner, repository.name].join("/")
+        const full_name = [repository.owner, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
-            const repo = data.repos.get(fullName)
+            const repo = data.repos.get(full_name)
 
             if (repo) {
                 repo.description = repository.description
                 repo.shared = repository.shared
                 repo.public = repository.public
 
-                resolve(copyRepo(repo, fullName))
+                resolve(copyRepo(repo, full_name))
             } else {
                 reject(Error("Repository does not exist"))
             }
@@ -460,14 +429,14 @@ export class RepoAPI {
     }
 
     remove(repository) {
-        const fullName = [repository.owner, repository.name].join("/")
+        const full_name = [repository.owner, repository.name].join("/")
 
         return new Promise((resolve, reject) => {
-            const repo = data.repos.get(fullName)
+            const repo = data.repos.get(full_name)
 
             if (repo) {
-                data.repos.delete(fullName)
-                resolve(copyRepo(repo, fullName))
+                data.repos.delete(full_name)
+                resolve(copyRepo(repo, full_name))
             } else {
                 reject(Error("Repository does not exist"))
             }
@@ -485,9 +454,9 @@ function lastDir(parent, dir, path) {
             return [null, path]
         }
     } else {
-        const subName = path[0]
-        if (dir.files.hasOwnProperty(subName)) {
-            return lastDir(dir, dir.files[subName], path.slice(1))
+        const sub_name = path[0]
+        if (dir.files.hasOwnProperty(sub_name)) {
+            return lastDir(dir, dir.files[sub_name], path.slice(1))
         } else {
             return [null, path]
         }
@@ -500,28 +469,30 @@ function copyFile(file) {
     if (file.type === "dir") {
         copy.files = {}
         for (let name of Object.keys(file.files)) {
-            if (file.files.hasOwnProperty(name)) {
-                let copySub = Object.assign({}, file.files[name])
-                delete copySub.files
-                copy.files[name] = copySub
-            }
+            let copy_sub = Object.assign({}, file.files[name])
+            delete copy_sub.files
+            copy.files[name] = copy_sub
         }
     }
 
     return copy
 }
 
-export class FileAPI {
+class FileAPI {
 
-    getDir(username, repoName, path, loginName) {
+    constructor(config) {
+        this.config = config
+    }
+
+    getDir(username, repo_name, path, login_name) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== loginName
-            const fullName = [username, repoName].join("/")
-            const repo = data.repos.get(fullName)
+            const public_only = username !== login_name
+            const full_name = [username, repo_name].join("/")
+            const repo = data.repos.get(full_name)
 
-            if (repo && (publicOnly ? repo.public : true)) {
-                const pathComp = path ? path.split("/") : []
-                let [dir, _p] = lastDir(null, repo.root, pathComp)
+            if (repo && (public_only ? repo.public : true)) {
+                const path_components = path ? path.split("/") : []
+                let [dir, _p] = lastDir(null, repo.root, path_components)
 
                 if (dir) {
                     resolve(copyFile(dir))
@@ -534,15 +505,15 @@ export class FileAPI {
         })
     }
 
-    getFile(username, repoName, path, loginName) {
+    getFile(username, repo_name, path, login_name) {
         return new Promise((resolve, reject) => {
-            const publicOnly = username !== loginName
-            const fullName = [username, repoName].join("/")
-            const repo = data.repos.get(fullName)
+            const public_only = username !== login_name
+            const full_name = [username, repo_name].join("/")
+            const repo = data.repos.get(full_name)
 
-            if (repo && (publicOnly ? repo.public : true)) {
-                const pathComp = path ? path.split("/") : []
-                const [dir, p] = lastDir(null, repo.root, pathComp)
+            if (repo && (public_only ? repo.public : true)) {
+                const path_components = path ? path.split("/") : []
+                const [dir, p] = lastDir(null, repo.root, path_components)
 
                 if (dir && dir.file.hasOwnProperty(p[0])) {
                     resolve(copyFile(dir[p[0]]))

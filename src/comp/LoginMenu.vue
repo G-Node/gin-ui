@@ -7,22 +7,12 @@
 <template>
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ login ? userName : "Sign In"}} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ account ? display_name : "Sign In"}} <span class="caret"></span></a>
 
-            <ul class="dropdown-menu" v-if="!login" style="padding: 1em">
+            <ul class="dropdown-menu" v-if="!account" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
                 <li>
-                    <div @keypress.enter="signIn">
-                        <div class="form-group">
-                            <input type="text" class="form-control" id="login" placeholder="G-Node Login" v-model="form.username">
-                        </div>
-                        <div class="form-group">
-                            <input type="password" class="form-control" id="password" placeholder="Password" v-model="form.password">
-                        </div>
-                        <div class="form-group">
-                            <button type="button" class="btn btn-primary btn-block" @click="signIn">Login</button>
-                        </div>
-                    </div>
+                    <a href="#" @click="signIn">Sign In</a>
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
@@ -30,11 +20,12 @@
                 </li>
             </ul>
 
-            <ul class="dropdown-menu" v-if="login">
+            <ul class="dropdown-menu" v-if="account">
                 <!-- login info (shown if logged in) -->
-                <li><a v-link="{ name: 'profile-settings', params: { username: login.username }}">Profile Settings</a></li>
-                <li><a v-link="{ name: 'password-settings', params: { username: login.username }}">Change Password</a></li>
-                <li><a v-link="{ name: 'sshkey-settings', params: { username: login.username }}">Manage SSH Keys</a></li>
+                <li><a v-link="{ name: 'profile-settings', params: { username: account.username }}">Profile Settings</a></li>
+                <li><a v-link="{ name: 'affiliation-settings', params: { username: account.username }}">Affiliation Settings</a></li>
+                <li><a v-link="{ name: 'password-settings', params: { username: account.username }}">Change Password</a></li>
+                <li><a v-link="{ name: 'sshkey-settings', params: { username: account.username }}">Manage SSH Keys</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a v-link="{ path: '/' }" @click="signOut">Sign Out</a></li>
             </ul>
@@ -43,56 +34,35 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Alert from "./Alert.js"
-
     export default {
 
-        data(){
-            return {
-                form: {
-                    username: null,
-                    password: null
-                }
-            }
-        },
-
         computed: {
-            userName: {
+            display_name: {
                 get() {
-                    const fn = this.login.firstName
-                    const ln = this.login.lastName
+                    const fn = this.account.first_name
+                    const ln = this.account.last_name
 
                     if (fn && ln) {
                         return fn[0] + ". " + ln
                     }
 
-                    return this.login.username
+                    return this.account.login
                 }
             }
         },
 
         props: {
-            login: { twoWay: true, required: true }
+            account: { required: true }
         },
-
-        mixins: [ Alert ],
 
         methods: {
             signIn() {
-                const promise = api.accounts.login(this.form.username, this.form.password)
-                promise.then(
-                    (acc) => {
-                        this.form.username = this.form.password = null
-                        this.login = acc
-                    },
-                    (error) => {
-                        this.alertError(error)
-                    }
-                )
+                window.api.authorize()
             },
 
             signOut() {
-                this.login = null
+                window.api.logout()
+                this.account = null
             }
         }
     }

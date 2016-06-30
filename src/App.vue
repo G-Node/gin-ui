@@ -25,9 +25,9 @@
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
                     <!-- left hand side navigation items -->
-                    <main-menu v-bind:login="login"></main-menu>
+                    <main-menu v-bind:account="account"></main-menu>
                     <!-- right hand side navigation items -->
-                    <login-menu v-bind:login.sync="login"></login-menu>
+                    <login-menu v-bind:account.sync="account"></login-menu>
                 </div>
             </div>
         </nav>
@@ -37,7 +37,7 @@
                 {{ alert.content }}
             </div>
             <div>
-                <router-view v-bind:login.sync="login"></router-view>
+                <router-view v-bind:account.sync="account"></router-view>
             </div>
         </div>
     </div>
@@ -54,15 +54,35 @@
     export default {
 
         data() {
-            return {
+            const data = {
                 alert: null,
-                login: null
+                account: null
             }
+
+            const promise = window.api.restore()
+            promise.then(
+                (account) => {
+                    data.account = account
+                    console.log("Info: login successfully restored")
+                },
+                (error) => {
+                    console.log("Info: " + error.message)
+                }
+            )
+
+            return data
         },
 
         events: {
             "alert-event": function (message) {
-                this.alert = message
+                const alert = Object.assign({}, message)
+                if (alert.content.hasOwnProperty("message")) {
+                    alert.content = alert.content.message
+                } else {
+                    alert.content = alert.content.toString()
+                }
+
+                this.alert = alert
 
                 setTimeout(() => { this.alert = null }, 4000)
 

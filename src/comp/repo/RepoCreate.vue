@@ -1,5 +1,5 @@
 <template>
-    <div class="panel panel-default" v-if="login">
+    <div class="panel panel-default" v-if="account">
         <div class="panel-heading">
             New Repository
         </div>
@@ -53,18 +53,18 @@
         },
 
         props: {
-            login: { required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
 
         methods: {
             save() {
-                let promise = api.repos.create(this.login.username, this.form)
+                let promise = api.repos.create(this.account.login, this.form)
                 promise.then(
                     (repo) => {
                         this.alertSuccess("Repository successfully created")
-                        this.$router.go({name: "own-repositories", params: { "username": this.login.username }})
+                        this.$router.go({name: "own-repositories", params: { "username": this.account.login }})
                     },
                     (error) => {
                         this.alertError(error)

@@ -1,27 +1,29 @@
 <template>
-    <div v-if="owner">
-        <h2>{{ header }}</h2>
+    <div>
+        <div v-if="owner">
+            <h2>{{ header }}</h2>
 
-        <hr />
+            <hr />
 
-        <div>
-            <ul class="nav pull-right">
-                <li role="presentation">
-                    <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: login.username }}">New Repository</button>
-                </li>
-            </ul>
+            <div>
+                <ul class="nav pull-right" v-if="account_is_owner">
+                    <li role="presentation">
+                        <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: owner.login }}">New Repository</button>
+                    </li>
+                </ul>
 
-            <ul class="nav nav-tabs">
-                <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
-                    <a v-link="{ name: 'own-repositories', params: { username: owner.username }}">{{ headerOwn }}</a>
-                </li>
-                <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
-                    <a v-link="{ name: 'shared-repositories', params: { username: owner.username }}">{{ headerShared }}</a>
-                </li>
-            </ul>
+                <ul class="nav nav-tabs">
+                    <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
+                        <a v-link="{ name: 'own-repositories', params: { username: owner.login }}">{{ heading_own }}</a>
+                    </li>
+                    <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
+                        <a v-link="{ name: 'shared-repositories', params: { username: owner.login }}">{{ heading_shared }}</a>
+                    </li>
+                </ul>
+            </div>
+
+            <router-view v-bind:account="account" v-bind:owner="owner"></router-view>
         </div>
-
-        <router-view v-bind:login="login" v-bind:owner="owner"></router-view>
     </div>
 </template>
 
@@ -38,58 +40,58 @@
         },
 
         computed: {
-            ownerName: {
+            owner_name: {
                 get() {
-                    const fn = this.owner ? this.owner.firstName : null
-                    const ln = this.owner ? this.owner.lastName : null
+                    const fn = this.owner ? this.owner.first_name : null
+                    const ln = this.owner ? this.owner.last_name : null
 
                     if (fn && ln) {
                         return fn[0] + ". " + ln
                     }
 
-                    return this.owner.username
+                    return this.owner.login
                 }
             },
 
             header: {
                 get() {
-                    if (this.isOwnRepository) {
+                    if (this.account_is_owner) {
                         return "Your Data"
                     } else {
-                        return this.ownerName + "'s Data"
+                        return this.owner_name + "'s Data"
                     }
                 }
             },
 
-            headerOwn: {
+            heading_own: {
                 get() {
-                    if (this.isOwnRepository) {
+                    if (this.account_is_owner) {
                         return "Repositories owned by You"
                     } else {
-                        return "Repositories owned by " + this.ownerName
+                        return "Repositories owned by " + this.owner_name
                     }
                 }
             },
 
-            headerShared: {
+            heading_shared: {
                 get() {
-                    if (this.isOwnRepository) {
+                    if (this.account_is_owner) {
                         return "Repositories shared with You"
                     } else {
-                        return "Repositories shared with " + this.ownerName
+                        return "Repositories shared with " + this.owner_name
                     }
                 }
             },
 
-            isOwnRepository: {
+            account_is_owner: {
                 get() {
-                    return this.login && this.owner.username === this.login.username
+                    return this.account && this.owner.login === this.account.login
                 }
             }
         },
 
         props: {
-            login: { required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
@@ -98,9 +100,9 @@
             update(params, old, target=null) {
                 target = target || this
 
-                const sameAccount = old && old.username === params.username
+                const is_same_account = old && old.username === params.username
 
-                if (!sameAccount) {
+                if (!is_same_account) {
                     const promise = api.accounts.get(params.username)
                     promise.then(
                         (acc) => {

@@ -6,16 +6,18 @@
             </div>
             <div class="panel-body">
                 <div class="form-horizontal">
-                    <div class="form-group">
+                    <div class="form-group" :class="{ 'has-error': reasons.description }">
                         <label for="description" class="col-sm-3 control-label">Description</label>
                         <div class="col-sm-9">
                             <input class="form-control" id="description" placeholder="Description" v-model="form.description">
+                            <span class="help-block" v-if="reasons.description">{{ reasons.description }}</span>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" :class="{ 'has-error': reasons.key }">
                         <label for="key" class="col-sm-3 control-label">Public Key</label>
                         <div class="col-sm-9">
                             <textarea class="form-control" id="key" placeholder="Public Key" v-model="form.key" rows="3"></textarea>
+                            <span class="help-block" v-if="reasons.key">{{ reasons.key }}</span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -52,50 +54,54 @@
                 form: {
                     description: null,
                     key: null
-                }
+                },
+                reasons: {}
             }
-            this.update(this.login.username, data)
+            this.update(this.account.login, data)
             return data
         },
 
         props: {
-            login: { required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
 
         methods: {
             save() {
-                let promise = api.keys.create(this.login.username, this.form)
+                let promise = api.keys.create(this.account.login, this.form)
                 promise.then(
-                        () => {
-                            this.update(this.login.username)
-                            this.form.description = null
-                            this.form.key = null
-                        },
-                        (error) => {
-                            this.alertError(error)
+                    () => {
+                        this.update(this.account.login)
+                        this.reset()
+                    },
+                    (error) => {
+                        if (error.hasOwnProperty("reasons")) {
+                            this.reasons = error.reasons
+                        } else {
+                            this.reasons = {}
                         }
+                        this.alertError(error)
+                    }
                 )
-                console.log(`Add key ${this.form.description}, ${this.form.key}`)
             },
 
             reset () {
                 this.form.description = null
                 this.form.key = null
+                this.reasons = {}
             },
 
             remove(key) {
                 let promise = api.keys.remove(key)
                 promise.then(
                     () => {
-                        this.update(this.login.username)
+                        this.update(this.account.login)
                     },
                     (error) => {
                         this.alertError(error)
                     }
                 )
-                console.log(`Remove key: ${key.fingerprint}`)
             },
 
             update(username, target=null) {
@@ -107,8 +113,9 @@
                     },
                     (error) => {
                         target.keys = []
-                        console.log(error)
-                    })
+                        this.alertError(error)
+                    }
+                )
             }
         }
     }

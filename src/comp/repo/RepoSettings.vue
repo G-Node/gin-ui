@@ -84,21 +84,21 @@
 
         props: {
             repository: { twoWay: true, required: true },
-            isRepositoryWriteable: { required: true }
+            is_repo_writeable: { required: true }
         },
 
         mixins: [ Alert ],
 
         methods: {
-            removeShare(loginName) {
-                this.form.shared = this.form.shared.filter((n) => n !== loginName)
+            removeShare(login_name) {
+                this.form.shared = this.form.shared.filter((n) => n !== login_name)
             },
 
-            addShare(loginName) {
-                const promise = api.accounts.get(loginName)
+            addShare(login_name) {
+                const promise = api.accounts.get(login_name)
                 promise.then(
                     (acc) => {
-                        this.form.shared = this.form.shared.concat(acc.username)
+                        this.form.shared = this.form.shared.concat(acc.login)
                         this.form.shared.sort()
                         this.share.selected = null
                         this.share.available = []
@@ -111,8 +111,8 @@
                 )
             },
 
-            selectShare(loginName) {
-                this.share.selected = loginName
+            selectShare(login_name) {
+                this.share.selected = login_name
             },
 
             searchLogin(search) {
@@ -120,7 +120,7 @@
                 promise.then(
                     (accounts) => {
                         this.share.available = accounts
-                                .map((acc) => acc.username)
+                                .map((acc) => acc.login)
                                 .filter((n) => !this.form.shared.includes(n) && this.repository.owner != n)
                     }
                 )
