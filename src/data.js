@@ -78,55 +78,6 @@ function randDirs() {
 }
 
 const data = {
-    accounts: mapOf({
-        "bob": {
-            password: "testtest",
-            email: "bob@example.com",
-            title: "Dr.",
-            first_name: "Bob",
-            last_name: "Baker"
-        },
-        "alice": {
-            password: "testtest",
-            email: null,
-            title: "Mrs.",
-            first_name: "Alice",
-            last_name: "Goodchild"
-        },
-        "john": {
-            password: "testtest",
-            email: "jj@example.com",
-            title: "Mr.",
-            first_name: "John",
-            last_name: "Josephson"
-        }
-    }),
-
-    keys: mapOf({
-        "bob": [
-            {
-                fingerprint: "x9nS_Siw6cUy0qemb10V0dSK8YQYS2BKvV5KFowitUw",
-                description: "Bobs work key"
-            }
-        ],
-        "alice": [
-            {
-                fingerprint: "YiyshecHIHhJo5gP2gl/0zfdutuWYob+1lbdFdCqIUw",
-                description: "Alice work key"
-            },
-            {
-                fingerprint: "A3tkBXFQWkjU6rzhkofY55G7tPR_Lmna4B-WEGVFXOQ",
-                description: "Alice home key"
-            }
-        ],
-        "john": [
-            {
-                fingerprint: "+2gCRHNg0LSAs3xhk+UYpZ33UFUj9GKK5C/i2LQp0fA",
-                description: "This is my only key"
-            }
-        ]
-    }),
-
     repos: mapOf({
         "john/johns-public-data": {
             description: "This is the repository description",
@@ -191,36 +142,52 @@ export default class API {
     }
     
     login(token_str) {
+        this.logout()
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `${this.config.auth_url}/oauth/validate/${token_str}`,
                 type: "GET",
                 dataType: "json",
                 success: (token) => {
-                    this.config.token = token
                     resolve(token)
                 },
                 error: (error) => {
-                    this.logout()
-                    reject(error)
+                    reject(error.responseJSON)
                 }
             })
         }).then(
             (token) => {
+                this.config.token = token
+                localStorage.setItem("token", JSON.stringify(token))
                 return this.accounts.get(token.login)   
             }
         )
     }
 
     logout() {
+        localStorage.removeItem("token")
         this.config.token = null
     }
-}
 
-function copyAccount(account, login_name) {
-    const copy = Object.assign({login: login_name}, account)
-    delete copy.password
-    return copy
+    restore() {
+        return new Promise((resolve, reject) => {
+            let token = localStorage.getItem("token")
+            if (!token) {
+                reject(Error("No token in local storage"))
+                return
+            }
+            token = JSON.parse(token)
+            let expires = new Date(token.exp)
+            if (expires < Date.now()) {
+                reject(Error("Token was expired"))
+                return
+            }
+            resolve(token)
+        }).then((token) => {
+            this.config.token = token
+            return this.accounts.get(token.login)
+        })
+    }
 }
 
 class AccountAPI {
@@ -233,10 +200,9 @@ class AccountAPI {
         return new Promise((resolve, reject) => {
             const request = {
                 url: `${this.config.auth_url}/api/accounts/${username}`,
-                type: "GET",
                 dataType: "json",
                 success: (acc) => resolve(acc),
-                error: (error) => reject(error)
+                error: (error) => reject(error.responseJSON)
             }
             if (this.config.token) {
                 request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
@@ -246,52 +212,49 @@ class AccountAPI {
     }
 
     search(text) {
-        let result = []
         return new Promise((resolve, reject) => {
-            if (text && text.length >= 1) {
-                result = Array.from(data.accounts.entries())
-                    .filter((entry) => entry[0].indexOf(text) >= 0)
-                    .map((entry) => copyAccount(entry[1], entry[0]))
+            const request = {
+                url: `${this.config.auth_url}/api/accounts`,
+                data: {q: text},
+                dataType: "json",
+                success: (accounts) => resolve(accounts),
+                error: (error) => reject(error.responseJSON)
             }
-            resolve(result)
+            if (this.config.token) {
+                request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+            $.ajax(request)
         })
     }
 
     update(account) {
         return new Promise((resolve, reject) => {
-            let acc = data.accounts.get(account.login)
-            if (acc) {
-                acc = Object.assign(acc, account)
-                delete acc.login
-                data.accounts.set(account.login, acc)
-                resolve(account)
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${account.login}`,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                headers: { Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(account),
+                dataType: "json",
+                success: (acc) => resolve(acc),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
     
-    updatePassword(username, old_password, new_password, repeated_password) {
+    updatePassword(username, password_old, password_new, password_new_repeat) {
         return new Promise((resolve, reject) => {
-            const acc = data.accounts.get(username)
-            if (acc) {
-                if (acc.password !== old_password) {
-                    reject(Error("Old password does not match"))
-                } else if (new_password !== repeated_password) {
-                    reject(Error("Repeated password does not match"))
-                } else {
-                    acc.password = new_password
-                    resolve(copyAccount(acc, username))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${username}/password`,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                headers: { Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify({password_old, password_new, password_new_repeat}),
+                success: () => resolve("ok"),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
-}
-
-function copyKey(username, key) {
-    return Object.assign({ login: username }, key)
 }
 
 class SSHKeyAPI {
@@ -302,90 +265,41 @@ class SSHKeyAPI {
     
     list(username) {
         return new Promise((resolve, reject) => {
-            const keys = data.keys.get(username)
-            if (keys) {
-                resolve(keys.map((key) => copyKey(username, key)))
-            } else {
-                reject(Error("Account does not exist"))
-            }
-        })
-    }
-
-    get(username, fingerprint) {
-        return new Promise((resolve, reject) => {
-            const keys = data.keys.get(username)
-            if (keys) {
-                const keyFound = keys.find((k) => k.fingerprint === fingerprint)
-                if (keyFound) {
-                    resolve(copyKey(username, keyFound))
-                } else {
-                    reject(Error("Key does not exist"))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${username}/keys`,
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
+                dataType: "json",
+                success: (keys) => resolve(keys),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 
     create(username, key) {
         return new Promise((resolve, reject) => {
-            let keys = data.keys.get(username)
-            if (key.description === null || key.description === "") {
-                reject(Error("Key description is missing"))
-            }
-            else if (key.key === null || key.key === "") {
-                reject(Error("Public key is missing"))
-            }
-            else {
-                key.fingerprint = randStr(20)
-                if (keys) {
-                    const key_found = keys.find((k) => k.fingerprint === key.fingerprint)
-                    if (!key_found) {
-                        keys = keys.concat({fingerprint: key.fingerprint, description: key.description})
-                        data.keys.set(username, keys)
-                        resolve(copyKey(username, key))
-                    } else {
-                        reject(Error("Key already exists"))
-                    }
-                } else {
-                    reject(Error("Account does not exist"))
-                }
-            }
-        })
-    }
-
-    update(key) {
-        return new Promise((resolve, reject) => {
-            const keys = data.keys.get(key.login)
-            if (keys) {
-                const key_found = keys.find((k) => k.fingerprint === key.fingerprint)
-                if (key_found) {
-                    key_found.fingerprint = key.fingerprint
-                    key_found.description = key.description
-                    resolve(copyKey(key.login, key_found))
-                } else {
-                    reject(Error("Key does not exist"))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${username}/keys`,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                headers: { Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(key),
+                dataType: "json",
+                success: (key) => resolve(key),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 
     remove(key) {
         return new Promise((resolve, reject) => {
-            const keys = data.keys.get(key.login)
-            if (keys) {
-                const new_keys = keys.filter((k) => k.fingerprint !== key.fingerprint)
-                if (new_keys.length < keys.length) {
-                    data.keys.set(key.login, new_keys)
-                    resolve(copyKey(key.login, key))
-                } else {
-                    reject(Error("Key does not exist"))
-                }
-            } else {
-                reject(Error("Account does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.auth_url}/api/keys/${key.fingerprint}`,
+                type: "DELETE",
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
+                dataType: "json",
+                success: (key) => resolve(key),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 }
