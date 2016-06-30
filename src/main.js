@@ -9,6 +9,7 @@ import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
 import SSHKeys          from "./comp/account/SSHKeys.vue"
+import AffiliationSettings from "./comp/account/AffiliationSettings.vue"
 import Repos            from "./comp/account/Repos.vue"
 import ReposOwn         from "./comp/account/ReposOwn.vue"
 import ReposShared      from "./comp/account/ReposShared.vue"
@@ -44,7 +45,8 @@ window.router.map({
         subRoutes: {
             "/": { component: ProfileSettings },
             "/password": { component: PasswordSettings, name: "password-settings" },
-            "/sshkey": { component: SSHKeys, name: "sshkey-settings" }
+            "/sshkey": { component: SSHKeys, name: "sshkey-settings" },
+            "/affiliation": { component: AffiliationSettings, name: "affiliation-settings" }
         }
     },
     "/a/:username/repositories": {
