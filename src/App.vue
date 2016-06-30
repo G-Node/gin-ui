@@ -54,15 +54,35 @@
     export default {
 
         data() {
-            return {
+            const data = {
                 alert: null,
-                account: null,
+                account: null
             }
+
+            const promise = window.api.restore()
+            promise.then(
+                (account) => {
+                    data.account = account
+                    console.log("Info: login successfully restored")
+                },
+                (error) => {
+                    console.log("Info: " + error.message)
+                }
+            )
+
+            return data
         },
 
         events: {
             "alert-event": function (message) {
-                this.alert = message
+                const alert = Object.assign({}, message)
+                if (alert.content.hasOwnProperty("message")) {
+                    alert.content = alert.content.message
+                } else {
+                    alert.content = alert.content.toString()
+                }
+
+                this.alert = alert
 
                 setTimeout(() => { this.alert = null }, 4000)
 
