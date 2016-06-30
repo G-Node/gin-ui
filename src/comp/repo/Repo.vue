@@ -65,8 +65,6 @@
                 const same_repo  = old && old.repository === params.repository
 
                 if (!same_owner) {
-                    console.log("updating owner")
-
                     const promise = api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
@@ -79,8 +77,6 @@
                 }
 
                 if (!same_repo || !same_owner) {
-                    console.log("updating repo")
-
                     const promise = api.repos.get(params.username, params.repository, login_name)
                     promise.then(
                             (repo) => {
