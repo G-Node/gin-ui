@@ -25,9 +25,9 @@
                             <div class="panel panel-default" style="margin-bottom: 0">
                                 <table class="table panel-body">
                                     <tbody>
-                                        <tr v-for="name in form.shared">
-                                            <td>{{ name }}</td>
-                                            <td class="text-right"><button class="btn btn-danger btn-xs" @click="removeShare(name)">remove</button></td>
+                                        <tr v-for="text in form.shared">
+                                            <td>{{ text }}</td>
+                                            <td class="text-right"><button class="btn btn-danger btn-xs" @click="removeShare(text)">remove</button></td>
                                         </tr>
                                         <tr v-if="form.shared.length === 0">
                                             <td>This Repository has no Collaborators</td>
@@ -41,15 +41,17 @@
                         <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
                         <div class="col-sm-8">
                             <div class="dropdown">
-                                <input type="text" class="form-control" id="select" name="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                                       v-model="share.selected" debounce="100" @keypress.enter="addShare(share.selected)">
-                                <ul v-if="share.available.length > 0" class="dropdown-menu" aria-labelledby="select">
-                                    <li ><a v-for="name in share.available" @click="selectShare(name)">{{ name }}</a></li>
+                                <input type="text" class="form-control" id="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
+                                       v-model="select.text" debounce="100" @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()" @keyup.down="selectionDown()">
+                                <ul v-if="select.all.length > 0" class="dropdown-menu" aria-labelledby="select" style="width: 100%">
+                                    <li v-for="acc in select.all" :class="{active: acc.active}">
+                                        <a @click="selectShare(acc.login)">{{ acc.login }} <small class="supplemental-text">{{ acc.label }}</small></a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <div class="col-sm-2">
-                            <button class="btn btn-primary btn-block" @click="addShare(share.selected)">Add</button>
+                            <button class="btn btn-primary btn-block" @click="addShare(select.text)">Add</button>
                         </div>
                     </div>
                     <div class="form-group">
@@ -67,6 +69,19 @@
 <script type="text/ecmascript-6">
     import Alert from "../Alert.js"
 
+    function accountLabel(acc) {
+        let parts = []
+        if (acc.first_name)
+            parts = parts.concat(acc.first_name)
+        if (acc.middle_name)
+            parts = parts.concat(acc.middle_name)
+        if (acc.last_name)
+            parts = parts.concat(acc.last_name)
+        if (acc.email)
+            parts = parts.concat(`(${acc.email.email})`)
+        return parts.length > 0 ? parts.join(" ") : acc.login
+    }
+
     export default {
         data() {
             return {
@@ -75,9 +90,10 @@
                     public: this.repository.public,
                     shared: this.repository.shared
                 },
-                share: {
-                    selected: null,
-                    available: []
+                select: {
+                    match: null,
+                    text: null,
+                    all: []
                 }
             }
         },
@@ -95,35 +111,78 @@
             },
 
             addShare(login_name) {
-                const promise = api.accounts.get(login_name)
-                promise.then(
-                    (acc) => {
-                        this.form.shared = this.form.shared.concat(acc.login)
-                        this.form.shared.sort()
-                        this.share.selected = null
-                        this.share.available = []
-                    },
-                    (error) => {
-                        this.share.selected = null
-                        this.share.available = []
-                        this.alertError(error)
-                    }
-                )
+                const selected = this.select.all.find(acc => acc.active)
+                if (selected) {
+                    selected.active = false
+                    this.select.text = selected.login
+                } else if (this.select.match === login_name) {
+                    const promise = api.accounts.get(login_name)
+                    promise.then(
+                        (acc) => {
+                            this.form.shared = this.form.shared.concat(acc.login)
+                            this.form.shared.sort()
+                            this.select.match = null
+                            this.select.text = null
+                            this.select.all = []
+                        },
+                        (error) => {
+                            this.select.match = null
+                            this.select.text = null
+                            this.select.all = []
+                            this.alertError(error)
+                        }
+                    )
+                }
             },
 
             selectShare(login_name) {
-                this.share.selected = login_name
+                this.select.text = login_name
             },
 
-            searchLogin(search) {
-                const promise = api.accounts.search(search)
-                promise.then(
-                    (accounts) => {
-                        this.share.available = accounts
-                                .map((acc) => acc.login)
-                                .filter((n) => !this.form.shared.includes(n) && this.repository.owner != n)
-                    }
-                )
+            selectionUp() {
+                let idx = this.select.all.findIndex(acc => acc.active)
+                if (idx < 1) {
+                    this.select.all[0].active = false
+                    idx = this.select.all.length
+                } else {
+                    this.select.all[idx].active = false
+                }
+                this.select.all[idx - 1].active = true
+            },
+
+            selectionDown() {
+                let idx = this.select.all.findIndex(acc => acc.active)
+                if (idx >= 0) {
+                    this.select.all[idx].active = false
+                }
+                const idx_next = (idx + 1) % this.select.all.length
+                this.select.all[idx_next].active = true
+            },
+
+            search(text) {
+                if (text && text.length > 0) {
+                    const promise = api.accounts.search(encodeURIComponent(text))
+                    promise.then(
+                        (accounts) => {
+                            const shared = this.form.shared
+                            const owner_login = this.repository.owner
+                            accounts = accounts
+                                    .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
+                                    .map(acc => { return { label: accountLabel(acc), login: acc.login, active: false}})
+                            const idx = accounts.findIndex(acc => acc.login === text)
+                            if (idx >= 0) {
+                                accounts.splice(idx, 1)
+                                this.select.match = text
+                            } else {
+                                this.select.match = null
+                            }
+                            this.select.all = accounts
+                        }
+                    )
+                } else {
+                    this.select.match = null
+                    this.select.all = []
+                }
             },
 
             save() {
@@ -146,16 +205,19 @@
                     public: this.repository.public,
                     shared: this.repository.shared
                 }
-                this.share = {
-                    selected: null,
-                    available: []
+                this.select = {
+                    match: null,
+                    text: null,
+                    all: []
                 }
             }
         },
 
         watch: {
-            "share.selected": function (val) {
-                this.searchLogin(val)
+            "select.text": function (search, old) {
+                if (search !== old) {
+                    this.search(search)
+                }
             }
         }
     }
