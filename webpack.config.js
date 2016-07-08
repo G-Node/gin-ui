@@ -2,7 +2,6 @@
 
 var path = require("path")
 var webpack = require("webpack")
-var ExtractTextPlugin = require("extract-text-webpack-plugin")
 
 module.exports = {
     entry: "./src/main.js",
@@ -34,10 +33,6 @@ module.exports = {
                 loader: "vue-html"
             },
             {
-                test: /\.less$/,
-                loader: ExtractTextPlugin.extract(["css", "less"])
-            },
-            {
                 test: /\.(png|jpg|gif|svg)$/,
                 loader: "url",
                 query: {
@@ -47,9 +42,6 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new ExtractTextPlugin("main.css")
-    ],
     devServer: {
         historyApiFallback: true,
         noInfo: true

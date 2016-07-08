@@ -10,7 +10,7 @@
 
 <template>
     <div>
-        <nav class="navbar navbar-gin navbar-fixed-top">
+        <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <!-- collapsed menu button -->
@@ -20,7 +20,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!-- navbar branding --> <!-- TODO add g-node logo here -->
-                    <a class="navbar-brand" v-link="{ path: '/' }"><img alt="G-Node" src="/img/gnode.png" height="46"></a>
+                    <a class="navbar-brand-gnode" v-link="{ path: '/' }"></a>
                 </div>
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
