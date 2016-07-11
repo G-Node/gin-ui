@@ -23,9 +23,6 @@ import RepoCreate       from "./comp/repo/RepoCreate.vue"
 import config           from "./config.json"
 import { filesize }     from "./filters"
 
-// imports only needed for webpack
-import _main            from "./main.less"
-
 
 Vue.filter("filesize", filesize)
 Vue.use(VueRouter)
