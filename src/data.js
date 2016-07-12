@@ -142,7 +142,6 @@ export default class API {
     }
     
     login(token_str) {
-        this.logout()
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `${this.config.auth_url}/oauth/validate/${token_str}`,
@@ -165,8 +164,16 @@ export default class API {
     }
 
     logout() {
-        localStorage.removeItem("token")
-        this.config.token = null
+        if (this.config.token) {
+            const token = encodeURIComponent(this.config.token.jti)
+            const redirect = encodeURIComponent(window.location.origin)
+            const url = `${this.config.auth_url}/oauth/logout/${token}?redirect_uri=${redirect}`
+
+            this.config.token = null
+            localStorage.removeItem("token")
+
+            window.location.replace(url)
+        }
     }
 
     restore() {

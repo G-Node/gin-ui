@@ -27,7 +27,7 @@
                 <li><a v-link="{ name: 'password-settings', params: { username: account.username }}">Change Password</a></li>
                 <li><a v-link="{ name: 'sshkey-settings', params: { username: account.username }}">Manage SSH Keys</a></li>
                 <li role="separator" class="divider"></li>
-                <li><a v-link="{ path: '/' }" @click="signOut">Sign Out</a></li>
+                <li><a href="#" @click="signOut">Sign Out</a></li>
             </ul>
         </li>
     </ul>
@@ -61,8 +61,8 @@
             },
 
             signOut() {
-                window.api.logout()
                 this.account = null
+                window.api.logout()
             }
         }
     }
