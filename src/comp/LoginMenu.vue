@@ -16,7 +16,7 @@
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                    <a href="#">Get a G-Node Account</a>
+                    <a href="#" @click="register">Get a G-Node Account</a>
                 </li>
             </ul>
 
@@ -63,6 +63,10 @@
             signOut() {
                 this.account = null
                 window.api.logout()
+            },
+
+            register() {
+                window.api.register()
             }
         }
     }

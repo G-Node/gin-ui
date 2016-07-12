@@ -195,6 +195,11 @@ export default class API {
             return this.accounts.get(token.login)
         })
     }
+
+    register() {
+        const url = `${this.config.auth_url}/oauth/registration_page`
+        window.location.replace(url)
+    }
 }
 
 class AccountAPI {
