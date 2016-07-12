@@ -19,7 +19,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <!-- navbar branding --> <!-- TODO add g-node logo here -->
+                    <!-- navbar branding -->
                     <a class="navbar-brand-gnode" v-link="{ path: '/' }"></a>
                 </div>
                 <!-- left hand side navigation items -->
