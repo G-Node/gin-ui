@@ -51,6 +51,8 @@
     Vue.component("main-menu", MainMenu)
     Vue.component("login-menu", LoginMenu)
 
+    const default_title = "G-Node GIN"
+
     export default {
 
         data() {
@@ -71,6 +73,20 @@
             )
 
             return data
+        },
+
+        ready() {
+            document.title = default_title
+        },
+
+        watch: {
+            "$route": function (route) {
+                let complete_title = default_title
+                if (route.title) {
+                    complete_title = complete_title + ": " + route.title
+                }
+                document.title = complete_title
+            }
         },
 
         events: {
