@@ -36,7 +36,7 @@ window.router.map({
         component: OAuthLogin,
         name: "oauth-login"
     },
-    "/a/:username/settings": {
+    "/account/settings": {
         component: Settings,
         name: "profile-settings",
         title: "Profile Settings",
@@ -61,7 +61,17 @@ window.router.map({
             }
         }
     },
-    "/a/:username/repositories": {
+    "/account/repository-create": {
+        component: RepoCreate,
+        name: "repository-create",
+        title: "Create New Repository"
+    },
+    "/public-repositories": {
+        component: PublicRepos,
+        name: "public-repos",
+        title: "Public Data"
+    },
+    "/:username/repositories": {
         component: Repos,
         name: "own-repositories",
         title: "Own Repositories",
@@ -76,17 +86,7 @@ window.router.map({
             }
         }
     },
-    "/a/:username/repository-create": {
-        component: RepoCreate,
-        name: "repository-create",
-        title: "Create New Repository"
-    },
-    "/r/public-repositories": {
-        component: PublicRepos,
-        name: "public-repos",
-        title: "Public Data"
-    },
-    "/r/:username/:repository": {
+    "/:username/:repository": {
         component: Repo,
         name: "repository",
         title: "Repository Overview",

@@ -8,7 +8,7 @@
             <div>
                 <ul class="nav pull-right" v-if="account_is_owner">
                     <li role="presentation">
-                        <button class="btn btn-default" v-link="{ name: 'repository-create', params: { username: owner.login }}">New Repository</button>
+                        <button class="btn btn-default" v-link="{ name: 'repository-create'}">New Repository</button>
                     </li>
                 </ul>
 
