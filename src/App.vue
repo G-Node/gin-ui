@@ -83,33 +83,30 @@
         },
 
         ready() {
-            if (!this.$route.matched) {
-                let msg = "Page does not exist"
-                this.error = msg
-                document.title = default_title + ": " + msg
-            } else {
-                let complete_title = default_title
-                if (this.$route.title) {
-                    complete_title = complete_title + ": " + this.$route.title
-                }
-                document.title = complete_title
-            }
+            this.updateTitle(this.$route)
         },
 
-        watch: {
-            "$route": function(route) {
-                this.error = null
-                if (!route.matched) {
-                    let msg = "Page does not exist"
-                    this.error = msg
-                    document.title = default_title + ": " + msg
-                } else {
+        methods: {
+            updateTitle(route, target=null) {
+                target = target || this
+
+                target.error = null
+                if (route.matched) {
                     let complete_title = default_title
                     if (route.title) {
                         complete_title = complete_title + ": " + route.title
                     }
                     document.title = complete_title
+                } else {
+                    target.error = "Page does not exist"
+                    document.title = default_title + ": " + target.error
                 }
+            }
+        },
+
+        watch: {
+            "$route": function(route) {
+                this.updateTitle(route)
             }
         },
 
