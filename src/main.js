@@ -4,6 +4,7 @@ import VueRouter from "vue-router"
 import API              from "./data.js"
 
 import App              from "./App.vue"
+import Index            from "./comp/Index.vue"
 import OAuthLogin       from "./comp/oauth/Login.vue"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
@@ -32,6 +33,10 @@ const app = Vue.extend(App)
 window.api = new API(config.auth_url, config.repo_url)
 window.router = new VueRouter({ history: true })
 window.router.map({
+    "/": {
+        component: Index,
+        name: "index"
+    },
     "/oauth/login": {
         component: OAuthLogin,
         name: "oauth-login"

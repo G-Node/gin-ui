@@ -109,7 +109,7 @@
                             target.owner = acc
                         },
                         (error) => {
-                            this.alertError(error)
+                            this.reportError(error)
                         },
                     )
                 }

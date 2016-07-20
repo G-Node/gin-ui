@@ -36,20 +36,26 @@
             <div class="alert" role="alert" v-if="alert" :class="[alert ? 'alert-' + alert.level : '']">
                 {{ alert.content }}
             </div>
-            <div>
+            <div v-if="!error">
                 <router-view v-bind:account.sync="account"></router-view>
+            </div>
+            <div v-if="error">
+                <error-page v-bind:error="error"></error-page>
             </div>
         </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
-    import Vue       from 'vue'
-    import LoginMenu from './comp/LoginMenu.vue'
-    import MainMenu  from './comp/MainMenu.vue'
+    import Vue       from "vue"
+
+    import MainMenu  from "./comp/MainMenu.vue"
+    import LoginMenu from "./comp/LoginMenu.vue"
+    import ErrorPage from "./comp/ErrorPage.vue"
 
     Vue.component("main-menu", MainMenu)
     Vue.component("login-menu", LoginMenu)
+    Vue.component("error-page", ErrorPage)
 
     const default_title = "G-Node GIN"
 
@@ -58,6 +64,7 @@
         data() {
             const data = {
                 alert: null,
+                error: null,
                 account: null
             }
 
@@ -76,21 +83,38 @@
         },
 
         ready() {
-            document.title = default_title
-        },
-
-        watch: {
-            "$route": function (route) {
+            if (!this.$route.matched) {
+                let msg = "Page does not exist"
+                this.error = msg
+                document.title = default_title + ": " + msg
+            } else {
                 let complete_title = default_title
-                if (route.title) {
-                    complete_title = complete_title + ": " + route.title
+                if (this.$route.title) {
+                    complete_title = complete_title + ": " + this.$route.title
                 }
                 document.title = complete_title
             }
         },
 
+        watch: {
+            "$route": function(route) {
+                this.error = null
+                if (!route.matched) {
+                    let msg = "Page does not exist"
+                    this.error = msg
+                    document.title = default_title + ": " + msg
+                } else {
+                    let complete_title = default_title
+                    if (route.title) {
+                        complete_title = complete_title + ": " + route.title
+                    }
+                    document.title = complete_title
+                }
+            }
+        },
+
         events: {
-            "alert-event": function (message) {
+            "alert-event": function(message) {
                 const alert = Object.assign({}, message)
                 if (alert.content.hasOwnProperty("message")) {
                     alert.content = alert.content.message
@@ -105,6 +129,10 @@
                 if (message.level === "danger" || message.level === "warning") {
                     console.error(message.content)
                 }
+            },
+
+            "error-event": function(error) {
+                this.error = error
             }
         }
     }
