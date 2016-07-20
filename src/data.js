@@ -402,11 +402,6 @@ class RepoAPI {
                 return
             }
 
-            if (!data.accounts.has(username)) {
-                reject(Error("Account does not exist"))
-                return
-            }
-
             if (data.repos.has(full_name)) {
                 reject(Error("Repository already exists"))
                 return
