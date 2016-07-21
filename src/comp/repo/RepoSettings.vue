@@ -15,7 +15,7 @@
                     <div class="form-group">
                         <div class="col-sm-10 col-sm-offset-2 checkbox">
                             <label for="public">
-                                <input type="checkbox" id="public" v-model="form.public"> Make Repository Public
+                                <input type="checkbox" id="public" v-model="form.is_public"> Make Repository Public
                             </label>
                         </div>
                     </div>
@@ -87,7 +87,7 @@
             return {
                 form: {
                     description: this.repository.description,
-                    public: this.repository.public,
+                    is_public: this.repository.is_public,
                     shared: this.repository.shared
                 },
                 select: {
@@ -202,7 +202,7 @@
             reset() {
                 this.from = {
                     description: this.repository.description,
-                    public: this.repository.public,
+                    is_public: this.repository.is_public,
                     shared: this.repository.shared
                 }
                 this.select = {

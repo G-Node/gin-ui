@@ -82,37 +82,37 @@ const data = {
         "john/johns-public-data": {
             description: "This is the repository description",
             shared: ["alice"],
-            public: true,
+            is_public: true,
             root: randDirs()
         },
         "john/johns-private-data": {
             description: "This is the repository description",
             shared: [],
-            public: false,
+            is_public: false,
             root: randDirs()
         },
         "alice/alice-public-data": {
             description: "This is the repository description",
             shared: ["bob"],
-            public: true,
+            is_public: true,
             root: randDirs()
         },
         "alice/alice-supplemental-data": {
             description: "This is the repository description",
             shared: [],
-            public: true,
+            is_public: true,
             root: randDirs()
         },
         "alice/my-private-data": {
             description: "This is the repository description",
             shared: [],
-            public: false,
+            is_public: false,
             root: randDirs()
         },
         "bob/bobs-data": {
             description: "This is the repository description",
             shared: ["alice", "john"],
-            public: true,
+            is_public: true,
             root: randDirs()
         }
     })
@@ -336,7 +336,7 @@ class RepoAPI {
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
                     const all = (repo.name + repo.description + repo.owner).toLowerCase()
-                    return repo.public && (all.search(search_lower) >= 0)
+                    return repo.is_public && (all.search(search_lower) >= 0)
                 })
             resolve(found)
         })
@@ -350,7 +350,7 @@ class RepoAPI {
                 .filter((repo) => {
                     const is_owner  = repo.owner === username
                     const is_shared = repo.shared.find((name) => {return name === username})
-                    const is_public = repo.public
+                    const is_public = repo.is_public
 
                     return !is_owner && is_shared && (public_only ? is_public : true)
                 })
@@ -365,7 +365,7 @@ class RepoAPI {
                 .map((entry) => { return copyRepo(entry[1], entry[0]) })
                 .filter((repo) => {
                     const is_owner  = repo.owner === username
-                    const is_public = repo.public
+                    const is_public = repo.is_public
 
                     return is_owner && (public_only ? is_public : true)
                 })
@@ -379,7 +379,7 @@ class RepoAPI {
             const full_name = [username, repo_name].join("/")
             const repo = data.repos.get(full_name)
 
-            if (repo && (public_only ? repo.public : true)) {
+            if (repo && (public_only ? repo.is_public : true)) {
                 resolve(copyRepo(repo, full_name))
             } else {
                 reject(Error("Repository does not exist"))
@@ -426,7 +426,7 @@ class RepoAPI {
             if (repo) {
                 repo.description = repository.description
                 repo.shared = repository.shared
-                repo.public = repository.public
+                repo.is_public = repository.is_public
 
                 resolve(copyRepo(repo, full_name))
             } else {
@@ -497,7 +497,7 @@ class FileAPI {
             const full_name = [username, repo_name].join("/")
             const repo = data.repos.get(full_name)
 
-            if (repo && (public_only ? repo.public : true)) {
+            if (repo && (public_only ? repo.is_public : true)) {
                 const path_components = path ? path.split("/") : []
                 let [dir, _p] = lastDir(null, repo.root, path_components)
 
@@ -518,7 +518,7 @@ class FileAPI {
             const full_name = [username, repo_name].join("/")
             const repo = data.repos.get(full_name)
 
-            if (repo && (public_only ? repo.public : true)) {
+            if (repo && (public_only ? repo.is_public : true)) {
                 const path_components = path ? path.split("/") : []
                 const [dir, p] = lastDir(null, repo.root, path_components)
 
