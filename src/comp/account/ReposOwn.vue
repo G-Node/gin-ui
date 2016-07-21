@@ -16,13 +16,17 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import Alert from "../Alert.js"
+
     export default {
         data() {
-            const data =  { repositories: null }
+            return {
+                repositories: null
+            }
+        },
 
-            this.update({ owner: this.owner, account: this.account }, data)
-
-            return data
+        ready() {
+            this.update({ owner: this.owner, account: this.account })
         },
 
         props: {
@@ -30,19 +34,19 @@
             owner: { required: true }
         },
 
-        methods: {
-            update(accounts, target=null) {
-                target = target || this
+        mixins: [ Alert ],
 
+        methods: {
+            update(accounts) {
                 const login_name = accounts.account ? accounts.account.login : null
                 const promise  = api.repos.listOwn(accounts.owner.login, login_name)
                 promise.then(
                     (repos) => {
-                        target.repositories = repos
+                        this.repositories = repos
                     },
                     (error) => {
-                        console.log(error)
-                        target.repositories = null
+                        this.repositories = null
+                        this.reportError(error)
                     }
                 )
             }

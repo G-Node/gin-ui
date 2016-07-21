@@ -32,11 +32,13 @@
 
     export default {
         data() {
-            const data = { owner: null }
+            return {
+                owner: null
+            }
+        },
 
-            this.update(this.$route.params, null, data)
-
-            return data
+        ready() {
+            this.update(this.$route.params, null)
         },
 
         computed: {
@@ -97,16 +99,14 @@
         mixins: [ Alert ],
 
         methods: {
-            update(params, old, target=null) {
-                target = target || this
-
+            update(params, old) {
                 const is_same_account = old && old.username === params.username
 
                 if (!is_same_account) {
                     const promise = api.accounts.get(params.username)
                     promise.then(
                         (acc) => {
-                            target.owner = acc
+                            this.owner = acc
                         },
                         (error) => {
                             this.reportError(error)
