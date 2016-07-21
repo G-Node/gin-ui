@@ -49,14 +49,14 @@
 
     export default {
         data() {
-            const data = {
+            return {
                 path: null,
                 dir: null
             }
+        },
 
-            this.update(this.$route.params, null, data)
-
-            return data
+        ready() {
+            this.update(this.$route.params, null)
         },
 
         computed: {
@@ -115,12 +115,11 @@
         },
 
         methods: {
-            update(params, old, target=null) {
-                target = target || this
-                target.path = cleanPath(params.root)
+            update(params, old) {
+                this.path = cleanPath(params.root)
 
                 const login_name = this.account ? this.account.login : null
-                const promise = window.api.files.getDir(params.username, params.repository, target.path, login_name)
+                const promise = window.api.files.getDir(params.username, params.repository, this.path, login_name)
                 promise.then(
                     (dir) => {
                         this.dir = dir
