@@ -8,10 +8,10 @@
                     </div>
                     <div class="panel-body">
                         <ul class="nav nav-pills  nav-stacked">
-                            <li role="presentation"><a v-link="{ name: 'profile-settings', params: { username: account.login }}">Profile</a></li>
-                            <li role="presentation"><a v-link="{ name: 'affiliation-settings', params: { username: account.login }}">Affiliation</a></li>
-                            <li role="presentation"><a v-link="{ name: 'password-settings', params: { username: account.login }}">Password</a></li>
-                            <li role="presentation"><a v-link="{ name: 'sshkey-settings', params: { username: account.login }}">SSH Keys</a></li>
+                            <li role="presentation"><a v-link="{ name: 'profile-settings'}">Profile</a></li>
+                            <li role="presentation"><a v-link="{ name: 'affiliation-settings'}">Affiliation</a></li>
+                            <li role="presentation"><a v-link="{ name: 'password-settings'}">Password</a></li>
+                            <li role="presentation"><a v-link="{ name: 'sshkey-settings'}">SSH Keys</a></li>
                         </ul>
                     </div>
                 </div>

@@ -4,7 +4,8 @@ import VueRouter from "vue-router"
 import API              from "./data.js"
 
 import App              from "./App.vue"
-import OAuthLogin       from "./comp/oauth/Login.vue"
+import Index            from "./comp/Index.vue"
+import OAuthLogin       from "./comp/oauth/Login.js"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
@@ -32,11 +33,15 @@ const app = Vue.extend(App)
 window.api = new API(config.auth_url, config.repo_url)
 window.router = new VueRouter({ history: true })
 window.router.map({
+    "/": {
+        component: Index,
+        name: "index"
+    },
     "/oauth/login": {
         component: OAuthLogin,
         name: "oauth-login"
     },
-    "/a/:username/settings": {
+    "/account/settings": {
         component: Settings,
         name: "profile-settings",
         title: "Profile Settings",
@@ -61,7 +66,17 @@ window.router.map({
             }
         }
     },
-    "/a/:username/repositories": {
+    "/account/repository-create": {
+        component: RepoCreate,
+        name: "repository-create",
+        title: "Create New Repository"
+    },
+    "/public-repositories": {
+        component: PublicRepos,
+        name: "public-repos",
+        title: "Public Data"
+    },
+    "/:username/repositories": {
         component: Repos,
         name: "own-repositories",
         title: "Own Repositories",
@@ -76,17 +91,7 @@ window.router.map({
             }
         }
     },
-    "/a/:username/repository-create": {
-        component: RepoCreate,
-        name: "repository-create",
-        title: "Create New Repository"
-    },
-    "/r/public-repositories": {
-        component: PublicRepos,
-        name: "public-repos",
-        title: "Public Data"
-    },
-    "/r/:username/:repository": {
+    "/:username/:repository": {
         component: Repo,
         name: "repository",
         title: "Repository Overview",

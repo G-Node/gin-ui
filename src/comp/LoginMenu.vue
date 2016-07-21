@@ -22,10 +22,10 @@
 
             <ul class="dropdown-menu" v-if="account">
                 <!-- login info (shown if logged in) -->
-                <li><a v-link="{ name: 'profile-settings', params: { username: account.username }}">Profile Settings</a></li>
-                <li><a v-link="{ name: 'affiliation-settings', params: { username: account.username }}">Affiliation Settings</a></li>
-                <li><a v-link="{ name: 'password-settings', params: { username: account.username }}">Change Password</a></li>
-                <li><a v-link="{ name: 'sshkey-settings', params: { username: account.username }}">Manage SSH Keys</a></li>
+                <li><a v-link="{ name: 'profile-settings'}">Profile Settings</a></li>
+                <li><a v-link="{ name: 'affiliation-settings'}">Affiliation Settings</a></li>
+                <li><a v-link="{ name: 'password-settings'}">Change Password</a></li>
+                <li><a v-link="{ name: 'sshkey-settings'}">Manage SSH Keys</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" @click="signOut">Sign Out</a></li>
             </ul>
