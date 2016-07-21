@@ -5,7 +5,7 @@ import API              from "./data.js"
 
 import App              from "./App.vue"
 import Index            from "./comp/Index.vue"
-import OAuthLogin       from "./comp/oauth/Login.vue"
+import OAuthLogin       from "./comp/oauth/Login.js"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
