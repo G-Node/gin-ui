@@ -29,14 +29,14 @@
 
     export default {
         data() {
-            const data = {
+            return {
                 owner: null,
                 repository: null
             }
+        },
 
-            this.update(this.$route.params, null, data)
-
-            return data
+        ready() {
+            this.update(this.$route.params, null)
         },
 
         computed: {
@@ -45,7 +45,7 @@
                     const name = this.account ? this.account.login : null
                     const repo = this.repository
 
-                    return !!(name && (repo.owner === name || repo.shared.indexOf(name) >= 0));
+                    return name && (repo.owner === name || repo.shared.indexOf(name) >= 0)
                 }
             }
         },
@@ -57,9 +57,7 @@
         mixins: [ Alert ],
 
         methods: {
-            update(params, old, target=null) {
-                target = target || this
-
+            update(params, old) {
                 const login_name = this.account ? this.account.login : null
                 const same_owner = old && old.username === params.username
                 const same_repo  = old && old.repository === params.repository
@@ -68,7 +66,7 @@
                     const promise = api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
-                                target.owner = acc
+                                this.owner = acc
                             },
                             (error) => {
                                 this.reportError(error)
@@ -80,7 +78,7 @@
                     const promise = api.repos.get(params.username, params.repository, login_name)
                     promise.then(
                             (repo) => {
-                                target.repository = repo
+                                this.repository = repo
                             },
                             (error) => {
                                 this.reportError(error)
