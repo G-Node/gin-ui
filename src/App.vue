@@ -58,28 +58,26 @@
     export default {
 
         data() {
-            const data = {
+            return {
                 alert: null,
                 error: null,
                 account: null
             }
+        },
+
+        ready() {
+            this.updateTitle(this.$route)
 
             const promise = window.api.restore()
             promise.then(
                 (account) => {
-                    data.account = account
+                    this.account = account
                     console.log("Info: login successfully restored")
                 },
                 (error) => {
                     console.log("Info: " + error.message)
                 }
             )
-
-            return data
-        },
-
-        ready() {
-            this.updateTitle(this.$route)
         },
 
         methods: {
