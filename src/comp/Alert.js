@@ -15,28 +15,28 @@ export default {
         },
 
         /*
-         * Sends an alert events with level "danger".
+         * Sends an alert event with level "danger".
          */
         alertError(content) {
             alert(this, "danger", content)
         },
 
         /*
-         * Sends an alert events with level "warning".
+         * Sends an alert event with level "warning".
          */
         alertWarning(content) {
             alert(this, "warning", content)
         },
 
         /*
-         * Sends an alert events with level "info".
+         * Sends an alert event with level "info".
          */
         alertInfo(content) {
             alert(this, "info", content)
         },
 
         /*
-         * Sends an alert events with level "success".
+         * Sends an alert event with level "success".
          */
         alertSuccess(content) {
             alert(this, "success", content)
