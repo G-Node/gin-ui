@@ -30,25 +30,27 @@
 <script type="text/ecmascript-6">
     export default{
         data(){
-            const data = {
-                searchText: "",
+            return {
+                searchText: null,
                 repositories: null
             }
+        },
 
-            const promise = api.repos.listPublic()
-            promise.then((repos) => {
-                data.repositories = repos
-            })
-
-            return data
+        ready() {
+            this.search()
         },
 
         methods: {
             search() {
                 const promise = api.repos.listPublic(this.searchText)
-                promise.then((repos) => {
-                    this.repositories = repos
-                })
+                promise.then(
+                    (repos) => {
+                        this.repositories = repos
+                    },
+                    (error) => {
+                        this.reportError(error)
+                    }
+                )
             }
         }
     }

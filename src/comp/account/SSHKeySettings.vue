@@ -49,7 +49,7 @@
 
     export default {
         data() {
-            let data = {
+            return {
                 keys: [],
                 form: {
                     description: null,
@@ -57,8 +57,10 @@
                 },
                 reasons: {}
             }
-            this.update(this.account.login, data)
-            return data
+        },
+
+        ready() {
+            this.update(this.account.login)
         },
 
         props: {
@@ -104,15 +106,14 @@
                 )
             },
 
-            update(username, target=null) {
-                target = target || this
+            update(username) {
                 let promise = api.keys.list(username)
                 promise.then(
                     (keys) => {
-                        target.keys = keys
+                        this.keys = keys
                     },
                     (error) => {
-                        target.keys = []
+                        this.keys = []
                         this.alertError(error)
                     }
                 )

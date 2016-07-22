@@ -22,7 +22,7 @@
                 <div class="form-group">
                     <div class="col-sm-10 col-sm-offset-2 checkbox">
                         <label for="public">
-                            <input type="checkbox" id="public" v-model="form.public"> Make Repository Public
+                            <input type="checkbox" id="public" v-model="form.is_public"> Make Repository Public
                         </label>
                     </div>
                 </div>
@@ -47,7 +47,7 @@
                 form: {
                     name: null,
                     description: null,
-                    public: false
+                    is_public: false
                 }
             }
         },
@@ -75,7 +75,7 @@
             reset() {
                 this.form.name = null
                 this.form.description = null
-                this.form.public = false
+                this.form.is_public = false
             }
         }
     }
