@@ -42,7 +42,7 @@
                         <div class="col-sm-8">
                             <div class="dropdown">
                                 <input type="text" class="form-control" id="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                                       v-model="select.text" debounce="100" @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()" @keyup.down="selectionDown()">
+                                       v-model="select.text" debounce="300" @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()" @keyup.down="selectionDown()">
                                 <ul v-if="select.all.length > 0" class="dropdown-menu" aria-labelledby="select" style="width: 100%">
                                     <li v-for="acc in select.all" :class="{active: acc.active}">
                                         <a @click="selectShare(acc.login)">{{ acc.login }} <small class="supplemental-text">{{ acc.label }}</small></a>

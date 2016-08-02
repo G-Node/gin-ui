@@ -5,10 +5,7 @@
         <div class="form-inline row">
             <div class="form-group col-sm-9 col-sm-offset-1">
                 <label class="sr-only" for="search">Search</label>
-                <input type="text" class="form-control" id="search" placeholder="Search Text" v-model="searchText" style="width: 100%" @keypress.enter="search">
-            </div>
-            <div class="form-group col-sm-1">
-                <button type="submit" class="btn btn-default" @click="search">Search</button>
+                <input type="text" class="form-control" id="search" placeholder="Search Text" v-model="search_text" style="width: 100%" @keypress.enter="search" debounce="300">
             </div>
         </div>
         <hr />
@@ -31,7 +28,7 @@
     export default{
         data(){
             return {
-                searchText: null,
+                search_text: null,
                 repositories: null
             }
         },
@@ -42,7 +39,7 @@
 
         methods: {
             search() {
-                const promise = api.repos.listPublic(this.searchText)
+                const promise = api.repos.listPublic(this.search_text)
                 promise.then(
                     (repos) => {
                         this.repositories = repos
@@ -51,6 +48,12 @@
                         this.reportError(error)
                     }
                 )
+            }
+        },
+
+        watch: {
+            "search_text": function() {
+                this.search()
             }
         }
     }
