@@ -10,7 +10,8 @@
 <script type="text/ecmascript-6">
     export default {
         props: {
-            repositories: {required: true}
+            repositories: null,
+            accounts: null
         },
 
         data() {
@@ -25,10 +26,21 @@
 
         methods: {
             search() {
-                const promise = api.repos.listPublic(this.search_text)
-                promise.then(
+                const repo_search = api.repos.listPublic(this.search_text)
+                const user_search = api.accounts.search(this.search_text)
+
+                repo_search.then(
                     (repos) => {
                         this.repositories = repos
+                    },
+                    (error) => {
+                        this.reportError(error)
+                    }
+                )
+
+                user_search.then(
+                    (accounts) => {
+                        this.accounts = accounts
                     },
                     (error) => {
                         this.reportError(error)

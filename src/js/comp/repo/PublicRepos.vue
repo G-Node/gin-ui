@@ -2,7 +2,7 @@
     <div>
         <h2>Public Repositories</h2>
         <hr />
-        <repo-search v-bind:repositories.sync="repositories"></repo-search>
+        <repo-search v-bind:repositories.sync="repositories" v-bind:accounts.sync="accounts"></repo-search>
         <hr />
         <ul class="list-unstyled">
             <li v-for="repo in repositories">
@@ -12,6 +12,13 @@
                     </div>
                     <div class="panel-body">
                         {{ repo.description }}
+                    </div>
+                </div>
+            </li>
+            <li v-for="acc in accounts">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{ acc.first_name }}
                     </div>
                 </div>
             </li>
@@ -29,7 +36,8 @@
     export default {
         data() {
             return {
-                repositories: null
+                repositories: null,
+                accounts: null
             }
         }
     }
