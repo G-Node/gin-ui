@@ -20,6 +20,9 @@
         </ul>
 
         <router-view v-bind:repositories.sync="repositories" v-bind:users.sync="users"></router-view>
+        <div v-if="$route.name === 'search'">
+            Search for public repositories or users
+        </div>
     </div>
 </template>
 
