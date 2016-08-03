@@ -4,8 +4,7 @@
             <li v-for="user in users">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <!--<a v-link="{ name: 'own-repositories' }">{{ user.first_name }} {{ user.last_name }}</a>-->
-                        {{ user.first_name }} {{ user.last_name }}
+                        <a v-link="{ name: 'own-repositories', params: { username: user.login } }">{{ user.first_name }} {{ user.last_name }}</a>
                     </div>
                     <div class="panel-body">
                             {{ user.affiliation.institute }}
