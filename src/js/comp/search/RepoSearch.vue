@@ -1,9 +1,6 @@
 <template>
     <div>
-        <h2>Public Repositories</h2>
-        <hr />
-        <search v-bind:repositories.sync="repositories" v-bind:accounts.sync="accounts"></search>
-        <hr />
+        Repositories
         <ul class="list-unstyled">
             <li v-for="repo in repositories">
                 <div class="panel panel-default">
@@ -15,23 +12,12 @@
                     </div>
                 </div>
             </li>
-            <li v-for="acc in accounts">
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        {{ acc.first_name }}
-                    </div>
-                </div>
-            </li>
         </ul>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     import Vue from "vue"
-
-    import Search from "../Search.vue"
-
-    Vue.component("search", Search)
 
     export default {
         data() {
