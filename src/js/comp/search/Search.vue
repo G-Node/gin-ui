@@ -19,20 +19,20 @@
             </li>
         </ul>
 
-        <router-view v-bind:repositories="repositories" v-bind:users="users"></router-view>
+        <router-view v-bind:repositories.sync="repositories" v-bind:users.sync="users"></router-view>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
     export default {
         props: {
-            repositories: null,
-            accounts: null
+            search_text: null
         },
 
         data() {
             return {
-                search_text: null
+                repositories: null,
+                users: null
             }
         },
 
@@ -55,8 +55,8 @@
                 )
 
                 user_search.then(
-                    (accounts) => {
-                        this.accounts = accounts
+                    (users) => {
+                        this.users = users
                     },
                     (error) => {
                         this.reportError(error)
