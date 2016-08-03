@@ -10,17 +10,19 @@
     <hr />
 
     <div>
-        <ul class="nav nav-tabs">
-            <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
-                <a v-link="{ name: 'search-repos' }">Repositories ({{ repositories.length }})</a>
-            </li>
-            <li role="presentation" :class="{ 'active': $route.name === 'search-users' }">
-                <a v-link="{ name: 'search-users' }">Users ({{ users.length }})</a>
-            </li>
-        </ul>
+        <div v-if="search_text">
+            <ul class="nav nav-tabs">
+                <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
+                    <a v-link="{ name: 'search-repos' }">Repositories ({{ repositories.length }})</a>
+                </li>
+                <li role="presentation" :class="{ 'active': $route.name === 'search-users' }">
+                    <a v-link="{ name: 'search-users' }">Users ({{ users.length }})</a>
+                </li>
+            </ul>
 
-        <router-view v-bind:repositories.sync="repositories" v-bind:users.sync="users"></router-view>
-        <div v-if="$route.name === 'search'">
+            <router-view v-bind:repositories.sync="repositories" v-bind:users.sync="users"></router-view>
+        </div>
+        <div v-if="!search_text">
             Search for public repositories or users
         </div>
     </div>
@@ -49,21 +51,38 @@
                 const user_search = api.accounts.search(this.search_text)
 
                 repo_search.then(
-                    (repos) => {
-                        this.repositories = repos
-                    },
-                    (error) => {
-                        this.reportError(error)
-                    }
+                        (repos) => {
+                            this.repositories = repos
+                        },
+                        (error) => {
+                            this.reportError(error)
+                        }
                 )
 
                 user_search.then(
-                    (users) => {
-                        this.users = users
-                    },
-                    (error) => {
-                        this.reportError(error)
-                    }
+                        (users) => {
+                            this.users = users
+                        },
+                        (error) => {
+                            this.reportError(error)
+                        }
+                )
+
+
+                Promise.all([repo_search, user_search]).then(
+                        () => {
+                            if (this.search_text) {
+                                var tab
+                                if ((this.repositories.length == 0) && (this.users.length > 0)) {
+                                    tab = "search-users"
+                                } else {
+                                    tab = "search-repos"
+                                }
+                                this.$route.router.go({
+                                    name: tab
+                                })
+                            }
+                        }
                 )
             }
         },
