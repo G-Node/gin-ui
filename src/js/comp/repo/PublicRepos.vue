@@ -2,7 +2,7 @@
     <div>
         <h2>Public Repositories</h2>
         <hr />
-        <repo-search v-bind:repositories.sync="repositories" v-bind:accounts.sync="accounts"></repo-search>
+        <search v-bind:repositories.sync="repositories" v-bind:accounts.sync="accounts"></search>
         <hr />
         <ul class="list-unstyled">
             <li v-for="repo in repositories">
@@ -29,9 +29,9 @@
 <script type="text/ecmascript-6">
     import Vue from "vue"
 
-    import RepoSearch from "../repo/RepoSearch.vue"
+    import Search from "../Search.vue"
 
-    Vue.component("repo-search", RepoSearch)
+    Vue.component("search", Search)
 
     export default {
         data() {
