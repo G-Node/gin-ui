@@ -6,6 +6,9 @@ import API              from "./data.js"
 import App              from "./App.vue"
 import Index            from "./comp/Index.vue"
 import OAuthLogin       from "./comp/oauth/Login.js"
+import Search           from "./comp/search/Search.vue"
+import RepoSearch      from "./comp/search/RepoSearch.vue"
+import UserSearch       from "./comp/search/UserSearch.vue"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
@@ -14,7 +17,6 @@ import AffiliationSettings from "./comp/account/AffiliationSettings.vue"
 import Repos            from "./comp/account/Repos.vue"
 import ReposOwn         from "./comp/account/ReposOwn.vue"
 import ReposShared      from "./comp/account/ReposShared.vue"
-import PublicRepos      from "./comp/repo/PublicRepos.vue"
 import Repo             from "./comp/repo/Repo.vue"
 import RepoReadme       from "./comp/repo/RepoReadme.vue"
 import RepoFiles        from "./comp/repo/RepoFiles.vue"
@@ -71,10 +73,22 @@ window.router.map({
         name: "repository-create",
         title: "Create New Repository"
     },
-    "/public-repositories": {
-        component: PublicRepos,
-        name: "public-repos",
-        title: "Public Data"
+    "/search": {
+        component: Search,
+        name: "search",
+        title: "Public Data",
+        subRoutes: {
+            "/repos": {
+                component: RepoSearch,
+                name: "search-repos",
+                title: "Repos Search"
+            },
+            "/users": {
+                component: UserSearch,
+                name: "search-users",
+                title: "User Search"
+            }
+        }
     },
     "/:username/repositories": {
         component: Repos,
