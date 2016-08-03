@@ -12,10 +12,10 @@
     <div>
         <ul class="nav nav-tabs">
             <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
-                <a v-link="{ name: 'search-repos' }">Repositories</a>
+                <a v-link="{ name: 'search-repos' }">Repositories ({{ repositories.length }})</a>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'search-users' }">
-                <a v-link="{ name: 'search-users' }">Users</a>
+                <a v-link="{ name: 'search-users' }">Users ({{ users.length }})</a>
             </li>
         </ul>
 
