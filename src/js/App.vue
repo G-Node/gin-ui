@@ -84,7 +84,6 @@
             updateTitle(route, target=null) {
                 target = target || this
 
-                target.error = null
                 if (route.matched) {
                     let complete_title = default_title
                     if (route.title) {
@@ -100,6 +99,7 @@
 
         watch: {
             "$route": function(route) {
+                target.error = null
                 this.updateTitle(route)
             }
         },
