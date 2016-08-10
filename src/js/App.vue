@@ -81,9 +81,8 @@
         },
 
         methods: {
-            updateTitle(route, target=null) {
-                target = target || this
-                target.error = null
+            updateTitle(route) {
+                this.error = null
 
                 if (route.matched) {
                     let complete_title = default_title
@@ -92,8 +91,8 @@
                     }
                     document.title = complete_title
                 } else {
-                    target.error = "Page does not exist"
-                    document.title = default_title + ": " + target.error
+                    this.error = "Page does not exist"
+                    document.title = default_title + ": " + this.error
                 }
             }
         },
