@@ -4,6 +4,9 @@ node_modules/
 # build destination
 build/
 
+# dist destination
+dist/
+
 # idea
 .idea
 *.iml
@@ -12,4 +15,4 @@ build/
 *~
 
 # log files
-*.log
+*.log*
