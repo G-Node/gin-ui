@@ -62,11 +62,16 @@
             save() {
                 let promise = api.repos.create(this.account.login, this.form)
                 promise.then(
-                    (repo) => {
+                    () => {
                         this.alertSuccess("Repository successfully created")
                         this.$router.go({name: "own-repositories", params: { "username": this.account.login }})
                     },
                     (error) => {
+                        if (error.hasOwnProperty("reasons")) {
+                            this.reasons = error.reasons
+                        } else {
+                            this.reasons = {}
+                        }
                         this.alertError(error)
                     }
                 )
