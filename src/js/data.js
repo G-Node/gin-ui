@@ -378,11 +378,9 @@ class RepoAPI {
         })
     }
 
-    create(username, repository) {
-        const full_name = [username, repository.name].join("/")
-
+    create(account_login, repo_form) {
         return new Promise((resolve, reject) => {
-            let name = repository.name || ""
+            let name = repo_form.name || ""
             if (!name.match(/^[a-zA-Z0-9_\-]*$/)) {
                 reject(Error("Repository name must only contain alphanumeric characters"))
                 return
@@ -393,17 +391,16 @@ class RepoAPI {
                 return
             }
 
-            if (data.repos.has(full_name)) {
-                reject(Error("Repository already exists"))
-                return
-            }
-
-            delete repository.name
-            repository.shared = []
-            repository.root = randDirs()
-
-            data.repos.set(full_name, repository)
-            resolve(copyRepo(repository, full_name))
+            $.ajax({
+                url: `${this.config.repo_url}/users/${account_login}/repos`,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(repo_form),
+                dataType: "json",
+                success: (repo) => resolve(repo),
+                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+            })
         })
     }
 
