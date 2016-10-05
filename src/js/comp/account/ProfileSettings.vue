@@ -33,13 +33,6 @@
                         <span class="help-block" v-if="reasons.last_name">{{ reasons.last_name }}</span>
                     </div>
                 </div>
-                <div class="form-group" :class="{ 'has-error': reasons.email }">
-                    <label for="email" class="col-sm-3 control-label">Email</label>
-                    <div class="col-sm-9">
-                        <input type="email" class="form-control" id="email" placeholder="Email Address" v-model="form.email.email">
-                        <span class="help-block" v-if="reasons.email">{{ reasons.email }}</span>
-                    </div>
-                </div>
                 <div class="form-group">
                     <div class="col-sm-9 col-sm-offset-3 checkbox">
                         <label for="public">
@@ -68,8 +61,7 @@
                     title: this.account.title,
                     first_name: this.account.first_name,
                     middle_name: this.account.middle_name,
-                    last_name: this.account.last_name,
-                    email: Object.assign({}, this.account.email)
+                    last_name: this.account.last_name
                 },
                 reasons: {}
             }
@@ -105,8 +97,7 @@
                     title: this.account.title,
                     first_name: this.account.first_name,
                     middle_name: this.account.middle_name,
-                    last_name: this.account.last_name,
-                    email: Object.assign({}, this.account.email)
+                    last_name: this.account.last_name
                 }
                 this.reasons = {}
             }
