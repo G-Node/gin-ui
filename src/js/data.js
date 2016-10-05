@@ -296,7 +296,7 @@ class SSHKeyAPI {
     remove(key) {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: `${this.config.auth_url}/api/keys/${key.fingerprint}`,
+                url: `${this.config.auth_url}/api/keys?fingerprint=${encodeURIComponent(key.fingerprint)}`,
                 type: "DELETE",
                 headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
