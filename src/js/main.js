@@ -12,6 +12,7 @@ import UserSearch       from "./comp/search/UserSearch.vue"
 import Settings         from "./comp/account/Settings.vue"
 import ProfileSettings  from "./comp/account/ProfileSettings.vue"
 import PasswordSettings from "./comp/account/PasswordSettings.vue"
+import EmailSettings    from "./comp/account/EmailSettings.vue"
 import SSHKeySettings   from "./comp/account/SSHKeySettings.vue"
 import AffiliationSettings from "./comp/account/AffiliationSettings.vue"
 import Repos            from "./comp/account/Repos.vue"
@@ -55,6 +56,11 @@ window.router.map({
                 component: PasswordSettings,
                 name: "password-settings",
                 title: "Password Settings"
+            },
+            "/email": {
+                component: EmailSettings,
+                name: "email-settings",
+                title: "E-mail settings"
             },
             "/sshkey": {
                 component: SSHKeySettings,
