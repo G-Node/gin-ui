@@ -25,6 +25,7 @@
                 <li><a v-link="{ name: 'profile-settings'}">Profile Settings</a></li>
                 <li><a v-link="{ name: 'affiliation-settings'}">Affiliation Settings</a></li>
                 <li><a v-link="{ name: 'password-settings'}">Change Password</a></li>
+                <li><a v-link="{ name: 'email-settings' }">Change E-mail</a></li>
                 <li><a v-link="{ name: 'sshkey-settings'}">Manage SSH Keys</a></li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" @click="signOut">Sign Out</a></li>
