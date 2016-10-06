@@ -258,6 +258,20 @@ class AccountAPI {
             })
         })
     }
+
+    updateEmail(login, email, password) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.auth_url}/api/accounts/${login}/email`,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify({password, email}),
+                success: () => resolve("ok"),
+                error: (error) => reject(error.responseJSON)
+            })
+        })
+    }
 }
 
 class SSHKeyAPI {

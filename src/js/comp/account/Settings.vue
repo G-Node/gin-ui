@@ -11,6 +11,7 @@
                             <li role="presentation"><a v-link="{ name: 'profile-settings'}">Profile</a></li>
                             <li role="presentation"><a v-link="{ name: 'affiliation-settings'}">Affiliation</a></li>
                             <li role="presentation"><a v-link="{ name: 'password-settings'}">Password</a></li>
+                            <li role="presentation"><a v-link="{ name: 'email-settings' }">E-mail</a></li>
                             <li role="presentation"><a v-link="{ name: 'sshkey-settings'}">SSH Keys</a></li>
                         </ul>
                     </div>
