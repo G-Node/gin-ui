@@ -4,10 +4,20 @@
             <li v-for="user in users">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a v-link="{ name: 'own-repositories', params: { username: user.login } }">{{ user.first_name }} {{ user.last_name }}</a>
+                        <a v-link="{ name: 'own-repositories', params: { username: user.login } }">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </a>
                     </div>
                     <div class="panel-body">
-                            {{ user.affiliation.institute }}
+                            <div v-if="user.affiliation">
+                                Institute: {{ user.affiliation.institute }}<br />
+                                Department: {{ user.affiliation.department }} <br/>
+                                City: {{ user.affiliation.city }} <br />
+                                Country: {{ user.affiliation.country }}
+                            </div>
+                            <div v-if="!user.affiliation">
+                                No available affiliation.
+                            </div>
                     </div>
                 </div>
             </li>
