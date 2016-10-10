@@ -21,10 +21,7 @@ const webpack_config = {
     output: {
         filename: "[name].js"
     },
-    devtool: "source-map",
-    resolve: {
-        alias: {vue: "vue/dist/vue.js"}
-    }
+    devtool: "source-map"
 }
 
 
