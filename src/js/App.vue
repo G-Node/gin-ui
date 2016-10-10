@@ -5,7 +5,7 @@
 </style>
 
 <template>
-    <div>
+    <div id="main">
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
@@ -43,15 +43,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Vue       from "vue"
-
     import MainMenu  from "./comp/MainMenu.vue"
     import LoginMenu from "./comp/LoginMenu.vue"
     import ErrorPage from "./comp/ErrorPage.vue"
-
-    Vue.component("main-menu", MainMenu)
-    Vue.component("login-menu", LoginMenu)
-    Vue.component("error-page", ErrorPage)
 
     const default_title = "G-Node GIN"
 
@@ -63,6 +57,12 @@
                 error: null,
                 account: null
             }
+        },
+
+        components: {
+            MainMenu,
+            LoginMenu,
+            ErrorPage
         },
 
         ready() {
