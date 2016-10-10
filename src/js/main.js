@@ -6,6 +6,7 @@ import API              from "./data.js"
 import App              from "./App.vue"
 import Index            from "./comp/Index.vue"
 import OAuthLogin       from "./comp/oauth/Login.js"
+
 import Search           from "./comp/search/Search.vue"
 import RepoSearch      from "./comp/search/RepoSearch.vue"
 import UserSearch       from "./comp/search/UserSearch.vue"
@@ -25,16 +26,30 @@ import RepoSettings     from "./comp/repo/RepoSettings.vue"
 import RepoCreate       from "./comp/repo/RepoCreate.vue"
 
 import config           from "./config.json"
+
+/*
 import { filesize }     from "./filters"
-
-
 Vue.filter("filesize", filesize)
-Vue.use(VueRouter)
-
-const app = Vue.extend(App)
+*/
 
 window.api = new API(config.auth_url, config.repo_url)
-window.router = new VueRouter({ history: true })
+
+var router = new VueRouter({
+    history: "true",
+    routes: [
+        { path: "/", component: Index, name: "index" },
+        { path: "/oauth/login", component: OAuthLogin, name: "oauth-login" }
+    ]
+})
+
+new Vue({
+    router,
+    render(h) {
+        return h(App)
+    }
+}).$mount("#main")
+
+/*
 window.router.map({
     "/": {
         component: Index,
@@ -132,5 +147,4 @@ window.router.map({
         }
     }
 })
-
-window.router.start(app, "#main")
+*/
