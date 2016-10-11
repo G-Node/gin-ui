@@ -63,10 +63,11 @@ const router = new VueRouter({
             ]
         },
         { path: "/:username/repositories", component: Repos,
-            name: "own-repositories", title: "Own Repositories",
+            name: "repositories", title: "Repositories",
             children: [
-                { path: "/", component: ReposOwn },
-                { path: "/shared", component: ReposShared,
+                { path: "own", component: ReposOwn,
+                    name: "own-repositories", title: "Own Repositories" },
+                { path: "shared", component: ReposShared,
                     name: "shared-repositories", title: "Shared Repositories" }
             ]
         },
