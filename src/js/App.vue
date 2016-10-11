@@ -66,7 +66,7 @@
             ErrorPage
         },
 
-        ready() {
+        mounted() {
             this.updateTitle(this.$route)
 
             const promise = window.api.restore()

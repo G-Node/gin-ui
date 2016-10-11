@@ -49,7 +49,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.search()
         },
 

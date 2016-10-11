@@ -1,7 +1,7 @@
 import Alert from "../Alert.js"
 
 export default {
-    ready() {
+    mounted() {
         let promise = window.api.login(this.$route.query["access_token"])
         promise.then(
             (account) => {

@@ -27,7 +27,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.update({ owner: this.owner, account: this.account })
         },
 

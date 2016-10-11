@@ -46,7 +46,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.update(this.$route.params, null)
         },
 
