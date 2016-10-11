@@ -28,7 +28,7 @@
                 </div>
             </div>
             <div class="col-md-9">
-                <router-view v-bind:account.sync="account"></router-view>
+                <router-view v-bind:account="account"></router-view>
             </div>
         </div>
     </div>

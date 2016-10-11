@@ -24,7 +24,7 @@
                     <!-- left hand side navigation items -->
                     <main-menu v-bind:account="account"></main-menu>
                     <!-- right hand side navigation items -->
-                    <login-menu v-bind:account.sync="account"></login-menu>
+                    <login-menu v-bind:account="account"></login-menu>
                 </div>
             </div>
         </nav>
@@ -34,7 +34,7 @@
                 {{ alert.content }}
             </div>
             <div v-if="!error">
-                <router-view v-bind:account.sync="account"></router-view>
+                <router-view v-bind:account="account"></router-view>
             </div>
             <div v-if="error">
                 <error-page v-bind:error="error"></error-page>

@@ -31,7 +31,7 @@
                      v-bind:account="account"
                      v-bind:owner="owner"
                      v-bind:is_repo_writeable="is_repo_writeable"
-                     v-bind:repository.sync="repository"></router-view>
+                     v-bind:repository="repository"></router-view>
     </div>
 </template>
 

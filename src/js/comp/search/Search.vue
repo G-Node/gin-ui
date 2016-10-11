@@ -27,7 +27,7 @@
                     </li>
                 </ul>
 
-                <router-view v-bind:repositories.sync="repositories" v-bind:users.sync="users"></router-view>
+                <router-view v-bind:repositories="repositories" v-bind:users="users"></router-view>
             </div>
             <div v-if="!search_text">
                 Search for public repositories or users
