@@ -74,11 +74,10 @@ const router = new VueRouter({
         { path: "/:username/:repository", component: Repo,
             name: "repository", title: "Repository Overview",
             children: [
-                { path: "/", component: RepoReadme },
-                { path: "/settings", component: RepoSettings,
-                    name: "repository-settings", title: "Repository Settings" },
-                { path: "/files/:root+", component: RepoFiles,
-                    name: "repository-files", title: "Browse Repository Files" }
+                { path: "info", component: RepoReadme,
+                    name: "repository-info", title: "Repository info"},
+                { path: "settings", component: RepoSettings,
+                    name: "repository-settings", title: "Repository Settings" }
             ]
         }
     ]

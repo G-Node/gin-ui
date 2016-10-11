@@ -4,7 +4,7 @@
             <li v-for="repo in repositories">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <router-link :to="{ name: 'repository', params: { username: repo.owner, repository: repo.name}}">
+                        <router-link :to="{ name: 'repository-info', params: { username: repo.owner, repository: repo.name}}">
                             {{ repo.owner }}/{{ repo.name }}
                         </router-link>
                     </div>

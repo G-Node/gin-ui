@@ -9,7 +9,7 @@
 
         <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
-                <router-link :to="{ name: 'repository', params: { username: owner.login, repository: repository.name }}">
+                <router-link :to="{ name: 'repository-info', params: { username: owner.login, repository: repository.name }}">
                     Info
                 </router-link>
             </li>
@@ -25,7 +25,6 @@
                 </router-link>
             </li>
         </ul>
-
 
         <router-view v-if="repository && owner"
                      v-bind:account="account"
