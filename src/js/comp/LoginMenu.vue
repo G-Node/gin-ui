@@ -71,7 +71,7 @@
 
         methods: {
             signIn() {
-                window.api.authorize()
+                window.api.authorize(this.$router)
             },
 
             signOut() {

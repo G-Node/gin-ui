@@ -119,19 +119,21 @@ export default class API {
         this.files    = new FileAPI(this.config)
     }
 
-    authorize() {
+    authorize(r) {
+        console.log("data 1")
         const url = this.config.auth_url + "/oauth/authorize?"
         const params = [
             ["response_type", "token"],
             ["client_id", "gin"],
-            ["redirect_uri", `${window.location.origin}/oauth/login`],
+            ["redirect_uri", `${window.location.origin}/#/oauth/login`],
             ["scope", "account-read account-write repo-read repo-write"],
             ["state", "foo"]
         ]
         const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
-        window.location.replace(url + query)
+        window.location.href = url + query
+        window.event.returnValue = false
     }
-    
+
     login(token_str) {
         return new Promise((resolve, reject) => {
             $.ajax({

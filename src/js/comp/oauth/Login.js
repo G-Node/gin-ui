@@ -6,11 +6,10 @@ export default {
         promise.then(
             (account) => {
                 this.account = account
-                this.$router.go({path: "/"})
+                this.$router.push({path: "/"})
             },
             (error) => {
                 this.reportError(error)
-                console.log(error)
             }
         )
     },
