@@ -40,7 +40,7 @@
 
 <script type="text/ecmascript-6">
     function cleanPath(path) {
-        if (path === ":root") {
+        if (path === ":root" || path === "" || path === null || path === undefined) {
             path = ""
         } else {
             if (path.startsWith("/")) {
@@ -62,6 +62,7 @@
         },
 
         mounted() {
+            console.log(this.$route.params)
             this.update(this.$route.params, null)
         },
 
