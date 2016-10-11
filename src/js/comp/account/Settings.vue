@@ -8,11 +8,21 @@
                     </div>
                     <div class="panel-body">
                         <ul class="nav nav-pills  nav-stacked">
-                            <li role="presentation"><a v-link="{ name: 'profile-settings'}">Profile</a></li>
-                            <li role="presentation"><a v-link="{ name: 'affiliation-settings'}">Affiliation</a></li>
-                            <li role="presentation"><a v-link="{ name: 'password-settings'}">Password</a></li>
-                            <li role="presentation"><a v-link="{ name: 'email-settings' }">E-mail</a></li>
-                            <li role="presentation"><a v-link="{ name: 'sshkey-settings'}">SSH Keys</a></li>
+                            <li role="presentation">
+                                <router-link :to="{ name: 'profile-settings'}">Profile</router-link>
+                            </li>
+                            <li role="presentation">
+                                <router-link :to="{ name: 'affiliation-settings'}">Affiliation</router-link>
+                            </li>
+                            <li role="presentation">
+                                <router-link :to="{ name: 'password-settings'}">Password</router-link>
+                            </li>
+                            <li role="presentation">
+                                <router-link :to="{ name: 'email-settings' }">E-mail</router-link>
+                            </li>
+                            <li role="presentation">
+                                <router-link :to="{ name: 'sshkey-settings'}">SSH Keys</router-link>
+                            </li>
                         </ul>
                     </div>
                 </div>

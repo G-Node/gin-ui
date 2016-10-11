@@ -40,7 +40,7 @@ var router = new VueRouter({
                 {path: "/", component: ProfileSettings},
                 {path: "/password", component: PasswordSettings, name: "password-settings", title: "Password Settings"},
                 {path: "/email", component: EmailSettings, name: "email-settings", title: "E-Mail Settings"},
-                {path: "/sshkey", component: SSHKeySettings, name: "sskey-settings", title: "SSH Key Settings"},
+                {path: "/sshkey", component: SSHKeySettings, name: "sshkey-settings", title: "SSH Key Settings"},
                 {path: "/affiliation", component: AffiliationSettings, name: "affiliation-settings", title: "Affiliation Settings"}
             ]
         },

@@ -8,10 +8,10 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <span>
-                <a v-link="{ name: 'repository-files', params: { root: ':root' }}">root</a>
+                <router-link :to="{ name: 'repository-files', params: { root: ':root' }}">root</router-link>
             </span>
             <span v-for="(n, p) in path_components">
-                / <a v-link="{ name: 'repository-files', params: { root: p }}">{{ n }}</a>
+                / <router-link :to="{ name: 'repository-files', params: { root: p }}">{{ n }}</router-link>
             </span>
         </div>
 
@@ -19,11 +19,17 @@
             <tbody>
                 <tr v-for="file in dir_list">
                     <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
-                    <td><a v-link="{ name: 'repository-files', params: { root: path + '/' + file.name }}">{{ file.name }}</a></td>
+
+                    <td>
+                        <router-link :to="{ name: 'repository-files', params: { root: path + '/' + file.name }}">
+                            {{ file.name }}
+                        </router-link>
+                    </td>
                     <td class="text-right">{{ file.size }}</td>
                 </tr>
                 <tr v-for="file in file_list">
                     <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
+
                     <td>{{ file.name }}</td>
                     <td class="text-right">{{ file.size | filesize }}</td>
                 </tr>

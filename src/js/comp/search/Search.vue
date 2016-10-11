@@ -14,10 +14,14 @@
             <div v-if="search_text">
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
-                        <a v-link="{ name: 'search-repos' }">Repositories ({{ repositories.length }})</a>
+                        <router-link :to="{ name: 'search-repos' }">
+                            Repositories ({{ repositories.length }})
+                        </router-link>
                     </li>
                     <li role="presentation" :class="{ 'active': $route.name === 'search-users' }">
-                        <a v-link="{ name: 'search-users' }">Users ({{ users.length }})</a>
+                        <router-link :to="{ name: 'search-users' }">
+                            Users ({{ users.length }})
+                        </router-link>
                     </li>
                 </ul>
 

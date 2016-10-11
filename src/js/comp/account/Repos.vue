@@ -14,10 +14,14 @@
 
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
-                        <a v-link="{ name: 'own-repositories', params: { username: owner.login }}">{{ heading_own }}</a>
+                        <router-link :to="{ name: 'own-repositories', params: { username: owner.login }}">
+                            {{ heading_own }}
+                        </router-link>
                     </li>
                     <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
-                        <a v-link="{ name: 'shared-repositories', params: { username: owner.login }}">{{ heading_shared }}</a>
+                        <router-link :to="{ name: 'shared-repositories', params: { username: owner.login }}">
+                            {{ heading_shared }}
+                        </router-link>
                     </li>
                 </ul>
             </div>

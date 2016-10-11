@@ -10,13 +10,14 @@
             <div class="container">
                 <div class="navbar-header">
                     <!-- collapsed menu button -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                     <!-- navbar branding -->
-                    <a class="navbar-brand-gnode" v-link="{ path: '/' }"></a>
+                    <router-link class="navbar-brand-gnode" :to="{ name: 'index' }"></router-link>
                 </div>
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
