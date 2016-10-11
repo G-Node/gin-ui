@@ -38,9 +38,9 @@ const router = new VueRouter({
         { path: "/oauth/login", component: OAuthLogin,
             name: "oauth-login" },
         { path: "/account/settings", component: Settings,
-            name: "profile-settings", title: "Profile Settings",
             children: [
-                { path: "/", component: ProfileSettings },
+                { path: "/profile", component: ProfileSettings,
+                    name: "profile-settings", title: "Profile Settings" },
                 { path: "/password", component: PasswordSettings,
                     name: "password-settings", title: "Password Settings" },
                 { path: "/email", component: EmailSettings,
