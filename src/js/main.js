@@ -30,47 +30,59 @@ Vue.use(VueRouter)
 
 window.api = new API(config.auth_url, config.repo_url)
 
-var router = new VueRouter({
+const router = new VueRouter({
     history: "true",
     routes: [
-        { path: "/", component: Index, name: "index" },
-        { path: "/oauth/login", component: OAuthLogin, name: "oauth-login" },
-        { path: "/account/settings", component: Settings, name: "profile-settings", title: "Profile Settings",
+        { path: "/", component: Index,
+            name: "index" },
+        { path: "/oauth/login", component: OAuthLogin,
+            name: "oauth-login" },
+        { path: "/account/settings", component: Settings,
+            name: "profile-settings", title: "Profile Settings",
             children: [
-                {path: "/", component: ProfileSettings},
-                {path: "/password", component: PasswordSettings, name: "password-settings", title: "Password Settings"},
-                {path: "/email", component: EmailSettings, name: "email-settings", title: "E-Mail Settings"},
-                {path: "/sshkey", component: SSHKeySettings, name: "sshkey-settings", title: "SSH Key Settings"},
-                {path: "/affiliation", component: AffiliationSettings, name: "affiliation-settings", title: "Affiliation Settings"}
+                { path: "/", component: ProfileSettings },
+                { path: "/password", component: PasswordSettings,
+                    name: "password-settings", title: "Password Settings" },
+                { path: "/email", component: EmailSettings,
+                    name: "email-settings", title: "E-Mail Settings" },
+                { path: "/sshkey", component: SSHKeySettings,
+                    name: "sshkey-settings", title: "SSH Key Settings" },
+                { path: "/affiliation", component: AffiliationSettings,
+                    name: "affiliation-settings", title: "Affiliation Settings" }
             ]
         },
-        { path: "/account/repository-create", component: RepoCreate, name: "repository-create", title: "Create new repository" },
-        { path: "/search", component: Search, name: "search", title: "Public Data",
+        { path: "/account/repository-create", component: RepoCreate,
+            name: "repository-create", title: "Create new repository" },
+        { path: "/search", component: Search,
+            name: "search", title: "Public Data",
             children: [
-                { path: "/repos", component: RepoSearch, name: "search-repos", title: "Search Repositories" },
-                { path: "/users", component: UserSearch, name: "search-users", title: "Search Users" }
+                { path: "/repos", component: RepoSearch,
+                    name: "search-repos", title: "Search Repositories" },
+                { path: "/users", component: UserSearch,
+                    name: "search-users", title: "Search Users" }
             ]
         },
-        { path: "/:username/repositories", component: Repos, name: "own-repositories", title: "Own Repositories",
+        { path: "/:username/repositories", component: Repos,
+            name: "own-repositories", title: "Own Repositories",
             children: [
                 { path: "/", component: ReposOwn },
-                { path: "/shared", component: ReposShared, name: "shared-repositories", title: "Shared Repositories" }
+                { path: "/shared", component: ReposShared,
+                    name: "shared-repositories", title: "Shared Repositories" }
             ]
         },
-        { path: "/:username/:repository", component: Repo, name: "repository", title: "Repository Overview",
+        { path: "/:username/:repository", component: Repo,
+            name: "repository", title: "Repository Overview",
             children: [
                 { path: "/", component: RepoReadme },
-                { path: "/settings", component: RepoSettings, name: "repository-settings", title: "Repository Settings" },
-                { path: "/files/:root+", component: RepoFiles, name: "repository-files", title: "Browse Repository Files" }
+                { path: "/settings", component: RepoSettings,
+                    name: "repository-settings", title: "Repository Settings" },
+                { path: "/files/:root+", component: RepoFiles,
+                    name: "repository-files", title: "Browse Repository Files" }
             ]
         }
     ]
 })
 
-new Vue({
-    el: "#main",
-    router,
-    render(h) {
-        return h(App)
-    }
-})
+new Vue(
+    Vue.util.extend({router}, App)
+).$mount("#main")
