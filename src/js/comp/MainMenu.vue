@@ -12,7 +12,7 @@
 <script type="text/ecmascript-6">
     export default {
         props: {
-            account: { twoWay: false, required: true }
+            account: { required: true }
         }
     }
 </script>

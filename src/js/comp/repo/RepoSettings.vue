@@ -99,7 +99,7 @@
         },
 
         props: {
-            repository: { twoWay: true, required: true },
+            repository: { required: true },
             is_repo_writeable: { required: true }
         },
 

@@ -17,6 +17,6 @@ export default {
     mixins: [ Alert ],
 
     props: {
-        account: { twoWay: true, required: true }
+        account: { required: true }
     }
 }

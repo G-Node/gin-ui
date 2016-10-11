@@ -71,7 +71,7 @@
         },
 
         props: {
-            account: { twoWay: true, required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
