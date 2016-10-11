@@ -1,5 +1,5 @@
 function alert(comp, level, content) {
-    comp.$dispatch("alert-event", {
+    comp.$emit("alert-event", {
         level: level,
         content: content
     })
@@ -11,7 +11,7 @@ export default {
          * Sends an error event.
          */
         reportError(error) {
-            this.$dispatch("error-event", error)
+            this.$emit("error-event", error)
         },
 
         /*
