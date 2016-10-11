@@ -61,7 +61,10 @@
                     title: this.account.title,
                     first_name: this.account.first_name,
                     middle_name: this.account.middle_name,
-                    last_name: this.account.last_name
+                    last_name: this.account.last_name,
+                    email: {
+                        is_public: this.account.email.is_public
+                    }
                 },
                 reasons: {}
             }
@@ -97,7 +100,10 @@
                     title: this.account.title,
                     first_name: this.account.first_name,
                     middle_name: this.account.middle_name,
-                    last_name: this.account.last_name
+                    last_name: this.account.last_name,
+                    email: {
+                        is_public: this.account.email.is_public
+                    }
                 }
                 this.reasons = {}
             }
