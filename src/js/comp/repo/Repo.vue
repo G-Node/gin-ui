@@ -9,18 +9,21 @@
 
         <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
-                <router-link :to="{ name: 'repository-info', params: { username: owner.login, repository: repository.name }}">
+                <router-link :to="{ name: 'repository-info',
+                            params: { username: owner.login, repository: repository.name }}">
                     Info
                 </router-link>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-files' }">
-                <router-link :to="{ name: 'repository-files', params: { username: owner.login, repository: repository.name }}">
+                <router-link :to="{ name: 'repository-files',
+                            params: { username: owner.login, repository: repository.name, root: '/' }}">
                     Files
                 </router-link>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }"
                                     v-if="is_repo_writeable">
-                <router-link :to="{ name: 'repository-settings', params: { username: owner.login, repository: repository.name }}">
+                <router-link :to="{ name: 'repository-settings',
+                            params: { username: owner.login, repository: repository.name }}">
                     Settings
                 </router-link>
             </li>

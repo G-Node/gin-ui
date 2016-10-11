@@ -78,7 +78,7 @@ const router = new VueRouter({
                     name: "repository-info", title: "Repository info"},
                 { path: "settings", component: RepoSettings,
                     name: "repository-settings", title: "Repository Settings" },
-                { path: "files", component: RepoFiles,
+                { path: "files/:root", component: RepoFiles,
                     name: "repository-files", title: "Browse Repository Files" }
             ]
         }
