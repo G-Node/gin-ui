@@ -56,9 +56,9 @@ const router = new VueRouter({
         { path: "/search", component: Search,
             name: "search", title: "Public Data",
             children: [
-                { path: "/repos", component: RepoSearch,
+                { path: "repos", component: RepoSearch,
                     name: "search-repos", title: "Search Repositories" },
-                { path: "/users", component: UserSearch,
+                { path: "users", component: UserSearch,
                     name: "search-users", title: "Search Users" }
             ]
         },
