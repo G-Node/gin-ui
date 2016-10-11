@@ -52,12 +52,6 @@
                     }
                 )
             }
-        },
-
-        watch: {
-            "{owner: owner, account: account}": function (accounts) {
-                this.update(accounts)
-            }
         }
     }
 </script>
