@@ -40,15 +40,15 @@ const router = new VueRouter({
             name: "oauth-login" },
         { path: "/account/settings", component: Settings,
             children: [
-                { path: "/profile", component: ProfileSettings,
+                { path: "profile", component: ProfileSettings,
                     name: "profile-settings", title: "Profile Settings" },
-                { path: "/password", component: PasswordSettings,
+                { path: "password", component: PasswordSettings,
                     name: "password-settings", title: "Password Settings" },
-                { path: "/email", component: EmailSettings,
+                { path: "email", component: EmailSettings,
                     name: "email-settings", title: "E-Mail Settings" },
-                { path: "/sshkey", component: SSHKeySettings,
+                { path: "sshkey", component: SSHKeySettings,
                     name: "sshkey-settings", title: "SSH Key Settings" },
-                { path: "/affiliation", component: AffiliationSettings,
+                { path: "affiliation", component: AffiliationSettings,
                     name: "affiliation-settings", title: "Affiliation Settings" }
             ]
         },
