@@ -68,17 +68,7 @@
 
         mounted() {
             this.updateTitle(this.$route)
-
-            const promise = window.api.restore()
-            promise.then(
-                (account) => {
-                    this.account = account
-                    console.log("Info: login successfully restored")
-                },
-                (error) => {
-                    console.log("Info: " + error.message)
-                }
-            )
+            this.updateAccount()
         },
 
         methods: {
@@ -95,12 +85,26 @@
                     this.error = "Page does not exist"
                     document.title = default_title + ": " + this.error
                 }
+            },
+
+            updateAccount() {
+                const promise = window.api.restore()
+                promise.then(
+                        (account) => {
+                            this.account = account
+                            console.log("Info: login successfully restored")
+                        },
+                        (error) => {
+                            console.log("Info: " + error.message)
+                        }
+                )
             }
         },
 
         watch: {
             "$route": function(route) {
                 this.updateTitle(route)
+                this.updateAccount()
             }
         },
 
