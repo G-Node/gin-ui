@@ -120,7 +120,6 @@ export default class API {
     }
 
     authorize(r) {
-        console.log("data 1")
         const url = this.config.auth_url + "/oauth/authorize?"
         const params = [
             ["response_type", "token"],
@@ -165,7 +164,8 @@ export default class API {
             this.config.token = null
             localStorage.removeItem("token")
 
-            window.location.replace(url)
+            window.location.href = url
+            window.event.returnValue = false
         }
     }
 
@@ -190,8 +190,8 @@ export default class API {
     }
 
     register() {
-        const url = `${this.config.auth_url}/oauth/registration_page`
-        window.location.replace(url)
+        window.location.href = `${this.config.auth_url}/oauth/registration_page`
+        window.event.returnValue = false
     }
 }
 
