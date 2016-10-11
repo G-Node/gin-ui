@@ -70,17 +70,14 @@
                         }
                 )
 
-
                 Promise.all([repo_search, user_search]).then(
                         () => {
                             if (this.search_text) {
-                                var tab
+                                var tab = "search-repos"
                                 if ((this.repositories.length == 0) && (this.users.length > 0)) {
                                     tab = "search-users"
-                                } else {
-                                    tab = "search-repos"
                                 }
-                                this.$route.router.go({
+                                this.$router.push({
                                     name: tab
                                 })
                             }
