@@ -15,7 +15,7 @@ export default {
          * Sends an error event.
          */
         reportError(error) {
-            this.$emit("error-event", error)
+            event.emit("error-event", error)
         },
 
         /*

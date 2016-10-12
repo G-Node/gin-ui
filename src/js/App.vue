@@ -119,23 +119,22 @@
                 if (message.level === "danger" || message.level === "warning") {
                     console.error(message.content)
                 }
+            },
+
+            errorEvent(error) {
+                this.error = error
             }
         },
 
         created: function() {
             event.on("account-update", this.updateAccount)
             event.on("alert-event", this.alertEvent)
+            event.on("error-event", this.errorEvent)
         },
 
         watch: {
             "$route": function(route) {
                 this.updateTitle(route)
-            }
-        },
-
-        events: {
-            "error-event": function(error) {
-                this.error = error
             }
         }
     }
