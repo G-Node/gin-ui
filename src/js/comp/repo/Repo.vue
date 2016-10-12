@@ -38,7 +38,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { event } from "../../events.js"
     import Alert from "../Alert.js"
+
+    event.init()
 
     export default {
         data() {
@@ -99,6 +102,10 @@
                     )
                 }
             }
+        },
+
+        created: function() {
+            event.on("repo-update", this.update)
         },
 
         watch: {

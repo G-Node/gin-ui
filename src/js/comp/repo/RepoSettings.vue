@@ -75,7 +75,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { event } from "../../events.js"
     import Alert from "../Alert.js"
+
+    event.init()
 
     function accountLabel(acc) {
         let parts = []
@@ -119,7 +122,6 @@
             },
 
             addShare(login_name) {
-                console.log("hurra")
                 const selected = this.select.all.find(acc => acc.active)
                 if (selected) {
                     selected.active = false
@@ -199,7 +201,7 @@
                 const promise = api.repos.update(repo)
                 promise.then(
                     (repo) => {
-                        this.repository = repo
+                        event.emit("repo-update", { username: this.$route.params.username, repository: repo.name })
                         this.alertSuccess("Repository settings successfully updated")
                     },
                     (error) => {
