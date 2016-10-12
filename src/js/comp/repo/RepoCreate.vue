@@ -64,7 +64,7 @@
                 promise.then(
                     () => {
                         this.alertSuccess("Repository successfully created")
-                        this.$router.go({name: "own-repositories", params: { "username": this.account.login }})
+                        this.$router.push({ name: "own-repositories", params: { "username": this.account.login } })
                     },
                     (error) => {
                         if (error.hasOwnProperty("reasons")) {
