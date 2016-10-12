@@ -1,11 +1,14 @@
+import { event } from "../../events.js"
 import Alert from "../Alert.js"
+
+event.init()
 
 export default {
     mounted() {
         let promise = window.api.login(this.$route.query["access_token"])
         promise.then(
             (account) => {
-                this.account = account
+                event.emit("account-update")
                 this.$router.push({path: "/"})
             },
             (error) => {
