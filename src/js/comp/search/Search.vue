@@ -7,7 +7,7 @@
                 <label class="sr-only" for="search">Search</label>
                 <input type="text" class="form-control" id="search"
                        placeholder="Search Text" v-model="search_text"
-                       style="width: 100%" @keypress.enter="search" debounce="300">
+                       style="width: 100%">
             </div>
         </div>
         <hr />
@@ -92,7 +92,7 @@
         mixins: [Alert],
 
         watch: {
-            "search_text": function() {
+            search_text: function() {
                 this.search()
             }
         }

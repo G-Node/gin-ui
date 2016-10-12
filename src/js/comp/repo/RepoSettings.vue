@@ -9,7 +9,8 @@
                     <div class="form-group">
                         <label for="description" class="col-sm-2 control-label">Description</label>
                         <div class="col-sm-10">
-                            <input type="text" class="form-control" id="description" placeholder="Repository Description" v-model="form.description">
+                            <input type="text" class="form-control" id="description"
+                                   placeholder="Repository Description" v-model="form.description">
                         </div>
                     </div>
                     <div class="form-group">
@@ -27,7 +28,9 @@
                                     <tbody>
                                         <tr v-for="text in form.shared">
                                             <td>{{ text }}</td>
-                                            <td class="text-right"><button class="btn btn-danger btn-xs" @click="removeShare(text)">remove</button></td>
+                                            <td class="text-right">
+                                                <button class="btn btn-danger btn-xs" @click="removeShare(text)">remove</button>
+                                            </td>
                                         </tr>
                                         <tr v-if="form.shared.length === 0">
                                             <td>This Repository has no Collaborators</td>
@@ -41,11 +44,16 @@
                         <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
                         <div class="col-sm-8">
                             <div class="dropdown">
-                                <input type="text" class="form-control" id="select" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"
-                                       v-model="select.text" debounce="300" @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()" @keyup.down="selectionDown()">
-                                <ul v-if="select.all.length > 0" class="dropdown-menu" aria-labelledby="select" style="width: 100%">
+                                <input type="text" class="form-control" id="select" data-toggle="dropdown"
+                                       aria-haspopup="true" aria-expanded="true" v-model="select.text"
+                                       @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()"
+                                       @keyup.down="selectionDown()">
+                                <ul v-if="select.all.length > 0" class="dropdown-menu"
+                                    aria-labelledby="select" style="width: 100%">
                                     <li v-for="acc in select.all" :class="{active: acc.active}">
-                                        <a @click="selectShare(acc.login)">{{ acc.login }} <small class="supplemental-text">{{ acc.label }}</small></a>
+                                        <a @click="selectShare(acc.login)">
+                                            {{ acc.login }} <small class="supplemental-text">{{ acc.label }}</small>
+                                        </a>
                                     </li>
                                 </ul>
                             </div>
@@ -111,6 +119,7 @@
             },
 
             addShare(login_name) {
+                console.log("hurra")
                 const selected = this.select.all.find(acc => acc.active)
                 if (selected) {
                     selected.active = false
