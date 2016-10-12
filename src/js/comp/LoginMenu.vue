@@ -75,7 +75,6 @@
             },
 
             signOut() {
-                this.account = null
                 window.api.logout()
             },
 
