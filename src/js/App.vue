@@ -102,21 +102,9 @@
                             console.log("Info: " + error.message)
                         }
                 )
-            }
-        },
+            },
 
-        created: function() {
-            event.on("account-update", this.updateAccount)
-        },
-
-        watch: {
-            "$route": function(route) {
-                this.updateTitle(route)
-            }
-        },
-
-        events: {
-            "alert-event": function(message) {
+            alertEvent(message) {
                 const alert = Object.assign({}, message)
                 if (alert.content.hasOwnProperty("message")) {
                     alert.content = alert.content.message
@@ -131,8 +119,21 @@
                 if (message.level === "danger" || message.level === "warning") {
                     console.error(message.content)
                 }
-            },
+            }
+        },
 
+        created: function() {
+            event.on("account-update", this.updateAccount)
+            event.on("alert-event", this.alertEvent)
+        },
+
+        watch: {
+            "$route": function(route) {
+                this.updateTitle(route)
+            }
+        },
+
+        events: {
             "error-event": function(error) {
                 this.error = error
             }
