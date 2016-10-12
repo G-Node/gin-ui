@@ -44,11 +44,15 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { event } from "./events.js"
+
     import MainMenu  from "./comp/MainMenu.vue"
     import LoginMenu from "./comp/LoginMenu.vue"
     import ErrorPage from "./comp/ErrorPage.vue"
 
     const default_title = "G-Node GIN"
+
+    event.init()
 
     export default {
 
@@ -101,10 +105,13 @@
             }
         },
 
+        created: function() {
+            event.on("account-update", this.updateAccount)
+        },
+
         watch: {
             "$route": function(route) {
                 this.updateTitle(route)
-                this.updateAccount()
             }
         },
 
