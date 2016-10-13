@@ -124,7 +124,7 @@ export default class API {
         const params = [
             ["response_type", "token"],
             ["client_id", "gin"],
-            ["redirect_uri", `${window.location.origin}/#/oauth/login`],
+            ["redirect_uri", `${window.location.origin}/oauth/login`],
             ["scope", "account-read account-write repo-read repo-write"],
             ["state", "foo"]
         ]

@@ -32,7 +32,7 @@ Vue.use(VueRouter)
 window.api = new API(config.auth_url, config.repo_url)
 
 const router = new VueRouter({
-    history: "true",
+    mode: "history",
     routes: [
         { path: "/", component: Index,
             name: "index" },
