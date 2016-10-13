@@ -14,6 +14,21 @@
                 </div>
             </li>
         </ul>
+        <hr/>
+        <ul class="list-unstyled">
+            <li v-for="repo in own_repos">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        {{ repo.Owner }}/{{ repo.Name }}
+                    </div>
+                    <div class="panel-body">
+                        Head: {{ repo.Head }} <br/>
+                        Description: {{ repo.Description }} <br/>
+                        Public: {{ repo.Visibility }}
+                    </div>
+                </div>
+            </li>
+        </ul>
     </div>
 </template>
 
@@ -23,7 +38,8 @@
     export default {
         data() {
             return {
-                repositories: null
+                repositories: null,
+                own_repos: null
             }
         },
 
@@ -41,7 +57,7 @@
         methods: {
             update(accounts) {
                 const login_name = accounts.account ? accounts.account.login : null
-                const promise  = api.repos.listOwn(accounts.owner.login, login_name)
+                const promise  = api.repos.listOwnOld(accounts.owner.login, login_name)
                 promise.then(
                     (repos) => {
                         this.repositories = repos
@@ -50,6 +66,17 @@
                         this.repositories = null
                         this.reportError(error)
                     }
+                )
+
+                const getOwn = api.repos.listOwn(this.account.login)
+                getOwn.then(
+                        (repos) => {
+                            this.own_repos = repos
+                        },
+                        (error) => {
+                            this.own_repos = null
+                            this.reportError(error)
+                        }
                 )
             }
         }
