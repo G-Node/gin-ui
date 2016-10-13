@@ -349,6 +349,18 @@ class RepoAPI {
         })
     }
 
+    filterRepos(search_text=null, repos) {
+        const search_lower = search_text ? search_text.toLowerCase() : ""
+        return new Promise((resolve) => {
+            const curr_data = Array.from(repos)
+                .filter((repo) => {
+                    const all = (repo.Name + repo.Description + repo.Owner).toLowerCase()
+                    return all.search(search_lower) >= 0
+                })
+            resolve(curr_data)
+        })
+    }
+
     listPublic() {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -391,7 +403,7 @@ class RepoAPI {
             resolve(found)
         })
     }
-    
+
     get(username, repo_name, login_name) {
         return new Promise((resolve, reject) => {
             const public_only = username !== login_name
