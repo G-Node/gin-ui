@@ -17,7 +17,7 @@
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
                         <router-link :to="{ name: 'search-repos' }">
-                            Repositories ({{ repositories.length }})
+                            Repositories ({{ public_repo.length }})
                         </router-link>
                     </li>
                     <li role="presentation" :class="{ 'active': $route.name === 'search-users' }">
@@ -27,7 +27,8 @@
                     </li>
                 </ul>
 
-                <router-view v-bind:repositories="repositories" v-bind:users="users"></router-view>
+                <router-view v-bind:users="users"
+                             v-bind:public_repo="public_repo"></router-view>
             </div>
             <div v-if="!search_text">
                 Search for public repositories or users
@@ -43,9 +44,9 @@
     export default {
         data() {
             return {
-                repositories: null,
                 users: null,
-                search_text: null
+                search_text: null,
+                public_repo: null
             }
         },
 
@@ -55,26 +56,34 @@
 
         methods: {
             search() {
-                const repo_search = api.repos.listPublic(this.search_text)
-                const user_search = api.accounts.search(this.search_text)
 
-                repo_search.then(
+                const all_public = api.repos.listPublic()
+                all_public.then(
                         (repos) => {
-                            this.repositories = repos
+                            const filter_public = api.repos.filterRepos(this.search_text, repos)
+                            filter_public.then(
+                                    (repos) => {
+                                        this.public_repo = repos
+                                    }
+                            )
+                        },
+                        (error) => {
+                            this.reportError(error)
                         }
                 )
 
+                const user_search = api.accounts.search(this.search_text)
                 user_search.then(
                         (users) => {
                             this.users = users
                         }
                 )
 
-                Promise.all([repo_search, user_search]).then(
+                Promise.all([all_public, user_search]).then(
                         () => {
                             if (this.search_text) {
                                 var tab = "search-repos"
-                                if ((this.repositories.length == 0) && (this.users.length > 0)) {
+                                if ((this.public_repo.length == 0) && (this.users.length > 0)) {
                                     tab = "search-users"
                                 }
                                 this.$router.push({
