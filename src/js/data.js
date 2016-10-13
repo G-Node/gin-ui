@@ -360,22 +360,6 @@ class RepoAPI {
         })
     }
 
-    listSharedOld(username, login_name) {
-        return new Promise((resolve) => {
-            const public_only = username !== login_name
-            const found = Array.from(data.repos.entries())
-                .map((entry) => { return copyRepo(entry[1], entry[0]) })
-                .filter((repo) => {
-                    const is_owner  = repo.owner === username
-                    const is_shared = repo.shared.find((name) => {return name === username})
-                    const is_public = repo.is_public
-
-                    return !is_owner && is_shared && (public_only ? is_public : true)
-                })
-            resolve(found)
-        })
-    }
-
     listShared() {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -388,6 +372,7 @@ class RepoAPI {
             })
         })
     }
+
     listOwn(username) {
         return new Promise((resolve, reject) => {
             $.ajax({
