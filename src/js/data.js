@@ -376,7 +376,7 @@ class RepoAPI {
         })
     }
 
-    listOwn(username, login_name) {
+    listOwnOld(username, login_name) {
         return new Promise((resolve) => {
             const public_only = username !== login_name
             const found = Array.from(data.repos.entries())
@@ -388,6 +388,19 @@ class RepoAPI {
                     return is_owner && (public_only ? is_public : true)
                 })
             resolve(found)
+        })
+    }
+
+    listOwn(username) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${username}/repos`,
+                type: "GET",
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 
