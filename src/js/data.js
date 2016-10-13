@@ -336,19 +336,6 @@ class RepoAPI {
         this.config = config
     }
 
-    listPublicOld(search_text=null) {
-        const search_lower = search_text ? search_text.toLowerCase() : ""
-        return new Promise((resolve) => {
-            const found = Array.from(data.repos.entries())
-                .map((entry) => { return copyRepo(entry[1], entry[0]) })
-                .filter((repo) => {
-                    const all = (repo.name + repo.description + repo.owner).toLowerCase()
-                    return repo.is_public && (all.search(search_lower) >= 0)
-                })
-            resolve(found)
-        })
-    }
-
     filterRepos(search_text=null, repos) {
         const search_lower = search_text ? search_text.toLowerCase() : ""
         return new Promise((resolve) => {
