@@ -5,7 +5,9 @@
         <div class="form-inline row">
             <div class="form-group col-sm-9 col-sm-offset-1">
                 <label class="sr-only" for="search">Search</label>
-                <input type="text" class="form-control" id="search" placeholder="Search Text" v-model="search_text" style="width: 100%" @keypress.enter="search" debounce="300">
+                <input type="text" class="form-control" id="search"
+                       placeholder="Search Text" v-model="search_text"
+                       style="width: 100%">
             </div>
         </div>
         <hr />
@@ -14,14 +16,18 @@
             <div v-if="search_text">
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
-                        <a v-link="{ name: 'search-repos' }">Repositories ({{ repositories.length }})</a>
+                        <router-link :to="{ name: 'search-repos' }">
+                            Repositories ({{ repositories.length }})
+                        </router-link>
                     </li>
                     <li role="presentation" :class="{ 'active': $route.name === 'search-users' }">
-                        <a v-link="{ name: 'search-users' }">Users ({{ users.length }})</a>
+                        <router-link :to="{ name: 'search-users' }">
+                            Users ({{ users.length }})
+                        </router-link>
                     </li>
                 </ul>
 
-                <router-view v-bind:repositories.sync="repositories" v-bind:users.sync="users"></router-view>
+                <router-view v-bind:repositories="repositories" v-bind:users="users"></router-view>
             </div>
             <div v-if="!search_text">
                 Search for public repositories or users
@@ -35,18 +41,15 @@
     import Alert from "../Alert.js"
 
     export default {
-        props: {
-            search_text: null
-        },
-
         data() {
             return {
                 repositories: null,
-                users: null
+                users: null,
+                search_text: null
             }
         },
 
-        ready() {
+        mounted() {
             this.search()
         },
 
@@ -67,17 +70,14 @@
                         }
                 )
 
-
                 Promise.all([repo_search, user_search]).then(
                         () => {
                             if (this.search_text) {
-                                var tab
+                                var tab = "search-repos"
                                 if ((this.repositories.length == 0) && (this.users.length > 0)) {
                                     tab = "search-users"
-                                } else {
-                                    tab = "search-repos"
                                 }
-                                this.$route.router.go({
+                                this.$router.push({
                                     name: tab
                                 })
                             }
@@ -92,7 +92,7 @@
         mixins: [Alert],
 
         watch: {
-            "search_text": function() {
+            search_text: function() {
                 this.search()
             }
         }

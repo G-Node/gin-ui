@@ -4,9 +4,9 @@
             <li v-for="user in users">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a v-link="{ name: 'own-repositories', params: { username: user.login } }">
+                        <router-link :to="{ name: 'own-repositories', params: { username: user.login } }">
                             {{ user.first_name }} {{ user.last_name }}
-                        </a>
+                        </router-link>
                     </div>
                     <div class="panel-body">
                             <div v-if="user.affiliation">

@@ -9,23 +9,39 @@
 
         <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
-                <a v-link="{ name: 'repository', params: { username: owner.login, repository: repository.name }}">Info</a>
+                <router-link :to="{ name: 'repository-info',
+                            params: { username: owner.login, repository: repository.name }}">
+                    Info
+                </router-link>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-files' }">
-                <a v-link="{ name: 'repository-files', params: { username: owner.login, repository: repository.name }}">Files</a>
+                <router-link :to="{ name: 'repository-files',
+                            params: { username: owner.login, repository: repository.name, root: '/' }}">
+                    Files
+                </router-link>
             </li>
-            <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }" v-if="is_repo_writeable">
-                <a v-link="{ name: 'repository-settings', params: { username: owner.login, repository: repository.name }}">Settings</a>
+            <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }"
+                                    v-if="is_repo_writeable">
+                <router-link :to="{ name: 'repository-settings',
+                            params: { username: owner.login, repository: repository.name }}">
+                    Settings
+                </router-link>
             </li>
         </ul>
 
-
-        <router-view v-if="repository && owner" v-bind:account="account" v-bind:owner="owner" v-bind:is_repo_writeable="is_repo_writeable" v-bind:repository.sync="repository"></router-view>
+        <router-view v-if="repository && owner"
+                     v-bind:account="account"
+                     v-bind:owner="owner"
+                     v-bind:is_repo_writeable="is_repo_writeable"
+                     v-bind:repository="repository"></router-view>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    import { event } from "../../events.js"
     import Alert from "../Alert.js"
+
+    event.init()
 
     export default {
         data() {
@@ -35,7 +51,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.update(this.$route.params, null)
         },
 
@@ -86,6 +102,10 @@
                     )
                 }
             }
+        },
+
+        created: function() {
+            event.on("repo-update", this.update)
         },
 
         watch: {

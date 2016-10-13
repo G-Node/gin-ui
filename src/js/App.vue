@@ -5,25 +5,26 @@
 </style>
 
 <template>
-    <div>
+    <div id="main">
         <nav class="navbar navbar-inverse navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <!-- collapsed menu button -->
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+                            data-target="#navbar" aria-expanded="false" aria-controls="navbar">
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
                     <!-- navbar branding -->
-                    <a class="navbar-brand-gnode" v-link="{ path: '/' }"></a>
+                    <router-link class="navbar-brand-gnode" :to="{ name: 'index' }"></router-link>
                 </div>
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
                     <!-- left hand side navigation items -->
                     <main-menu v-bind:account="account"></main-menu>
                     <!-- right hand side navigation items -->
-                    <login-menu v-bind:account.sync="account"></login-menu>
+                    <login-menu v-bind:account="account"></login-menu>
                 </div>
             </div>
         </nav>
@@ -33,7 +34,7 @@
                 {{ alert.content }}
             </div>
             <div v-if="!error">
-                <router-view v-bind:account.sync="account"></router-view>
+                <router-view v-bind:account="account"></router-view>
             </div>
             <div v-if="error">
                 <error-page v-bind:error="error"></error-page>
@@ -43,17 +44,15 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import Vue       from "vue"
+    import { event } from "./events.js"
 
     import MainMenu  from "./comp/MainMenu.vue"
     import LoginMenu from "./comp/LoginMenu.vue"
     import ErrorPage from "./comp/ErrorPage.vue"
 
-    Vue.component("main-menu", MainMenu)
-    Vue.component("login-menu", LoginMenu)
-    Vue.component("error-page", ErrorPage)
-
     const default_title = "G-Node GIN"
+
+    event.init()
 
     export default {
 
@@ -65,19 +64,15 @@
             }
         },
 
-        ready() {
-            this.updateTitle(this.$route)
+        components: {
+            MainMenu,
+            LoginMenu,
+            ErrorPage
+        },
 
-            const promise = window.api.restore()
-            promise.then(
-                (account) => {
-                    this.account = account
-                    console.log("Info: login successfully restored")
-                },
-                (error) => {
-                    console.log("Info: " + error.message)
-                }
-            )
+        mounted() {
+            this.updateTitle(this.$route)
+            this.updateAccount()
         },
 
         methods: {
@@ -94,17 +89,22 @@
                     this.error = "Page does not exist"
                     document.title = default_title + ": " + this.error
                 }
-            }
-        },
+            },
 
-        watch: {
-            "$route": function(route) {
-                this.updateTitle(route)
-            }
-        },
+            updateAccount() {
+                const promise = window.api.restore()
+                promise.then(
+                        (account) => {
+                            this.account = account
+                            console.log("Info: login successfully restored")
+                        },
+                        (error) => {
+                            console.log("Info: " + error.message)
+                        }
+                )
+            },
 
-        events: {
-            "alert-event": function(message) {
+            alertEvent(message) {
                 const alert = Object.assign({}, message)
                 if (alert.content.hasOwnProperty("message")) {
                     alert.content = alert.content.message
@@ -121,8 +121,20 @@
                 }
             },
 
-            "error-event": function(error) {
+            errorEvent(error) {
                 this.error = error
+            }
+        },
+
+        created: function() {
+            event.on("account-update", this.updateAccount)
+            event.on("alert-event", this.alertEvent)
+            event.on("error-event", this.errorEvent)
+        },
+
+        watch: {
+            "$route": function(route) {
+                this.updateTitle(route)
             }
         }
     }

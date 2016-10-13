@@ -8,22 +8,46 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <span>
-                <a v-link="{ name: 'repository-files', params: { root: ':root' }}">root</a>
+                <router-link :to="{ name: 'repository-files',
+                    params: {
+                        root: '/',
+                        username: $route.params.username,
+                        repository: $route.params.repository}}">
+                    root
+                </router-link>
             </span>
-            <span v-for="(n, p) in path_components">
-                / <a v-link="{ name: 'repository-files', params: { root: p }}">{{ n }}</a>
+            <span v-for="(p, n) in path_components">
+                /
+                <router-link :to="{ name: 'repository-files',
+                    params: {
+                        root: p,
+                        username: $route.params.username,
+                        repository: $route.params.repository}}">
+                    {{ n }}
+                </router-link>
             </span>
         </div>
 
         <table v-if="dir" class="table">
             <tbody>
-                <tr v-for="file in dir_list">
+                <tr v-for="dir in dir_list">
                     <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
-                    <td><a v-link="{ name: 'repository-files', params: { root: path + '/' + file.name }}">{{ file.name }}</a></td>
-                    <td class="text-right">{{ file.size }}</td>
+
+                    <td>
+                        <router-link :to="{ name: 'repository-files',
+                            params: {
+                                username: $route.params.username,
+                                repository: $route.params.repository,
+                                root: path + '/' + dir.name }}">
+                            {{ dir.name }}
+                        </router-link>
+                    </td>
+                    <td class="text-right">{{ dir.size }}</td>
                 </tr>
+
                 <tr v-for="file in file_list">
                     <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
+
                     <td>{{ file.name }}</td>
                     <td class="text-right">{{ file.size | filesize }}</td>
                 </tr>
@@ -34,7 +58,7 @@
 
 <script type="text/ecmascript-6">
     function cleanPath(path) {
-        if (path === ":root") {
+        if (path === "root" || path === "" || path === null || path === undefined) {
             path = ""
         } else {
             if (path.startsWith("/")) {
@@ -55,7 +79,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.update(this.$route.params, null)
         },
 

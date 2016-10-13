@@ -119,7 +119,7 @@ export default class API {
         this.files    = new FileAPI(this.config)
     }
 
-    authorize() {
+    authorize(r) {
         const url = this.config.auth_url + "/oauth/authorize?"
         const params = [
             ["response_type", "token"],
@@ -129,9 +129,10 @@ export default class API {
             ["state", "foo"]
         ]
         const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
-        window.location.replace(url + query)
+        window.location.href = url + query
+        window.event.returnValue = false
     }
-    
+
     login(token_str) {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -163,7 +164,8 @@ export default class API {
             this.config.token = null
             localStorage.removeItem("token")
 
-            window.location.replace(url)
+            window.location.href = url
+            window.event.returnValue = false
         }
     }
 
@@ -188,8 +190,8 @@ export default class API {
     }
 
     register() {
-        const url = `${this.config.auth_url}/oauth/registration_page`
-        window.location.replace(url)
+        window.location.href = `${this.config.auth_url}/oauth/registration_page`
+        window.event.returnValue = false
     }
 }
 

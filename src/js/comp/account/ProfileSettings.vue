@@ -52,7 +52,10 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { event } from "../../events.js"
     import Alert from "../Alert.js"
+
+    event.init()
 
     export default {
         data() {
@@ -71,7 +74,7 @@
         },
 
         props: {
-            account: { twoWay: true, required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
@@ -80,8 +83,8 @@
             save() {
                 const copy = Object.assign({}, this.account, this.form)
                 api.accounts.update(copy).then(
-                    (acc) => {
-                        this.account = acc
+                    () => {
+                        event.emit("account-update")
                         this.alertSuccess("Profile successfully updated!")
                     },
                     (error) => {

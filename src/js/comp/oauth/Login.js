@@ -1,16 +1,18 @@
+import { event } from "../../events.js"
 import Alert from "../Alert.js"
 
+event.init()
+
 export default {
-    ready() {
+    mounted() {
         let promise = window.api.login(this.$route.query["access_token"])
         promise.then(
             (account) => {
-                this.account = account
-                this.$router.go({path: "/"})
+                event.emit("account-update")
+                this.$router.push({path: "/"})
             },
             (error) => {
                 this.reportError(error)
-                console.log(error)
             }
         )
     },
@@ -18,6 +20,6 @@ export default {
     mixins: [ Alert ],
 
     props: {
-        account: { twoWay: true, required: true }
+        account: { required: true }
     }
 }

@@ -7,7 +7,10 @@
 <template>
     <ul class="nav navbar-nav navbar-right">
         <li>
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ account ? display_name : "Sign In"}} <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
+               aria-haspopup="true" aria-expanded="false">
+                {{ account ? display_name : "Sign In"}} <span class="caret"></span>
+            </a>
 
             <ul class="dropdown-menu" v-if="!account" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
@@ -22,11 +25,21 @@
 
             <ul class="dropdown-menu" v-if="account">
                 <!-- login info (shown if logged in) -->
-                <li><a v-link="{ name: 'profile-settings'}">Profile Settings</a></li>
-                <li><a v-link="{ name: 'affiliation-settings'}">Affiliation Settings</a></li>
-                <li><a v-link="{ name: 'password-settings'}">Change Password</a></li>
-                <li><a v-link="{ name: 'email-settings' }">Change E-mail</a></li>
-                <li><a v-link="{ name: 'sshkey-settings'}">Manage SSH Keys</a></li>
+                <li>
+                    <router-link :to="{ name: 'profile-settings'}">Profile Settings</router-link>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'affiliation-settings'}">Affiliation Settings</router-link>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'password-settings'}">Change Password</router-link>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'email-settings' }">Change E-mail</router-link>
+                </li>
+                <li>
+                    <router-link :to="{ name: 'sshkey-settings'}">Manage SSH Keys</router-link>
+                </li>
                 <li role="separator" class="divider"></li>
                 <li><a href="#" @click="signOut">Sign Out</a></li>
             </ul>
@@ -58,11 +71,10 @@
 
         methods: {
             signIn() {
-                window.api.authorize()
+                window.api.authorize(this.$router)
             },
 
             signOut() {
-                this.account = null
                 window.api.logout()
             },
 

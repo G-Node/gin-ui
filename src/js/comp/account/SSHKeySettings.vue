@@ -59,7 +59,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.update(this.account.login)
         },
 

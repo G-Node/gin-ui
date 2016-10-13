@@ -4,7 +4,9 @@
             <li v-for="repo in repositories">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <a v-link="{ name: 'repository', params: { username: repo.owner, repository: repo.name}}">{{ repo.owner }}/{{ repo.name }}</a>
+                        <router-link :to="{ name: 'repository-info', params: { username: repo.owner, repository: repo.name}}">
+                            {{ repo.owner }}/{{ repo.name }}
+                        </router-link>
                     </div>
                     <div class="panel-body">
                         {{ repo.description }}
@@ -25,7 +27,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.update({ owner: this.owner, account: this.account })
         },
 
@@ -49,12 +51,6 @@
                         this.reportError(error)
                     }
                 )
-            }
-        },
-
-        watch: {
-            "{owner: owner, account: account}": function (accounts) {
-                this.update(accounts)
             }
         }
     }

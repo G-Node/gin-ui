@@ -8,16 +8,22 @@
             <div>
                 <ul class="nav pull-right" v-if="account_is_owner">
                     <li role="presentation">
-                        <button class="btn btn-default" v-link="{ name: 'repository-create'}">New Repository</button>
+                        <button class="btn btn-default">
+                            <router-link :to="{ name: 'repository-create'}">New Repository</router-link>
+                        </button>
                     </li>
                 </ul>
 
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'own-repositories' }">
-                        <a v-link="{ name: 'own-repositories', params: { username: owner.login }}">{{ heading_own }}</a>
+                        <router-link :to="{ name: 'own-repositories', params: { username: owner.login }}">
+                            {{ heading_own }}
+                        </router-link>
                     </li>
                     <li role="presentation" :class="{ 'active': $route.name === 'shared-repositories' }">
-                        <a v-link="{ name: 'shared-repositories', params: { username: owner.login }}">{{ heading_shared }}</a>
+                        <router-link :to="{ name: 'shared-repositories', params: { username: owner.login }}">
+                            {{ heading_shared }}
+                        </router-link>
                     </li>
                 </ul>
             </div>
@@ -37,7 +43,7 @@
             }
         },
 
-        ready() {
+        mounted() {
             this.update(this.$route.params, null)
         },
 
