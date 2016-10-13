@@ -360,7 +360,7 @@ class RepoAPI {
         })
     }
 
-    listShared(username, login_name) {
+    listSharedOld(username, login_name) {
         return new Promise((resolve) => {
             const public_only = username !== login_name
             const found = Array.from(data.repos.entries())
@@ -376,6 +376,18 @@ class RepoAPI {
         })
     }
 
+    listShared() {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/repos/shared`,
+                type: "GET",
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            })
+        })
+    }
     listOwn(username) {
         return new Promise((resolve, reject) => {
             $.ajax({
