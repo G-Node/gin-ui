@@ -336,7 +336,7 @@ class RepoAPI {
         this.config = config
     }
 
-    listPublic(search_text=null) {
+    listPublicOld(search_text=null) {
         const search_lower = search_text ? search_text.toLowerCase() : ""
         return new Promise((resolve) => {
             const found = Array.from(data.repos.entries())
@@ -346,6 +346,18 @@ class RepoAPI {
                     return repo.is_public && (all.search(search_lower) >= 0)
                 })
             resolve(found)
+        })
+    }
+
+    listPublic() {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/repos/public`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 
