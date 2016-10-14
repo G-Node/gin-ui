@@ -29,11 +29,13 @@
             </li>
         </ul>
 
-        <router-view v-if="repository && owner"
+        <router-view v-if="(repository || curr_branch) && owner"
                      v-bind:account="account"
                      v-bind:owner="owner"
                      v-bind:is_repo_writeable="is_repo_writeable"
-                     v-bind:repository="repository"></router-view>
+                     v-bind:repository="repository"
+                     v-bind:curr_branch="curr_branch">
+        </router-view>
     </div>
 </template>
 
@@ -43,11 +45,15 @@
 
     event.init()
 
+// TODO should params.username on this page and its child pages not actually be ownername?
+// TODO also probably better change params.repository to reponame
+
     export default {
         data() {
             return {
                 owner: null,
-                repository: null
+                repository: null,
+                curr_branch: null
             }
         },
 
@@ -61,7 +67,7 @@
                     const name = this.account ? this.account.login : null
                     const repo = this.repository
 
-                    return name && (repo.owner === name || repo.shared.indexOf(name) >= 0)
+                    return name && repo && (repo.owner === name || repo.shared.indexOf(name) >= 0)
                 }
             }
         },
@@ -82,25 +88,40 @@
                     const promise = api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
+                                console.log("I have fetched an account")
                                 this.owner = acc
                             },
                             (error) => {
+                                console.log("I failed miserably")
                                 this.reportError(error)
                             }
                     )
                 }
 
                 if (!same_repo || !same_owner) {
-                    const promise = api.repos.get(params.username, params.repository, login_name)
+                    // always use one of the fake repositories for now until the repo service is fully integrated
+                    // and this whole page can be refactored
+                    //const promise = api.repos.get(params.username, params.repository, login_name)
+                    const promise = api.repos.get("alice", "alice-public-data", login_name)
                     promise.then(
                             (repo) => {
                                 this.repository = repo
                             },
                             (error) => {
-                                this.reportError(error)
-                            }
+                                this.reportError(error)                            }
                     )
                 }
+
+                // get branch from repo - currently "master" only.
+                const promise = api.repos.getBranch(params.username, params.repository, "master")
+                promise.then(
+                        (b) => {
+                            this.curr_branch = b
+                        },
+                        (error) => {
+                            this.reportError(error)
+                        }
+                )
             }
         },
 
