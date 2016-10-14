@@ -400,6 +400,18 @@ class RepoAPI {
         })
     }
 
+    getBranch(repo_owner, repo_name, branch_name) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/branches/${branch_name}`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            })
+        })
+    }
+
     create(account_login, repo_form) {
         return new Promise((resolve, reject) => {
             let name = repo_form.name || ""
