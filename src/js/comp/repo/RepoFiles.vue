@@ -28,32 +28,6 @@
             </span>
         </div>
 
-        <table v-if="dir" class="table">
-            <tbody>
-                <tr v-for="dir in dir_list">
-                    <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
-
-                    <td>
-                        <router-link :to="{ name: 'repository-files',
-                            params: {
-                                username: $route.params.username,
-                                repository: $route.params.repository,
-                                root: path + '/' + dir.name }}">
-                            {{ dir.name }}
-                        </router-link>
-                    </td>
-                    <td class="text-right">{{ dir.size }}</td>
-                </tr>
-
-                <tr v-for="file in file_list">
-                    <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
-
-                    <td>{{ file.name }}</td>
-                    <td class="text-right">{{ file.size | filesize }}</td>
-                </tr>
-            </tbody>
-        </table>
-
         <table v-if="content_tree || content_files" class="table">
             <tbody>
                 <tr v-for="item in content_tree">
@@ -101,7 +75,6 @@
         data() {
             return {
                 path: null,
-                dir: null,
                 content_tree: [],
                 content_files: []
             }
@@ -123,42 +96,6 @@
 
                     return comp
                 }
-            },
-
-            dir_list: {
-                get() {
-                    let dirs = []
-
-                    if (this.dir) {
-                        const all = this.dir.files
-                        for (let name of Object.keys(this.dir.files)) {
-                            let file = all[name]
-                            if (file.type === "dir") {
-                                dirs = dirs.concat(file)
-                            }
-                        }
-                    }
-
-                    return dirs
-                }
-            },
-
-            file_list: {
-                get() {
-                    let files = []
-
-                    if (this.dir) {
-                        const all = this.dir.files
-                        for (let name of Object.keys(this.dir.files)) {
-                            let file = all[name]
-                            if (file.type === "file") {
-                                files = files.concat(file)
-                            }
-                        }
-                    }
-
-                    return files
-                }
             }
         },
 
@@ -168,21 +105,6 @@
 
         methods: {
             update(params, old) {
-                /*
-                this.path = cleanPath(params.root)
-
-                const login_name = this.account ? this.account.login : null
-                const promise = window.api.files.getDir(params.username, params.repository, this.path, login_name)
-                promise.then(
-                    (dir) => {
-                        this.dir = dir
-                    },
-                    (error) => {
-                        console.log(error)
-                        this.dir = null
-                    }
-                )
-                */
                 // not sure if this check is a good thing to do
                 if (params !== old) {
                     this.path = cleanPath(params.root)
