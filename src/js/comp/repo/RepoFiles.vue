@@ -53,6 +53,32 @@
                 </tr>
             </tbody>
         </table>
+
+        <table v-if="content_tree || content_files" class="table">
+            <tbody>
+                <tr v-for="item in content_tree">
+                    <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
+                    <td>
+                        <router-link :to="{ name: 'repository-files',
+                            params: {
+                                username: $route.params.username,
+                                repository: $route.params.repository,
+                                root: path + '/' + item.name}}">
+                            {{ item.name }}
+                        </router-link>
+                    </td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.id }}</td>
+                </tr>
+
+                <tr v-for="item in content_files">
+                    <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.type }}</td>
+                    <td>{{ item.id }}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -75,7 +101,9 @@
         data() {
             return {
                 path: null,
-                dir: null
+                dir: null,
+                content_tree: [],
+                content_files: []
             }
         },
 
@@ -140,6 +168,7 @@
 
         methods: {
             update(params, old) {
+                /*
                 this.path = cleanPath(params.root)
 
                 const login_name = this.account ? this.account.login : null
@@ -153,6 +182,35 @@
                         this.dir = null
                     }
                 )
+                */
+                // not sure if this check is a good thing to do
+                if (params !== old) {
+                    this.path = cleanPath(params.root)
+
+                    const promise_dir = api.repos.getDirectorySection(params.username, params.repository,
+                                                                        "master", this.path)
+                    promise_dir.then(
+                            (dir) => {
+                                let content = dir.entries
+                                let c_t = []
+                                let c_f = []
+                                for (let item of content) {
+                                    if (item.type) {
+                                        if (item.type === "tree") {
+                                            c_t = c_t.concat(item)
+                                        } else {
+                                            c_f = c_f.concat(item)
+                                        }
+                                    }
+                                }
+                                this.content_tree = c_t
+                                this.content_files = c_f
+                            },
+                            (error) => {
+                                this.reportError(error)
+                            }
+                    )
+                }
             }
         },
 
