@@ -10,31 +10,30 @@
         <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
                 <router-link :to="{ name: 'repository-info',
-                            params: { username: owner.login, repository: repository.name }}">
+                            params: { username: $route.params.username, repository: $route.params.repository }}">
                     Info
                 </router-link>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-files' }">
                 <router-link :to="{ name: 'repository-files',
-                            params: { username: owner.login, repository: repository.name, root: '/' }}">
+                            params: { username: $route.params.username, repository: $route.params.repository, root: '/' }}">
                     Files
                 </router-link>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }"
                                     v-if="is_repo_writeable">
                 <router-link :to="{ name: 'repository-settings',
-                            params: { username: owner.login, repository: repository.name }}">
+                            params: { username: $route.params.username, repository: $route.params.repository }}">
                     Settings
                 </router-link>
             </li>
         </ul>
 
-        <router-view v-if="(repository || curr_branch) && owner"
+        <router-view v-if="repository && owner"
                      v-bind:account="account"
                      v-bind:owner="owner"
                      v-bind:is_repo_writeable="is_repo_writeable"
-                     v-bind:repository="repository"
-                     v-bind:curr_branch="curr_branch">
+                     v-bind:repository="repository">
         </router-view>
     </div>
 </template>
@@ -52,8 +51,7 @@
         data() {
             return {
                 owner: null,
-                repository: null,
-                curr_branch: null
+                repository: null
             }
         },
 
@@ -111,17 +109,6 @@
                                 this.reportError(error)                            }
                     )
                 }
-
-                // get branch from repo - currently "master" only.
-                const promise = api.repos.getBranch(params.username, params.repository, "master")
-                promise.then(
-                        (b) => {
-                            this.curr_branch = b
-                        },
-                        (error) => {
-                            this.reportError(error)
-                        }
-                )
             }
         },
 
