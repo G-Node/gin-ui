@@ -412,6 +412,18 @@ class RepoAPI {
         })
     }
 
+    getDirectorySection(repo_owner, repo_name, branch_name, path) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/browse/${branch_name}/${path}`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            })
+        })
+    }
+
     create(account_login, repo_form) {
         return new Promise((resolve, reject) => {
             let name = repo_form.name || ""
