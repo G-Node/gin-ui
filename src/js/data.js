@@ -424,6 +424,18 @@ class RepoAPI {
         })
     }
 
+    getTextFileContent(repo_owner, repo_name, object_id) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/objects/${object_id}`,
+                type: "GET",
+                dataType: "text",
+                success: (text) => resolve(text),
+                error: (error) => reject(error.responseJSON)
+            })
+        })
+    }
+
     create(account_login, repo_form) {
         return new Promise((resolve, reject) => {
             let name = repo_form.name || ""
