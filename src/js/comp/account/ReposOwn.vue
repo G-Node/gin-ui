@@ -1,6 +1,6 @@
 <template>
     <div>
-        <ul class="list-unstyled">
+        <ul class="list-unstyled" v-if="repos">
             <li v-for="repo in repos">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -14,6 +14,13 @@
                         Description: {{ repo.Description }} <br/>
                         Public: {{ repo.Visibility }}
                     </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="list-unstyled" v-if="!repos">
+            <li class="panel panel-default">
+                <div class="panel-body">
+                    There are no available repositories
                 </div>
             </li>
         </ul>
