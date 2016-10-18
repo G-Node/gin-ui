@@ -68,7 +68,7 @@
                 const repos_shared = api.repos.listShared()
                 repos_shared.then(
                         (repos) => {
-                            if (this.account.login === params.username) {
+                            if (this.account.login !== params.username) {
                                 let repo_filter = Array.from(repos)
                                                        .filter((r) => { return r.Owner === params.username})
                                 if (repo_filter.length > 0) {

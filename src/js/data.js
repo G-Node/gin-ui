@@ -362,27 +362,37 @@ class RepoAPI {
 
     listShared() {
         return new Promise((resolve, reject) => {
-            $.ajax({
+            let req = {
                 url: `${this.config.repo_url}/repos/shared`,
                 type: "GET",
-                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
                 success: (json) => resolve(json),
                 error: (error) => reject(error.responseJSON)
-            })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
         })
     }
 
     listUserRepos(username) {
         return new Promise((resolve, reject) => {
-            $.ajax({
+            let req = {
                 url: `${this.config.repo_url}/users/${username}/repos`,
                 type: "GET",
-                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
                 success: (json) => resolve(json),
                 error: (error) => reject(error.responseJSON)
-            })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
         })
     }
 
@@ -402,46 +412,61 @@ class RepoAPI {
 
     getBranch(repo_owner, repo_name, branch_name) {
         return new Promise((resolve, reject) => {
-            $.ajax({
+            let req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/branches/${branch_name}`,
-                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
                 error: (error) => reject({ code: error.status,
                                             status: error.statusText,
                                             message: error.responseText })
-            })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
         })
     }
 
     getDirectorySection(repo_owner, repo_name, branch_name, path) {
         return new Promise((resolve, reject) => {
-            $.ajax({
+            let req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/browse/${branch_name}/${path}`,
-                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
                 error: (error) => reject({ code: error.status,
                                             status: error.statusText,
                                             message: error.responseText })
-            })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
         })
     }
 
     getTextFileContent(repo_owner, repo_name, object_id) {
         return new Promise((resolve, reject) => {
-            $.ajax({
+            let req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/objects/${object_id}`,
-                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 type: "GET",
                 dataType: "text",
                 success: (text) => resolve(text),
                 error: (error) => reject({ code: error.status,
                                             status: error.statusText,
                                             message: error.responseText })
-            })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
         })
     }
 
