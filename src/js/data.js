@@ -404,6 +404,7 @@ class RepoAPI {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/branches/${branch_name}`,
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
@@ -418,6 +419,7 @@ class RepoAPI {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/browse/${branch_name}/${path}`,
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
@@ -432,6 +434,7 @@ class RepoAPI {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/objects/${object_id}`,
+                headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 type: "GET",
                 dataType: "text",
                 success: (text) => resolve(text),
