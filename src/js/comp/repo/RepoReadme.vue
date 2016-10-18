@@ -1,7 +1,7 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            README.md
+            README
         </div>
         <div class="panel-body">
             <article style="margin-top: 1.5em">
@@ -12,6 +12,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import Alert from "../Alert.js"
+
     const no_readme = "No readme file for this repository"
 
     export default {
@@ -24,11 +26,15 @@
             this.update(this.$route.params, null)
         },
 
+        mixins: [ Alert ],
+
         methods: {
             update(params, old){
                 if (params != old) {
                     // fetch the repository root to look for a readme file
                     const promise_root = api.repos.getDirectorySection(params.username, params.repository, "master", "")
+                    // TODO chaining promises like this is not nice (at all)!
+                    // change it when there is time
                     promise_root.then(
                             (root) => {
                                 var entries = root.entries
@@ -44,6 +50,8 @@
                                                 },
                                                 (error) => {
                                                     this.readme = no_readme
+                                                    // TODO this is probably not the best way to deal with
+                                                    // not found entities.
                                                     this.reportError(error)
                                                 }
                                         )
@@ -55,6 +63,8 @@
                             },
                             (error) => {
                                 this.readme = no_readme
+                                // TODO this is probably not the best way to deal
+                                // with not found repositories
                                 this.reportError(error)
                             }
                     )

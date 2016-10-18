@@ -57,6 +57,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import Alert from "../Alert.js"
+
     function cleanPath(path) {
         if (path === "root" || path === "" || path === null || path === undefined) {
             path = ""
@@ -103,6 +105,8 @@
             account: { required: true }
         },
 
+        mixins: [ Alert ],
+
         methods: {
             update(params, old) {
                 // not sure if this check is a good thing to do
@@ -127,11 +131,13 @@
                                 }
                                 this.content_tree = c_t
                                 this.content_files = c_f
-                            },
-                            (error) => {
-                                this.reportError(error)
-                            }
-                    )
+                            }).catch((error) => {
+                                if (error.code === 404) {
+                                    this.alertWarning("This path does not exist")
+                                } else {
+                                    this.reportError(error)
+                                }
+                            })
                 }
             }
         },
