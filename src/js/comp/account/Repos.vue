@@ -28,7 +28,7 @@
                 </ul>
             </div>
 
-            <router-view v-bind:account="account" v-bind:owner="owner"></router-view>
+            <router-view v-bind:account="account"></router-view>
         </div>
     </div>
 </template>
