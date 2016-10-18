@@ -1,7 +1,7 @@
 <template>
     <div>
         <ul class="list-unstyled">
-            <li v-for="repo in own_repos">
+            <li v-for="repo in repos">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <router-link :to="{ name: 'repository-info',
@@ -26,12 +26,12 @@
     export default {
         data() {
             return {
-                own_repos: null
+                repos: null
             }
         },
 
         mounted() {
-            this.update()
+            this.update(this.$route.params)
         },
 
         props: {
@@ -41,17 +41,23 @@
         mixins: [ Alert ],
 
         methods: {
-            update() {
-                const getOwn = api.repos.listOwn(this.account.login)
-                getOwn.then(
+            update(params) {
+                const promise_own = api.repos.listUserRepos(params.username)
+                promise_own.then(
                         (repos) => {
-                            this.own_repos = repos
+                            this.repos = repos
                         },
                         (error) => {
-                            this.own_repos = null
+                            this.repos = null
                             this.reportError(error)
                         }
                 )
+            }
+        },
+
+        watch: {
+            "$route.params": function(params) {
+                this.update(params)
             }
         }
     }

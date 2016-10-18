@@ -111,13 +111,12 @@
                 if (!is_same_account) {
                     const promise = api.accounts.get(params.username)
                     promise.then(
-                        (acc) => {
-                            this.owner = acc
-                        },
-                        (error) => {
-                            this.reportError(error)
-                        },
-                    )
+                            (acc) => {
+                                this.owner = acc
+                            },
+                            (error) => {
+                                this.reportError(error)
+                            })
                 }
             }
         },

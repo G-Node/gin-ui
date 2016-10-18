@@ -373,7 +373,7 @@ class RepoAPI {
         })
     }
 
-    listOwn(username) {
+    listUserRepos(username) {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `${this.config.repo_url}/users/${username}/repos`,
