@@ -1,15 +1,17 @@
 <template>
     <div>
         <ul class="list-unstyled">
-            <li v-for="repo in repositories">
+            <li v-for="repo in public_repo">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <router-link :to="{ name: 'repository-info', params: { username: repo.owner, repository: repo.name } }">
-                            {{ repo.owner }}/{{ repo.name }}
+                        <router-link :to="{ name: 'repository-info',
+                                            params: { username: repo.Owner, repository: repo.Name } }">
+                            {{ repo.Owner }}/{{ repo.Name }}
                         </router-link>
                     </div>
                     <div class="panel-body">
-                        {{ repo.description }}
+                        Head: {{ repo.Head }} <br/>
+                        Description: {{ repo.Description }}
                     </div>
                 </div>
             </li>
@@ -20,7 +22,7 @@
 <script type="text/ecmascript-6">
     export default {
         props: {
-            repositories: {required: true}
+            public_repo: { required: true }
         }
     }
 </script>

@@ -10,20 +10,20 @@
         <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
                 <router-link :to="{ name: 'repository-info',
-                            params: { username: owner.login, repository: repository.name }}">
+                            params: { username: $route.params.username, repository: $route.params.repository }}">
                     Info
                 </router-link>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-files' }">
                 <router-link :to="{ name: 'repository-files',
-                            params: { username: owner.login, repository: repository.name, root: '/' }}">
+                            params: { username: $route.params.username, repository: $route.params.repository, root: '/' }}">
                     Files
                 </router-link>
             </li>
             <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }"
                                     v-if="is_repo_writeable">
                 <router-link :to="{ name: 'repository-settings',
-                            params: { username: owner.login, repository: repository.name }}">
+                            params: { username: $route.params.username, repository: $route.params.repository }}">
                     Settings
                 </router-link>
             </li>
@@ -33,7 +33,8 @@
                      v-bind:account="account"
                      v-bind:owner="owner"
                      v-bind:is_repo_writeable="is_repo_writeable"
-                     v-bind:repository="repository"></router-view>
+                     v-bind:repository="repository">
+        </router-view>
     </div>
 </template>
 
@@ -42,6 +43,9 @@
     import Alert from "../Alert.js"
 
     event.init()
+
+// TODO should params.username on this page and its child pages not actually be ownername?
+// TODO also probably better change params.repository to reponame
 
     export default {
         data() {
@@ -61,7 +65,7 @@
                     const name = this.account ? this.account.login : null
                     const repo = this.repository
 
-                    return name && (repo.owner === name || repo.shared.indexOf(name) >= 0)
+                    return name && repo && (repo.owner === name || repo.shared.indexOf(name) >= 0)
                 }
             }
         },
@@ -82,23 +86,27 @@
                     const promise = api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
+                                console.log("I have fetched an account")
                                 this.owner = acc
                             },
                             (error) => {
+                                console.log("I failed miserably")
                                 this.reportError(error)
                             }
                     )
                 }
 
                 if (!same_repo || !same_owner) {
-                    const promise = api.repos.get(params.username, params.repository, login_name)
+                    // always use one of the fake repositories for now until the repo service is fully integrated
+                    // and this whole page can be refactored
+                    //const promise = api.repos.get(params.username, params.repository, login_name)
+                    const promise = api.repos.get("alice", "alice-public-data", login_name)
                     promise.then(
                             (repo) => {
                                 this.repository = repo
                             },
                             (error) => {
-                                this.reportError(error)
-                            }
+                                this.reportError(error)                            }
                     )
                 }
             }

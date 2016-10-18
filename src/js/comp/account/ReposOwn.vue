@@ -1,16 +1,26 @@
 <template>
     <div>
-        <ul class="list-unstyled">
-            <li v-for="repo in repositories">
+        <ul class="list-unstyled" v-if="repos">
+            <li v-for="repo in repos">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <router-link :to="{ name: 'repository-info', params: { username: repo.owner, repository: repo.name}}">
-                            {{ repo.owner }}/{{ repo.name }}
+                        <router-link :to="{ name: 'repository-info',
+                                            params: { username: repo.Owner, repository: repo.Name } }">
+                            {{ repo.Owner }}/{{ repo.Name }}
                         </router-link>
                     </div>
                     <div class="panel-body">
-                        {{ repo.description }}
+                        Head: {{ repo.Head }} <br/>
+                        Description: {{ repo.Description }} <br/>
+                        Public: {{ repo.Visibility }}
                     </div>
+                </div>
+            </li>
+        </ul>
+        <ul class="list-unstyled" v-if="!repos">
+            <li class="panel panel-default">
+                <div class="panel-body">
+                    There are no available repositories
                 </div>
             </li>
         </ul>
@@ -23,34 +33,38 @@
     export default {
         data() {
             return {
-                repositories: null
+                repos: null
             }
         },
 
         mounted() {
-            this.update({ owner: this.owner, account: this.account })
+            this.update(this.$route.params)
         },
 
         props: {
-            account: { required: true },
-            owner: { required: true }
+            account: { required: true }
         },
 
         mixins: [ Alert ],
 
         methods: {
-            update(accounts) {
-                const login_name = accounts.account ? accounts.account.login : null
-                const promise  = api.repos.listOwn(accounts.owner.login, login_name)
-                promise.then(
-                    (repos) => {
-                        this.repositories = repos
-                    },
-                    (error) => {
-                        this.repositories = null
-                        this.reportError(error)
-                    }
+            update(params) {
+                const promise_own = api.repos.listUserRepos(params.username)
+                promise_own.then(
+                        (repos) => {
+                            this.repos = repos
+                        },
+                        (error) => {
+                            this.repos = null
+                            this.reportError(error)
+                        }
                 )
+            }
+        },
+
+        watch: {
+            "$route.params": function(params) {
+                this.update(params)
             }
         }
     }

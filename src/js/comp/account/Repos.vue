@@ -28,7 +28,7 @@
                 </ul>
             </div>
 
-            <router-view v-bind:account="account" v-bind:owner="owner"></router-view>
+            <router-view v-bind:account="account"></router-view>
         </div>
     </div>
 </template>
@@ -111,13 +111,12 @@
                 if (!is_same_account) {
                     const promise = api.accounts.get(params.username)
                     promise.then(
-                        (acc) => {
-                            this.owner = acc
-                        },
-                        (error) => {
-                            this.reportError(error)
-                        },
-                    )
+                            (acc) => {
+                                this.owner = acc
+                            },
+                            (error) => {
+                                this.reportError(error)
+                            })
                 }
             }
         },

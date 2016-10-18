@@ -336,50 +336,66 @@ class RepoAPI {
         this.config = config
     }
 
-    listPublic(search_text=null) {
+    filterRepos(search_text=null, repos) {
         const search_lower = search_text ? search_text.toLowerCase() : ""
         return new Promise((resolve) => {
-            const found = Array.from(data.repos.entries())
-                .map((entry) => { return copyRepo(entry[1], entry[0]) })
+            const curr_data = Array.from(repos)
                 .filter((repo) => {
-                    const all = (repo.name + repo.description + repo.owner).toLowerCase()
-                    return repo.is_public && (all.search(search_lower) >= 0)
+                    const all = (repo.Name + repo.Description + repo.Owner).toLowerCase()
+                    return all.search(search_lower) >= 0
                 })
-            resolve(found)
+            resolve(curr_data)
         })
     }
 
-    listShared(username, login_name) {
-        return new Promise((resolve) => {
-            const public_only = username !== login_name
-            const found = Array.from(data.repos.entries())
-                .map((entry) => { return copyRepo(entry[1], entry[0]) })
-                .filter((repo) => {
-                    const is_owner  = repo.owner === username
-                    const is_shared = repo.shared.find((name) => {return name === username})
-                    const is_public = repo.is_public
-
-                    return !is_owner && is_shared && (public_only ? is_public : true)
-                })
-            resolve(found)
+    listPublic() {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/repos/public`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            })
         })
     }
 
-    listOwn(username, login_name) {
-        return new Promise((resolve) => {
-            const public_only = username !== login_name
-            const found = Array.from(data.repos.entries())
-                .map((entry) => { return copyRepo(entry[1], entry[0]) })
-                .filter((repo) => {
-                    const is_owner  = repo.owner === username
-                    const is_public = repo.is_public
+    listShared() {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/repos/shared`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            }
 
-                    return is_owner && (public_only ? is_public : true)
-                })
-            resolve(found)
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
         })
     }
-    
+
+    listUserRepos(username) {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/users/${username}/repos`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject(error.responseJSON)
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
+        })
+    }
+
     get(username, repo_name, login_name) {
         return new Promise((resolve, reject) => {
             const public_only = username !== login_name
@@ -391,6 +407,66 @@ class RepoAPI {
             } else {
                 reject(Error("Repository does not exist"))
             }
+        })
+    }
+
+    getBranch(repo_owner, repo_name, branch_name) {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/branches/${branch_name}`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject({ code: error.status,
+                                            status: error.statusText,
+                                            message: error.responseText })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
+        })
+    }
+
+    getDirectorySection(repo_owner, repo_name, branch_name, path) {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/browse/${branch_name}/${path}`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject({ code: error.status,
+                                            status: error.statusText,
+                                            message: error.responseText })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
+        })
+    }
+
+    getTextFileContent(repo_owner, repo_name, object_id) {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/objects/${object_id}`,
+                type: "GET",
+                dataType: "text",
+                success: (text) => resolve(text),
+                error: (error) => reject({ code: error.status,
+                                            status: error.statusText,
+                                            message: error.responseText })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
         })
     }
 
