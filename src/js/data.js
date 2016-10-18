@@ -407,7 +407,9 @@ class RepoAPI {
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                error: (error) => reject({ code: error.status,
+                                            status: error.statusText,
+                                            message: error.responseText })
             })
         })
     }
@@ -419,7 +421,9 @@ class RepoAPI {
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                error: (error) => reject({ code: error.status,
+                                            status: error.statusText,
+                                            message: error.responseText })
             })
         })
     }
@@ -431,7 +435,9 @@ class RepoAPI {
                 type: "GET",
                 dataType: "text",
                 success: (text) => resolve(text),
-                error: (error) => reject(error.responseJSON)
+                error: (error) => reject({ code: error.status,
+                                            status: error.statusText,
+                                            message: error.responseText })
             })
         })
     }
