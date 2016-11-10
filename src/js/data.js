@@ -536,10 +536,10 @@ class RepoAPI {
         })
     }
 
-    update(owner, name, patch) {
+    update(owner, repo_name, patch) {
         return new Promise((resolve, reject) => {
             $.ajax({
-                url: `${this.config.repo_url}/users/${owner}/repos/${name}/settings`,
+                url: `${this.config.repo_url}/users/${owner}/repos/${repo_name}/settings`,
                 type: "PATCH",
                 contentType: "application/json; charset=utf-8",
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
@@ -563,6 +563,21 @@ class RepoAPI {
             } else {
                 reject(Error("Repository does not exist"))
             }
+        })
+    }
+
+    putCollaborator(owner, repo_name, collaborator, access_level) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${owner}/repos/${repo_name}/collaborators/${collaborator}`,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(access_level),
+                dataType: "json",
+                success: () => resolve(),
+                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+            })
         })
     }
 }
