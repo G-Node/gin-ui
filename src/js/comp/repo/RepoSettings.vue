@@ -24,7 +24,7 @@
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
                                 <button type="submit" class="btn btn-default" @click="reset">Reset</button>
-                                <button type="submit" class="btn btn-primary" @click="save">Save</button>
+                                <button type="submit" class="btn btn-primary" @click="saveSettings">Save</button>
                             </div>
                         </div>
                     </div>
@@ -209,21 +209,35 @@
                 }
             },
 
-            save() {
-                const repo = Object.assign({}, this.repository, this.form)
-                const promise = api.repos.update(repo)
-                promise.then(
-                    (repo) => {
-                        event.emit("repo-update", { username: this.$route.params.username, repository: repo.name })
-                        this.alertSuccess("Repository settings successfully updated")
-                    },
-                    (error) => {
-                        this.alertError(error)
+            saveSettings() {
+                if (this.repository.Description !== this.form.description ||
+                        this.repository.Public !== this.form.is_public) {
+                    var data = {}
+                    if (this.repository.Description !== this.form.description) {
+                        data["description"] = this.form.description
                     }
-                )
+                    if (this.repository.Public !== this.form.is_public ) {
+                        data["public"] = this.form.is_public
+                    }
+
+                    const promise = api.repos.update(this.repository.Owner, this.repository.Name, data)
+                    promise.then(
+                            (patch) => {
+                                this.form.description = patch.Description
+                                this.form.is_public = patch.Public
+                                event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                                this.alertSuccess("Repository settings successfully updated")
+                            },
+                            (error) => {
+                                this.alertError(error)
+                            }
+                    )
+                }
             },
 
             reset() {
+                // TODO shared should actually be removed from this reset,
+                // but it is currently still too entangled in the code above.
                 this.form = {
                     description: this.repository.Description,
                     is_public: this.repository.Public,
