@@ -140,14 +140,41 @@
                     selected.active = false
                     this.select.text = selected.login
                 } else if (this.select.match === login_name) {
+                    // Check if the account is actually available at gin-auth
                     const promise = api.accounts.get(login_name)
                     promise.then(
                         (acc) => {
-                            this.form.shared = this.form.shared.concat(acc.login)
-                            this.form.shared.sort()
-                            this.select.match = null
-                            this.select.text = null
-                            this.select.all = []
+                            // Add account login as collaborator at gin-repo
+                            // This will add the collaborator with the default access level "can-push"
+                            // TODO handle different access levels
+                            const put_promise = api.repos.putCollaborator(this.$route.params.username,
+                                                                            this.$route.params.repository,
+                                                                            login_name,
+                                                                            { Permission: "can-push" })
+                            put_promise.then(
+                                    () => {
+                                        this.form.shared = this.form.shared.concat(acc.login)
+                                        this.form.shared.sort()
+                                        this.select.match = null
+                                        this.select.text = null
+                                        this.select.all = []
+                                    },
+                                    (error) => {
+                                        this.select.match = null
+                                        this.select.text = null
+                                        this.select.all = []
+
+                                        // TODO this is a hack; this promise always defaults to error,
+                                        // even if the REST call returns status OK, but don't see
+                                        // the reason at the moment.
+                                        if (String(error).includes("OK")) {
+                                            this.form.shared = this.form.shared.concat(acc.login)
+                                            this.form.shared.sort()
+                                        } else {
+                                            this.alertError(error)
+                                        }
+                                    }
+                            )
                         },
                         (error) => {
                             this.select.match = null
