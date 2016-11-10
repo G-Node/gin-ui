@@ -1,31 +1,49 @@
 <template>
-    <div class="form">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                Edit Repository Settings
+    <div>
+        <div class="form">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Edit Repository Settings
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label for="description" class="col-sm-2 control-label">Description</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="description"
+                                       placeholder="Repository Description" v-model="form.description">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-10 col-sm-offset-2 checkbox">
+                                <label for="public">
+                                    <input type="checkbox" id="public" v-model="form.is_public"> Make Repository Public
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-offset-2 col-sm-10">
+                                <button type="submit" class="btn btn-default" @click="reset">Reset</button>
+                                <button type="submit" class="btn btn-primary" @click="save">Save</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="panel-body">
-                <div class="form-horizontal">
-                    <div class="form-group">
-                        <label for="description" class="col-sm-2 control-label">Description</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="description"
-                                   placeholder="Repository Description" v-model="form.description">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-10 col-sm-offset-2 checkbox">
-                            <label for="public">
-                                <input type="checkbox" id="public" v-model="form.is_public"> Make Repository Public
-                            </label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">Collaborators</label>
-                        <div class="col-sm-10">
-                            <div class="panel panel-default" style="margin-bottom: 0">
-                                <table class="table panel-body">
-                                    <tbody>
+        </div>
+        <div class="form">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Change Repository Collaborators
+                </div>
+                <div class="panel-body">
+                    <div class="form-horizontal">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">Collaborators</label>
+                            <div class="col-sm-10">
+                                <div class="panel panel-default" style="margin-bottom: 0">
+                                    <table class="table panel-body">
+                                        <tbody>
                                         <tr v-for="text in form.shared">
                                             <td>{{ text }}</td>
                                             <td class="text-right">
@@ -35,37 +53,32 @@
                                         <tr v-if="form.shared.length === 0">
                                             <td>This Repository has no Collaborators</td>
                                         </tr>
-                                    </tbody>
-                                </table>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
-                        <div class="col-sm-8">
-                            <div class="dropdown">
-                                <input type="text" class="form-control" id="select" data-toggle="dropdown"
-                                       aria-haspopup="true" aria-expanded="true" v-model="select.text"
-                                       @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()"
-                                       @keyup.down="selectionDown()">
-                                <ul v-if="select.all.length > 0" class="dropdown-menu"
-                                    aria-labelledby="select" style="width: 100%">
-                                    <li v-for="acc in select.all" :class="{active: acc.active}">
-                                        <a @click="selectShare(acc.login)">
-                                            {{ acc.login }} <small class="supplemental-text">{{ acc.label }}</small>
-                                        </a>
-                                    </li>
-                                </ul>
+                        <div class="form-group">
+                            <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
+                            <div class="col-sm-8">
+                                <div class="dropdown">
+                                    <input type="text" class="form-control" id="select" data-toggle="dropdown"
+                                           aria-haspopup="true" aria-expanded="true" v-model="select.text"
+                                           @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()"
+                                           @keyup.down="selectionDown()">
+                                    <ul v-if="select.all.length > 0" class="dropdown-menu"
+                                        aria-labelledby="select" style="width: 100%">
+                                        <li v-for="acc in select.all" :class="{active: acc.active}">
+                                            <a @click="selectShare(acc.login)">
+                                                {{ acc.login }} <small class="supplemental-text">{{ acc.label }}</small>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-sm-2">
-                            <button class="btn btn-primary btn-block" @click="addShare(select.text)">Add</button>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <div class="col-sm-offset-2 col-sm-10">
-                            <button type="submit" class="btn btn-default" @click="reset">Reset</button>
-                            <button type="submit" class="btn btn-primary" @click="save">Save</button>
+                            <div class="col-sm-2">
+                                <button class="btn btn-primary btn-block" @click="addShare(select.text)">Add</button>
+                            </div>
                         </div>
                     </div>
                 </div>
