@@ -536,21 +536,18 @@ class RepoAPI {
         })
     }
 
-    update(repository) {
-        const full_name = [repository.owner, repository.name].join("/")
-
+    update(owner, name, patch) {
         return new Promise((resolve, reject) => {
-            const repo = data.repos.get(full_name)
-
-            if (repo) {
-                repo.description = repository.description
-                repo.shared = repository.shared
-                repo.is_public = repository.is_public
-
-                resolve(copyRepo(repo, full_name))
-            } else {
-                reject(Error("Repository does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.repo_url}/users/${owner}/repos/${name}/settings`,
+                type: "PATCH",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(patch),
+                dataType: "json",
+                success: (patch) => resolve(patch),
+                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+            })
         })
     }
 
