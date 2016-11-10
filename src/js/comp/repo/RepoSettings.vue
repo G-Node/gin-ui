@@ -131,7 +131,17 @@
 
         methods: {
             removeShare(login_name) {
-                this.form.shared = this.form.shared.filter((n) => n !== login_name)
+                const promise = api.repos.removeCollaborator(this.$route.params.username,
+                        this.$route.params.repository,
+                        login_name)
+                promise.then(
+                        () => {
+                            this.form.shared = this.form.shared.filter((n) => n !== login_name)
+                        },
+                        (error) => {
+                            this.alertError(error)
+                        }
+                )
             },
 
             addShare(login_name) {
@@ -153,6 +163,7 @@
                                                                             { Permission: "can-push" })
                             put_promise.then(
                                     () => {
+                                        console.log("proper put")
                                         this.form.shared = this.form.shared.concat(acc.login)
                                         this.form.shared.sort()
                                         this.select.match = null
@@ -168,6 +179,7 @@
                                         // even if the REST call returns status OK, but don't see
                                         // the reason at the moment.
                                         if (String(error).includes("OK")) {
+                                            console.log("hack put")
                                             this.form.shared = this.form.shared.concat(acc.login)
                                             this.form.shared.sort()
                                         } else {
