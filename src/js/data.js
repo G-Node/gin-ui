@@ -410,6 +410,26 @@ class RepoAPI {
         })
     }
 
+    getRepo(repo_owner, repo_name, branch_name) {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject({ code: error.status,
+                    status: error.statusText,
+                    message: error.responseText })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
+        })
+    }
+
     getBranch(repo_owner, repo_name, branch_name) {
         return new Promise((resolve, reject) => {
             let req = {
