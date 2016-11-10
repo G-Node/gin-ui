@@ -110,9 +110,9 @@
         data() {
             return {
                 form: {
-                    description: this.repository.description,
-                    is_public: this.repository.is_public,
-                    shared: this.repository.shared
+                    description: this.repository.Description,
+                    is_public: this.repository.Public,
+                    shared: this.repository.Shared
                 },
                 select: {
                     match: null,
@@ -189,7 +189,7 @@
                     promise.then(
                         (accounts) => {
                             const shared = this.form.shared
-                            const owner_login = this.repository.owner
+                            const owner_login = this.repository.Owner
                             accounts = accounts
                                     .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
                                     .map(acc => { return { label: accountLabel(acc), login: acc.login, active: false}})
@@ -224,10 +224,10 @@
             },
 
             reset() {
-                this.from = {
-                    description: this.repository.description,
-                    is_public: this.repository.is_public,
-                    shared: this.repository.shared
+                this.form = {
+                    description: this.repository.Description,
+                    is_public: this.repository.Public,
+                    shared: this.repository.Shared
                 }
                 this.select = {
                     match: null,

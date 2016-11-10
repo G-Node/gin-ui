@@ -2,7 +2,7 @@
     <div>
         <header>
             <h2>{{$route.params.username}}/{{$route.params.repository}}</h2>
-            <h4 v-if="repository">{{ repository.description }}</h4>
+            <h4 v-if="repository">{{ repository.Description }}</h4>
         </header>
 
         <hr />
@@ -65,7 +65,7 @@
                     const name = this.account ? this.account.login : null
                     const repo = this.repository
 
-                    return name && repo && (repo.owner === name || repo.shared.indexOf(name) >= 0)
+                    return name && repo && (repo.Owner === name || repo.Shared.indexOf(name) >= 0)
                 }
             }
         },
@@ -86,27 +86,35 @@
                     const promise = api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
-                                console.log("I have fetched an account")
                                 this.owner = acc
                             },
                             (error) => {
-                                console.log("I failed miserably")
                                 this.reportError(error)
                             }
                     )
                 }
 
                 if (!same_repo || !same_owner) {
-                    // always use one of the fake repositories for now until the repo service is fully integrated
-                    // and this whole page can be refactored
-                    //const promise = api.repos.get(params.username, params.repository, login_name)
-                    const promise = api.repos.get("alice", "alice-public-data", login_name)
+                    // This is still a hack to transit the project from mockup to actual data
+                    // If results are returned, this means the repository exists and the current user
+                    // has at least pull access.
+                    const promise = api.repos.getRepo(params.username, params.repository)
                     promise.then(
                             (repo) => {
-                                this.repository = repo
+                                this.repository = Object.assign({}, repo, { Shared: [] })
+                                const co_promise = api.repos.getRepoCollaborators(params.username, params.repository)
+                                co_promise.then(
+                                        (collaborators) => {
+                                            this.repository.Shared = collaborators
+                                        },
+                                        (error) => {
+                                            this.reportError(error)
+                                        }
+                                )
                             },
                             (error) => {
-                                this.reportError(error)                            }
+                                this.reportError(error.message)
+                            }
                     )
                 }
             }
