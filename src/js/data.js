@@ -580,6 +580,19 @@ class RepoAPI {
             })
         })
     }
+
+    removeCollaborator(owner, repo_name, collaborator) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${owner}/repos/${repo_name}/collaborators/${collaborator}`,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                success: () => resolve(),
+                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+            })
+        })
+    }
 }
 
 function lastDir(parent, dir, path) {
