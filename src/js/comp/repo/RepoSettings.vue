@@ -34,7 +34,7 @@
         <div class="form">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Change Repository Collaborators
+                    Manage Repository Collaborators
                 </div>
                 <div class="panel-body">
                     <div class="form-horizontal">
@@ -137,6 +137,8 @@
                 promise.then(
                         () => {
                             this.form.shared = this.form.shared.filter((n) => n !== login_name)
+                            event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                            this.alertSuccess("Collaborator removed")
                         },
                         (error) => {
                             this.alertError(error)
@@ -169,6 +171,9 @@
                                         this.select.match = null
                                         this.select.text = null
                                         this.select.all = []
+
+                                        event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                                        this.alertSuccess("Collaborator added")
                                     },
                                     (error) => {
                                         this.select.match = null
@@ -182,6 +187,8 @@
                                             console.log("hack put")
                                             this.form.shared = this.form.shared.concat(acc.login)
                                             this.form.shared.sort()
+                                            event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                                            this.alertSuccess("Collaborator added")
                                         } else {
                                             this.alertError(error)
                                         }
