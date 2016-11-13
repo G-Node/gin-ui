@@ -50,9 +50,6 @@
                                                 },
                                                 (error) => {
                                                     this.readme = no_readme
-                                                    // TODO this is probably not the best way to deal with
-                                                    // not found entities.
-                                                    this.reportError(error)
                                                 }
                                         )
                                         break
@@ -63,9 +60,6 @@
                             },
                             (error) => {
                                 this.readme = no_readme
-                                // TODO this is probably not the best way to deal
-                                // with not found repositories
-                                this.reportError(error)
                             }
                     )
                 }
