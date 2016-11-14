@@ -410,6 +410,46 @@ class RepoAPI {
         })
     }
 
+    getRepo(repo_owner, repo_name, branch_name) {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject({ code: error.status,
+                    status: error.statusText,
+                    message: error.responseText })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
+        })
+    }
+
+    getRepoCollaborators(repo_owner, repo_name) {
+        return new Promise((resolve, reject) => {
+            let req = {
+                url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/collaborators`,
+                type: "GET",
+                dataType: "json",
+                success: (json) => resolve(json),
+                error: (error) => reject({ code: error.status,
+                    status: error.statusText,
+                    message: error.responseText })
+            }
+
+            if (this.config.token) {
+                req["headers"] = { Authorization: `Bearer ${this.config.token.jti}` }
+            }
+
+            $.ajax(req)
+        })
+    }
+
     getBranch(repo_owner, repo_name, branch_name) {
         return new Promise((resolve, reject) => {
             let req = {
@@ -496,22 +536,18 @@ class RepoAPI {
         })
     }
 
-
-    update(repository) {
-        const full_name = [repository.owner, repository.name].join("/")
-
+    update(owner, repo_name, patch) {
         return new Promise((resolve, reject) => {
-            const repo = data.repos.get(full_name)
-
-            if (repo) {
-                repo.description = repository.description
-                repo.shared = repository.shared
-                repo.is_public = repository.is_public
-
-                resolve(copyRepo(repo, full_name))
-            } else {
-                reject(Error("Repository does not exist"))
-            }
+            $.ajax({
+                url: `${this.config.repo_url}/users/${owner}/repos/${repo_name}/settings`,
+                type: "PATCH",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(patch),
+                dataType: "json",
+                success: (patch) => resolve(patch),
+                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+            })
         })
     }
 
@@ -527,6 +563,34 @@ class RepoAPI {
             } else {
                 reject(Error("Repository does not exist"))
             }
+        })
+    }
+
+    putCollaborator(owner, repo_name, collaborator, access_level) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${owner}/repos/${repo_name}/collaborators/${collaborator}`,
+                type: "PUT",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                data: JSON.stringify(access_level),
+                dataType: "json",
+                success: () => resolve(),
+                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+            })
+        })
+    }
+
+    removeCollaborator(owner, repo_name, collaborator) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${owner}/repos/${repo_name}/collaborators/${collaborator}`,
+                type: "DELETE",
+                contentType: "application/json; charset=utf-8",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                success: () => resolve(),
+                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+            })
         })
     }
 }
