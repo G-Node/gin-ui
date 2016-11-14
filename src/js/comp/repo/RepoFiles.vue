@@ -133,7 +133,7 @@
                                 this.content_files = c_f
                             }).catch((error) => {
                                 if (error.code === 404) {
-                                    this.alertWarning("This path does not exist")
+                                    this.alertWarning("Repository contains no files")
                                 } else {
                                     this.reportError(error)
                                 }
