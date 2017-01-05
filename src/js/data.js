@@ -191,7 +191,17 @@ export default class API {
     }
 
     register() {
-        window.location.href = `${this.config.auth_url}/oauth/registration_page`
+        const state = "toBeDetermined"
+        const uri = this.config.auth_url + "/oauth/registration_init?"
+        const kv = [
+            ["response_type", "client"],
+            ["client_id", this.config.client_id],
+            ["redirect_uri", `${window.location.origin}`],
+            ["scope", "account-create"],
+            ["state", encodeURIComponent(state)]
+        ]
+        const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        window.location.href = uri + query
         window.event.returnValue = false
     }
 }
