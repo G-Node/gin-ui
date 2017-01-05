@@ -1,4 +1,6 @@
 {
   "auth_url": "http://localhost:8081",
-  "repo_url": "http://localhost:8082"
+  "repo_url": "http://localhost:8082",
+  "client_id": "gin",
+  "client_secret": "secret"
 }
