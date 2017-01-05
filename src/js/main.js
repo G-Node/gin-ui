@@ -29,7 +29,7 @@ import { filesize }         from "./filters"
 Vue.filter("filesize", filesize)
 Vue.use(VueRouter)
 
-window.api = new API(config.auth_url, config.repo_url)
+window.api = new API(config.auth_url, config.repo_url, config.client_id, config.client_secret)
 
 const router = new VueRouter({
     mode: "history",
