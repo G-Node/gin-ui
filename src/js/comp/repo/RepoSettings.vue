@@ -162,7 +162,7 @@
                             const put_promise = api.repos.putCollaborator(this.$route.params.username,
                                                                             this.$route.params.repository,
                                                                             login_name,
-                                                                            { Permission: "can-push" })
+                                                                            { Permission: "can-pull" })
                             put_promise.then(
                                     () => {
                                         console.log("proper put")
