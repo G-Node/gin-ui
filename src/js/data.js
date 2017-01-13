@@ -111,8 +111,9 @@ const data = {
 
 export default class API {
 
-    constructor(auth_url, repo_url) {
-        this.config   = { auth_url: auth_url, repo_url: repo_url, token: null }
+    constructor(auth_url, repo_url, cid, cs) {
+        this.config   = { auth_url: auth_url, repo_url: repo_url,
+            client_id: cid, client_secret: cs, token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
         this.repos    = new RepoAPI(this.config)
@@ -123,7 +124,7 @@ export default class API {
         const url = this.config.auth_url + "/oauth/authorize?"
         const params = [
             ["response_type", "token"],
-            ["client_id", "gin"],
+            ["client_id", this.config.client_id],
             ["redirect_uri", `${window.location.origin}/oauth/login`],
             ["scope", "account-read account-write repo-read repo-write"],
             ["state", "foo"]
@@ -190,7 +191,17 @@ export default class API {
     }
 
     register() {
-        window.location.href = `${this.config.auth_url}/oauth/registration_page`
+        const state = "toBeDetermined"
+        const uri = this.config.auth_url + "/oauth/registration_init?"
+        const kv = [
+            ["response_type", "client"],
+            ["client_id", this.config.client_id],
+            ["redirect_uri", `${window.location.origin}`],
+            ["scope", "account-create"],
+            ["state", encodeURIComponent(state)]
+        ]
+        const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        window.location.href = uri + query
         window.event.returnValue = false
     }
 }
