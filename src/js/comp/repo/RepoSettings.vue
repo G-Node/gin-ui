@@ -136,7 +136,7 @@
                         login_name)
                 promise.then(
                         () => {
-                            this.form.shared = this.form.shared.filter((n) => n !== login_name)
+                            this.form.shared = this.form.shared.filter((n) => n.User !== login_name)
                             event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                             this.alertSuccess("Collaborator removed")
                         },
