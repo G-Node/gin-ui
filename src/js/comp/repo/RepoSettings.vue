@@ -132,6 +132,42 @@
         mixins: [ Alert ],
 
         methods: {
+            updateCollaborator(login_name, permission) {
+                const put_promise = api.repos.putCollaborator(this.$route.params.username,
+                        this.$route.params.repository,
+                        login_name,
+                        { Permission: permission })
+                put_promise.then(
+                        () => {
+                            event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                            for (var i = 0; i < this.form.shared.length; i++) {
+                                if (this.form.shared[i].User === login_name) {
+                                    this.form.shared[i].AccessLevel = permission
+                                    break
+                                }
+                            }
+                            this.alertSuccess("Collaborator updated")
+                        },
+                        (error) => {
+                            // TODO this is a hack; this promise always defaults to error,
+                            // even if the REST call returns status OK, but don't see
+                            // the reason at the moment.
+                            if (String(error).includes("OK")) {
+                                event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                                for (var i = 0; i < this.form.shared.length; i++) {
+                                    if (this.form.shared[i].User === login_name) {
+                                        this.form.shared[i].AccessLevel = permission
+                                        break
+                                    }
+                                }
+                                this.alertSuccess("Collaborator updated")
+                            } else {
+                                this.alertError(error)
+                            }
+                        }
+                )
+            },
+
             removeShare(login_name) {
                 const promise = api.repos.removeCollaborator(this.$route.params.username,
                         this.$route.params.repository,
