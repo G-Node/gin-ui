@@ -109,6 +109,8 @@
     export default {
         data() {
             return {
+                permissions: ["can-pull", "can-push", "is-admin"],
+                default_permission: "can-pull",
                 form: {
                     description: this.repository.Description,
                     is_public: this.repository.Public,
@@ -156,25 +158,22 @@
                     const promise = api.accounts.get(login_name)
                     promise.then(
                         (acc) => {
+                            this.select.match = null
+                            this.select.text = null
+                            this.select.all = []
+
+                            // Add account login as collaborator at gin-repo with default access level
                             const put_promise = api.repos.putCollaborator(this.$route.params.username,
                                                                             this.$route.params.repository,
                                                                             login_name,
-                                                                            { Permission: "can-pull" })
+                                                                            { Permission: this.default_permission })
                             put_promise.then(
                                     () => {
-                                        this.select.match = null
-                                        this.select.text = null
-                                        this.select.all = []
-
                                         event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                                         this.form.shared.push({User: login_name, AccessLevel: this.default_permission})
                                         this.alertSuccess("Collaborator added")
                                     },
                                     (error) => {
-                                        this.select.match = null
-                                        this.select.text = null
-                                        this.select.all = []
-
                                         // TODO this is a hack; this promise always defaults to error,
                                         // even if the REST call returns status OK, but don't see
                                         // the reason at the moment.
