@@ -45,9 +45,9 @@
                                     <table class="table panel-body">
                                         <tbody>
                                         <tr v-for="text in form.shared">
-                                            <td>{{ text }}</td>
+                                            <td>{{ text.User }}</td>
                                             <td class="text-right">
-                                                <button class="btn btn-danger btn-xs" @click="removeShare(text)">remove</button>
+                                                <button class="btn btn-danger btn-xs" @click="removeShare(text.User)">remove</button>
                                             </td>
                                         </tr>
                                         <tr v-if="form.shared.length === 0">
@@ -156,23 +156,18 @@
                     const promise = api.accounts.get(login_name)
                     promise.then(
                         (acc) => {
-                            // Add account login as collaborator at gin-repo
-                            // This will add the collaborator with the default access level "can-push"
-                            // TODO handle different access levels
                             const put_promise = api.repos.putCollaborator(this.$route.params.username,
                                                                             this.$route.params.repository,
                                                                             login_name,
                                                                             { Permission: "can-pull" })
                             put_promise.then(
                                     () => {
-                                        console.log("proper put")
-                                        this.form.shared = this.form.shared.concat(acc.login)
-                                        this.form.shared.sort()
                                         this.select.match = null
                                         this.select.text = null
                                         this.select.all = []
 
                                         event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                                        this.form.shared.push({User: login_name, AccessLevel: this.default_permission})
                                         this.alertSuccess("Collaborator added")
                                     },
                                     (error) => {
@@ -184,10 +179,8 @@
                                         // even if the REST call returns status OK, but don't see
                                         // the reason at the moment.
                                         if (String(error).includes("OK")) {
-                                            console.log("hack put")
-                                            this.form.shared = this.form.shared.concat(acc.login)
-                                            this.form.shared.sort()
                                             event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                                            this.form.shared.push({User: login_name, AccessLevel: this.default_permission})
                                             this.alertSuccess("Collaborator added")
                                         } else {
                                             this.alertError(error)
