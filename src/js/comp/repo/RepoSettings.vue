@@ -224,14 +224,21 @@
 
             search(text) {
                 if (text && text.length > 0) {
+                    // TODO currently every new character entered leads to a request to the auth server.
+                    // Check if this could be done more efficiently to reduce either the number of
+                    // requests all together or at least the amount of transferred data using an
+                    // eTag for the account information.
+                    // TODO promise currently does not deal with the reject case.
                     const promise = api.accounts.search(encodeURIComponent(text))
                     promise.then(
                         (accounts) => {
-                            const shared = this.form.shared
+                            const shared = this.form.shared.map(collab => { return collab.User })
                             const owner_login = this.repository.Owner
+
                             accounts = accounts
                                     .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
                                     .map(acc => { return { label: accountLabel(acc), login: acc.login, active: false}})
+
                             const idx = accounts.findIndex(acc => acc.login === text)
                             if (idx >= 0) {
                                 accounts.splice(idx, 1)
