@@ -67,7 +67,9 @@
 
                     var collaborator
                     if (repo.Shared.length !== undefined) {
-                        collaborator = repo.Shared.map(coll => { return coll.User })
+                        collaborator = repo.Shared
+                                    .filter((coll) => coll.AccessLevel === "is-admin")
+                                    .map(coll => { return coll.User })
                     }
 
                     return name && repo && (repo.Owner === name || (collaborator && collaborator.indexOf(name) >= 0))
