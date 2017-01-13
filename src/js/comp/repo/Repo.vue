@@ -65,7 +65,12 @@
                     const name = this.account ? this.account.login : null
                     const repo = this.repository
 
-                    return name && repo && (repo.Owner === name || repo.Shared.indexOf(name) >= 0)
+                    var collaborator
+                    if (repo.Shared.length !== undefined) {
+                        collaborator = repo.Shared.map(coll => { return coll.User })
+                    }
+
+                    return name && repo && (repo.Owner === name || (collaborator && collaborator.indexOf(name) >= 0))
                 }
             }
         },
