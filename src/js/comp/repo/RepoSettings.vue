@@ -114,6 +114,10 @@
         return parts.length > 0 ? parts.join(" ") : acc.login
     }
 
+    function sortCollaborators(a,b) {
+        return a.User.localeCompare(b.User)
+    }
+
     export default {
         data() {
             return {
@@ -130,6 +134,10 @@
                     all: []
                 }
             }
+        },
+
+        mounted() {
+            this.form.shared.sort(sortCollaborators)
         },
 
         props: {
@@ -215,6 +223,7 @@
                                     () => {
                                         event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                                         this.form.shared.push({User: login_name, AccessLevel: this.default_permission})
+                                        this.form.shared.sort(sortCollaborators)
                                         this.alertSuccess("Collaborator added")
                                     },
                                     (error) => {
@@ -224,6 +233,7 @@
                                         if (String(error).includes("OK")) {
                                             event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                                             this.form.shared.push({User: login_name, AccessLevel: this.default_permission})
+                                            this.form.shared.sort(sortCollaborators)
                                             this.alertSuccess("Collaborator added")
                                         } else {
                                             this.alertError(error)
@@ -332,6 +342,7 @@
                     is_public: this.repository.Public,
                     shared: this.repository.Shared
                 }
+                this.form.shared.sort(sortCollaborators)
                 this.select = {
                     match: null,
                     text: null,
