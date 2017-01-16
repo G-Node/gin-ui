@@ -165,21 +165,7 @@
                             this.alertSuccess("Collaborator updated")
                         },
                         (error) => {
-                            // TODO this is a hack; this promise always defaults to error,
-                            // even if the REST call returns status OK, but don't see
-                            // the reason at the moment.
-                            if (String(error).includes("OK")) {
-                                event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
-                                for (var i = 0; i < this.form.shared.length; i++) {
-                                    if (this.form.shared[i].User === login_name) {
-                                        this.form.shared[i].AccessLevel = permission
-                                        break
-                                    }
-                                }
-                                this.alertSuccess("Collaborator updated")
-                            } else {
-                                this.alertError(error)
-                            }
+                            this.alertError(error)
                         }
                 )
             },
@@ -227,17 +213,7 @@
                                         this.alertSuccess("Collaborator added")
                                     },
                                     (error) => {
-                                        // TODO this is a hack; this promise always defaults to error,
-                                        // even if the REST call returns status OK, but don't see
-                                        // the reason at the moment.
-                                        if (String(error).includes("OK")) {
-                                            event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
-                                            this.form.shared.push({User: login_name, AccessLevel: this.default_permission})
-                                            this.form.shared.sort(sortCollaborators)
-                                            this.alertSuccess("Collaborator added")
-                                        } else {
-                                            this.alertError(error)
-                                        }
+                                        this.alertError(error)
                                     }
                             )
                         },
