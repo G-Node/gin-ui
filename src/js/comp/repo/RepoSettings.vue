@@ -61,7 +61,7 @@
                                                 <button class="btn btn-danger btn-xs" @click="removeShare(text.User)">remove</button>
                                             </td>
                                         </tr>
-                                        <tr v-if="form.shared.length === 0">
+                                        <tr v-if="form.shared.length === undefined || form.shared.length === 0">
                                             <td>This Repository has no Collaborators</td>
                                         </tr>
                                         </tbody>
@@ -140,7 +140,9 @@
         },
 
         mounted() {
-            this.form.shared.sort(sortCollaborators)
+            if (this.form.shared.length !== undefined) {
+                this.form.shared.sort(sortCollaborators)
+            }
         },
 
         props: {
