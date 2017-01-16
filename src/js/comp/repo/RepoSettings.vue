@@ -23,7 +23,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default" @click="reset">Reset</button>
+                                <button type="submit" class="btn btn-default" @click="resetSettings">Reset</button>
                                 <button type="submit" class="btn btn-primary" @click="saveSettings">Save</button>
                             </div>
                         </div>
@@ -195,15 +195,11 @@
                     selected.active = false
                     this.select.text = selected.login
                 } else if (this.select.match === login_name) {
-                    // Check if the account is actually available at gin-auth
+                    // Check if the account is actually available at gin-auth.
                     const promise = api.accounts.get(login_name)
                     promise.then(
                         (acc) => {
-                            this.select.match = null
-                            this.select.text = null
-                            this.select.all = []
-
-                            // Add account login as collaborator at gin-repo with default access level
+                            // Put gin-auth account login as collaborator to gin-repo with default access level.
                             const put_promise = api.repos.putCollaborator(this.$route.params.username,
                                                                             this.$route.params.repository,
                                                                             login_name,
@@ -221,12 +217,12 @@
                             )
                         },
                         (error) => {
-                            this.select.match = null
-                            this.select.text = null
-                            this.select.all = []
                             this.alertError(error)
                         }
                     )
+                    this.select.match = null
+                    this.select.text = null
+                    this.select.all = []
                 }
             },
 
@@ -260,7 +256,6 @@
                     // Check if this could be done more efficiently to reduce either the number of
                     // requests all together or at least the amount of transferred data using an
                     // eTag for the account information.
-                    // TODO promise currently does not deal with the reject case.
                     const promise = api.accounts.search(encodeURIComponent(text))
                     promise.then(
                         (accounts) => {
@@ -279,6 +274,9 @@
                                 this.select.match = null
                             }
                             this.select.all = accounts
+                        },
+                        (error) => {
+                            this.alertError(error)
                         }
                     )
                 } else {
@@ -313,19 +311,10 @@
                 }
             },
 
-            reset() {
-                // TODO shared should actually be removed from this reset,
-                // but it is currently still too entangled in the code above.
+            resetSettings() {
                 this.form = {
                     description: this.repository.Description,
                     is_public: this.repository.Public,
-                    shared: this.repository.Shared
-                }
-                this.form.shared.sort(sortCollaborators)
-                this.select = {
-                    match: null,
-                    text: null,
-                    all: []
                 }
             }
         },
