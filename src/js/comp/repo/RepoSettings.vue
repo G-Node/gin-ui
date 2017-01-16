@@ -48,10 +48,13 @@
                                             <td>{{ text.User }}</td>
                                             <td class="text-right">
                                                 <span v-for="level in permissions">
-                                                    <button v-if="text.AccessLevel === level" class="btn btn-success btn-xs"
-                                                            @click="updateCollaborator(text.User, level)">{{ level }}</button>
-                                                    <button v-if="text.AccessLevel !== level" class="btn btn-xs"
-                                                            @click="updateCollaborator(text.User, level)">{{ level }}</button>
+                                                    <button v-if="(permissions.indexOf(text.AccessLevel) > -1 &&
+                                                            permissions.indexOf(level) <= permissions.indexOf(text.AccessLevel))"
+                                                            @click="updateCollaborator(text.User, level)"
+                                                            class="btn btn-success btn-xs">{{ level }}</button>
+                                                    <button v-else
+                                                            @click="updateCollaborator(text.User, level)"
+                                                            class="btn btn-xs">{{ level }}</button>
                                                 </span>
                                             </td>
                                             <td class="text-right">
