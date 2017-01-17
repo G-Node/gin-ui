@@ -102,7 +102,6 @@
                 }
 
                 if (!same_repo || !same_owner) {
-                    // This is still a hack to transit the project from mockup to actual data
                     // If results are returned, this means the repository exists and the current user
                     // has at least pull access.
                     const promise = api.repos.getRepo(params.username, params.repository)
