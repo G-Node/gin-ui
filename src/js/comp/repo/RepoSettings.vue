@@ -314,10 +314,8 @@
             },
 
             resetSettings() {
-                this.form = {
-                    description: this.repository.Description,
-                    is_public: this.repository.Public,
-                }
+                this.form.description = this.repository.Description
+                this.form.is_public = this.repository.Public
             }
         },
 
