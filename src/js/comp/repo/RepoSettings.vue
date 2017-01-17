@@ -121,6 +121,8 @@
         return a.User.localeCompare(b.User)
     }
 
+    var searchBuffer
+
     export default {
         data() {
             return {
@@ -322,7 +324,8 @@
         watch: {
             "select.text": function (search, old) {
                 if (search !== old) {
-                    this.search(search)
+                    clearTimeout(searchBuffer)
+                    searchBuffer = setTimeout(() => {this.search(search)}, 300)
                 }
             }
         }
