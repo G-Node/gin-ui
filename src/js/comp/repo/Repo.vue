@@ -44,8 +44,8 @@
 
     event.init()
 
-// TODO should params.username on this page and its child pages not actually be ownername?
-// TODO also probably better change params.repository to reponame
+    // TODO should params.username on this page and its child pages not actually be ownername?
+    // TODO Also probably change params.repository to reponame.
 
     export default {
         data() {
@@ -65,7 +65,14 @@
                     const name = this.account ? this.account.login : null
                     const repo = this.repository
 
-                    return name && repo && (repo.Owner === name || repo.Shared.indexOf(name) >= 0)
+                    var collaborator
+                    if (repo.Shared.length !== undefined) {
+                        collaborator = repo.Shared
+                                    .filter((coll) => coll.AccessLevel === "is-admin")
+                                    .map(coll => { return coll.User })
+                    }
+
+                    return name && repo && (repo.Owner === name || (collaborator && collaborator.indexOf(name) >= 0))
                 }
             }
         },
@@ -101,7 +108,7 @@
                     const promise = api.repos.getRepo(params.username, params.repository)
                     promise.then(
                             (repo) => {
-                                this.repository = Object.assign({}, repo, { Shared: [] })
+                                this.repository = Object.assign({}, repo, { Shared: {} })
                                 const co_promise = api.repos.getRepoCollaborators(params.username, params.repository)
                                 co_promise.then(
                                         (collaborators) => {

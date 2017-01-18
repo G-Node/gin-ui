@@ -23,7 +23,7 @@
                         </div>
                         <div class="form-group">
                             <div class="col-sm-offset-2 col-sm-10">
-                                <button type="submit" class="btn btn-default" @click="reset">Reset</button>
+                                <button type="submit" class="btn btn-default" @click="resetSettings">Reset</button>
                                 <button type="submit" class="btn btn-primary" @click="saveSettings">Save</button>
                             </div>
                         </div>
@@ -45,12 +45,23 @@
                                     <table class="table panel-body">
                                         <tbody>
                                         <tr v-for="text in form.shared">
-                                            <td>{{ text }}</td>
+                                            <td>{{ text.User }}</td>
                                             <td class="text-right">
-                                                <button class="btn btn-danger btn-xs" @click="removeShare(text)">remove</button>
+                                                <span v-for="level in permissions">
+                                                    <button v-if="(permissions.indexOf(text.AccessLevel) > -1 &&
+                                                            permissions.indexOf(level) <= permissions.indexOf(text.AccessLevel))"
+                                                            @click="updateCollaborator(text.User, level)"
+                                                            class="btn btn-success btn-xs">{{ level }}</button>
+                                                    <button v-else
+                                                            @click="updateCollaborator(text.User, level)"
+                                                            class="btn btn-xs">{{ level }}</button>
+                                                </span>
+                                            </td>
+                                            <td class="text-right">
+                                                <button class="btn btn-danger btn-xs" @click="removeShare(text.User)">remove</button>
                                             </td>
                                         </tr>
-                                        <tr v-if="form.shared.length === 0">
+                                        <tr v-if="form.shared.length === undefined || form.shared.length === 0">
                                             <td>This Repository has no Collaborators</td>
                                         </tr>
                                         </tbody>
@@ -106,9 +117,17 @@
         return parts.length > 0 ? parts.join(" ") : acc.login
     }
 
+    function sortCollaborators(a,b) {
+        return a.User.localeCompare(b.User)
+    }
+
+    var searchBuffer
+
     export default {
         data() {
             return {
+                permissions: ["can-pull", "can-push", "is-admin"],
+                default_permission: "can-pull",
                 form: {
                     description: this.repository.Description,
                     is_public: this.repository.Public,
@@ -122,6 +141,12 @@
             }
         },
 
+        mounted() {
+            if (this.form.shared.length !== undefined) {
+                this.form.shared.sort(sortCollaborators)
+            }
+        },
+
         props: {
             repository: { required: true },
             is_repo_writeable: { required: true }
@@ -130,13 +155,35 @@
         mixins: [ Alert ],
 
         methods: {
+            updateCollaborator(login_name, permission) {
+                const put_promise = api.repos.putCollaborator(this.$route.params.username,
+                        this.$route.params.repository,
+                        login_name,
+                        { Permission: permission })
+                put_promise.then(
+                        () => {
+                            event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                            for (var i = 0; i < this.form.shared.length; i++) {
+                                if (this.form.shared[i].User === login_name) {
+                                    this.form.shared[i].AccessLevel = permission
+                                    break
+                                }
+                            }
+                            this.alertSuccess("Collaborator updated")
+                        },
+                        (error) => {
+                            this.alertError(error)
+                        }
+                )
+            },
+
             removeShare(login_name) {
                 const promise = api.repos.removeCollaborator(this.$route.params.username,
                         this.$route.params.repository,
                         login_name)
                 promise.then(
                         () => {
-                            this.form.shared = this.form.shared.filter((n) => n !== login_name)
+                            this.form.shared = this.form.shared.filter((n) => n.User !== login_name)
                             event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                             this.alertSuccess("Collaborator removed")
                         },
@@ -152,56 +199,34 @@
                     selected.active = false
                     this.select.text = selected.login
                 } else if (this.select.match === login_name) {
-                    // Check if the account is actually available at gin-auth
+                    // Check if the account is actually available at gin-auth.
                     const promise = api.accounts.get(login_name)
                     promise.then(
                         (acc) => {
-                            // Add account login as collaborator at gin-repo
-                            // This will add the collaborator with the default access level "can-push"
-                            // TODO handle different access levels
+                            // Put gin-auth account login as collaborator to gin-repo with default access level.
                             const put_promise = api.repos.putCollaborator(this.$route.params.username,
                                                                             this.$route.params.repository,
                                                                             login_name,
-                                                                            { Permission: "can-push" })
+                                                                            { Permission: this.default_permission })
                             put_promise.then(
                                     () => {
-                                        console.log("proper put")
-                                        this.form.shared = this.form.shared.concat(acc.login)
-                                        this.form.shared.sort()
-                                        this.select.match = null
-                                        this.select.text = null
-                                        this.select.all = []
-
                                         event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
+                                        this.form.shared.push({User: login_name, AccessLevel: this.default_permission})
+                                        this.form.shared.sort(sortCollaborators)
                                         this.alertSuccess("Collaborator added")
                                     },
                                     (error) => {
-                                        this.select.match = null
-                                        this.select.text = null
-                                        this.select.all = []
-
-                                        // TODO this is a hack; this promise always defaults to error,
-                                        // even if the REST call returns status OK, but don't see
-                                        // the reason at the moment.
-                                        if (String(error).includes("OK")) {
-                                            console.log("hack put")
-                                            this.form.shared = this.form.shared.concat(acc.login)
-                                            this.form.shared.sort()
-                                            event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
-                                            this.alertSuccess("Collaborator added")
-                                        } else {
-                                            this.alertError(error)
-                                        }
+                                        this.alertError(error)
                                     }
                             )
                         },
                         (error) => {
-                            this.select.match = null
-                            this.select.text = null
-                            this.select.all = []
                             this.alertError(error)
                         }
                     )
+                    this.select.match = null
+                    this.select.text = null
+                    this.select.all = []
                 }
             },
 
@@ -231,14 +256,20 @@
 
             search(text) {
                 if (text && text.length > 0) {
+                    // TODO currently every new character entered leads to a request to the auth server.
+                    // Check if this could be done more efficiently to reduce either the number of
+                    // requests all together or at least the amount of transferred data using an
+                    // eTag for the account information.
                     const promise = api.accounts.search(encodeURIComponent(text))
                     promise.then(
                         (accounts) => {
-                            const shared = this.form.shared
+                            const shared = this.form.shared.map(collab => { return collab.User })
                             const owner_login = this.repository.Owner
+
                             accounts = accounts
                                     .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
                                     .map(acc => { return { label: accountLabel(acc), login: acc.login, active: false}})
+
                             const idx = accounts.findIndex(acc => acc.login === text)
                             if (idx >= 0) {
                                 accounts.splice(idx, 1)
@@ -247,6 +278,9 @@
                                 this.select.match = null
                             }
                             this.select.all = accounts
+                        },
+                        (error) => {
+                            this.alertError(error)
                         }
                     )
                 } else {
@@ -281,26 +315,17 @@
                 }
             },
 
-            reset() {
-                // TODO shared should actually be removed from this reset,
-                // but it is currently still too entangled in the code above.
-                this.form = {
-                    description: this.repository.Description,
-                    is_public: this.repository.Public,
-                    shared: this.repository.Shared
-                }
-                this.select = {
-                    match: null,
-                    text: null,
-                    all: []
-                }
+            resetSettings() {
+                this.form.description = this.repository.Description
+                this.form.is_public = this.repository.Public
             }
         },
 
         watch: {
             "select.text": function (search, old) {
                 if (search !== old) {
-                    this.search(search)
+                    clearTimeout(searchBuffer)
+                    searchBuffer = setTimeout(() => {this.search(search)}, 300)
                 }
             }
         }
