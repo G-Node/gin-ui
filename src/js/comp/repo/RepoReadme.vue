@@ -1,11 +1,11 @@
 <template>
     <div class="panel panel-default">
         <div class="panel-heading">
-            README
+            Repository information
         </div>
         <div class="panel-body">
             <article style="margin-top: 1.5em">
-                {{ readme }}
+                {{ description }}
             </article>
         </div>
     </div>
@@ -14,61 +14,29 @@
 <script type="text/ecmascript-6">
     import Alert from "../Alert.js"
 
-    const no_readme = "No readme file for this repository"
+    const no_description = "No description for this repository"
 
     export default {
 
         data() {
-            return { readme: no_readme }
+            return { description: no_description }
         },
 
         mounted() {
-            this.update(this.$route.params, null)
+            this.update()
+        },
+
+        props: {
+            repository: {required: true},
         },
 
         mixins: [ Alert ],
 
         methods: {
-            update(params, old){
-                if (params != old) {
-                    // fetch the repository root to look for a readme file
-                    const promise_root = api.repos.getDirectorySection(params.username, params.repository, "master", "")
-                    // TODO chaining promises like this is not nice (at all)!
-                    // change it when there is time
-                    promise_root.then(
-                            (root) => {
-                                var entries = root.entries
-                                for (var entry of entries) {
-                                    if (entry.name && entry.name.startsWith("README") && entry.id) {
-                                        // fetch the contents of the readme file
-                                        const promise_readme = api.repos.getTextFileContent(params.username,
-                                                                                            params.repository,
-                                                                                            entry.id)
-                                        promise_readme.then(
-                                                (text) => {
-                                                    this.readme = text
-                                                },
-                                                (error) => {
-                                                    this.readme = no_readme
-                                                }
-                                        )
-                                        break
-                                    } else {
-                                        this.readme = no_readme
-                                    }
-                                }
-                            },
-                            (error) => {
-                                this.readme = no_readme
-                            }
-                    )
+            update(){
+                if (this.repository.Description !== undefined && this.repository.Description !== "") {
+                    this.description = this.repository.Description
                 }
-            }
-        },
-
-        watch: {
-            "$route.params" : function(params, old) {
-                this.update(params, old)
             }
         }
     }

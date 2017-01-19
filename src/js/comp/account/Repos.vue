@@ -5,12 +5,12 @@
 
             <hr />
 
-            <div>
+            <span>
                 <ul class="nav pull-right" v-if="account_is_owner">
                     <li role="presentation">
-                        <button class="btn btn-default">
-                            <router-link :to="{ name: 'repository-create'}">New Repository</router-link>
-                        </button>
+                        <router-link :to="{ name: 'repository-create'}" class="btn btn-default">
+                            New Repository
+                        </router-link>
                     </li>
                 </ul>
 
@@ -26,7 +26,7 @@
                         </router-link>
                     </li>
                 </ul>
-            </div>
+            </span>
 
             <router-view v-bind:account="account"></router-view>
         </div>
