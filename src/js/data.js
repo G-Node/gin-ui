@@ -19,7 +19,9 @@ export default class API {
         ]
         const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
         window.location.href = url + query
-        window.event.returnValue = false
+        if (window.event !== undefined) {
+            window.event.returnValue = false
+        }
     }
 
     login(token_str) {
