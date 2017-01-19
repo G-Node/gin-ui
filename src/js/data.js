@@ -8,14 +8,17 @@ export default class API {
         this.repos    = new RepoAPI(this.config)
     }
 
-    authorize(r) {
+    // Redirects to the gin-auth login page to request an access token and create a session.
+    // A successful request will redirect back to gin-ui/oauth/login for the token validation.
+    authorize() {
+        const state = "toBeDetermined"
         const url = this.config.auth_url + "/oauth/authorize?"
         const params = [
             ["response_type", "token"],
             ["client_id", this.config.client_id],
             ["redirect_uri", `${window.location.origin}/oauth/login`],
             ["scope", "account-read account-write repo-read repo-write"],
-            ["state", "foo"]
+            ["state", encodeURIComponent(state)]
         ]
         const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
         window.location.href = url + query
@@ -24,6 +27,8 @@ export default class API {
         }
     }
 
+    // Requests validation of an access token at gin-auth and sets
+    // the account information corresponding to the token.
     login(token_str) {
         return new Promise((resolve, reject) => {
             $.ajax({
