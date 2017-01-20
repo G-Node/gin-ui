@@ -4,7 +4,8 @@ import VueRouter            from "vue-router"
 import API                  from "./data.js"
 import App                  from "./App.vue"
 import Index                from "./comp/Index.vue"
-import OAuthLogin           from "./comp/oauth/Login.js"
+import Authorize            from "./comp/oauth/Authorize.vue"
+import OAuthLogin           from "./comp/oauth/Login.vue"
 import Search               from "./comp/search/Search.vue"
 import RepoSearch           from "./comp/search/RepoSearch.vue"
 import UserSearch           from "./comp/search/UserSearch.vue"
@@ -38,6 +39,8 @@ const router = new VueRouter({
             name: "index" },
         { path: "/oauth/login", component: OAuthLogin,
             name: "oauth-login" },
+        { path: "/oauth/authorize", component: Authorize,
+            name: "oauth-authorize" },
         { path: "/account/settings", component: Settings,
             children: [
                 { path: "profile", component: ProfileSettings,
