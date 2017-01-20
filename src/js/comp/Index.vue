@@ -67,7 +67,7 @@
 
         <p>If you want to use our services</p>
         <ul>
-            <li><a @click="window.api.register()">register</a> an account with us.</li>
+            <li><a @click="register()">register</a> an account with us.</li>
             <li>download the command line client <a href="https://github.com/G-Node/gin-cli">gin-cli</a>.</li>
             <li>upload your data using gin-cli.</li>
             <li>access your data via the web services or download them on another machine using gin-cli.</li>
@@ -90,3 +90,13 @@
 
     </div>
 </template>
+
+<script type="text/ecmascript-6">
+    export default {
+        methods: {
+            register() {
+                window.api.register()
+            }
+        }
+    }
+</script>
