@@ -12,7 +12,7 @@
         <p>Therefore this service will always be free and Open Source - you can even setup your
             own in-house instance of this service.</p>
 
-        <p>We also provide a free publishing service for data by issuing DOIs to repositories.</p>
+        <p>We also provide a free publishing service for data by issuing DOIs to public repositories.</p>
 
         <h2>Features:</h2>
 
@@ -45,14 +45,14 @@
                         repositories with other users of the GIN service making it easy to jointly work on a project.</li>
                 </ul>
             </li>
-            <li>Publish your data (DOI)
+            <li>Publish your data (DOI) [in development]
                 <ul>
                     <li>when you are hosting your data on the GIN server, we give you the option
-                        to publish any of your repositories. We will issue a DOI reliably hosting
+                        to publish any of your public repositories. We will issue a DOI reliably hosting
                         your data for your publications. </li>
                 </ul>
             </li>
-            <li>Enhanced search of your repositories
+            <li>Enhanced search of your repositories [in development]
                 <ul>
                     <li>By indexing the repository contents it's easy to find the files you are looking for</li>
                     <li>When using the <a href="https://github.com/G-Node/nix">NIX</a> (Neuroscience Exchange format)
