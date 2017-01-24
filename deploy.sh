@@ -8,7 +8,8 @@ CAOK="\033[32;01m"
 CERR="\033[31;01m"
 CWRN="\033[33;01m"
 
-GOPATH=/opt/deploy/go
+NODE=/opt/node/bin
+HOME=/opt/deploy
 
 sudo -v -p "Certain commands require sudo access. Please enter your password: "
 
@@ -32,9 +33,11 @@ sudo -u deploy git pull origin master
 echo "Setting up config file"
 sudo -u deploy cp /opt/deploy/service_conf/gin-ui/config.json /opt/deploy/gin-ui/src/js/
 
-echo "Installing gin-ui"
-sudo -u deploy npm install
-sudo -u deploy npm run build
+echo "Installing gin-ui dependencies"
+sudo -u deploy -E PATH="$PATH:$NODE" $NODE/npm install
+
+echo "Building gin-ui"
+sudo -u deploy -E PATH="$PATH:$NODE" $NODE/npm run build
 
 echo "Reset config file"
 sudo -u deploy git checkout src/js/config.json
