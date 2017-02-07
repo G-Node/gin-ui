@@ -30,6 +30,7 @@ import ReposShared          from "./comp/account/ReposShared.vue"
 import Repo                 from "./comp/repo/Repo.vue"
 import RepoReadme           from "./comp/repo/RepoReadme.vue"
 import RepoFiles            from "./comp/repo/RepoFiles.vue"
+import RepoDOI              from "./comp/repo/RepoDOI.vue"
 import RepoSettings         from "./comp/repo/RepoSettings.vue"
 import RepoCreate           from "./comp/repo/RepoCreate.vue"
 
@@ -93,7 +94,10 @@ const router = new VueRouter({
                 { path: "settings", component: RepoSettings,
                     name: "repository-settings", title: "Repository Settings" },
                 { path: "files/:root", component: RepoFiles,
-                    name: "repository-files", title: "Browse Repository Files" }
+                    name: "repository-files", title: "Browse Repository Files" },
+                { path: "doi", component: RepoDOI,
+                    name: "repository-doi", title: "Create DOI"
+                }
             ]
         }
     ]
