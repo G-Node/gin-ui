@@ -1,6 +1,6 @@
 <template>
     <div>
-        Create DOI from your current repository status.
+        Create DOI with the data of your current repository.
     </div>
 </template>
 
@@ -13,9 +13,21 @@
     export default {
         props: {
             repository: { required: true },
+            account: { required: true},
         },
 
         mixins: [ Alert ],
 
+        // Required due to race condition with App.vue, where "account" is reloaded,
+        // when the route is changed directly.
+        watch: {
+            "account": function () {
+                console.log("[RepoDOI] account has changed, update")
+            },
+
+            "$route.params": function () {
+                console.log("[RepoDOI] route has changed, update")
+            }
+        }
     }
 </script>
