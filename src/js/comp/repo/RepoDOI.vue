@@ -1,10 +1,31 @@
 <template>
     <div>
-        Create DOI with the data of your current repository.
+        <h3>Create DOI with the data of your current repository</h3>
+
+        <!-- handle unfulfilled requirements -->
+        <div v-if="!can_doi">
+            <p>Currently you cannot create a DOI from your repository!</p>
+            <div v-if="message == 'one'">
+                <p>Your repository is private, you can only publish your data,
+                    if your repository is public.
+                </p>
+            </div>
+            <div v-if="message == 'two'">
+                <p>In order to request a DOI, the root of your repository must contain a file
+                    named "{{ doi_file }}".<br/>This file has to contain information about
+                    yourself and your project.
+                </p>
+                <p>Please add this file to your repository before continuing.</p>
+                <p>You can find a description about the content of this request file <a href="#">here</a>.</p>
+                <p>You can download an example file <a href="#">here</a>.</p>
+            </div>
+        </div>
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+    const doiYML = "README.md"
+
     import { event } from "../../events.js"
     import Alert from "../Alert.js"
 
@@ -15,7 +36,12 @@
             return {
                 can_doi: null,
                 doi_file: null,
+                message: null,
             }
+        },
+
+        mounted() {
+            this.update(this.$route.params)
         },
 
         props: {
@@ -28,7 +54,8 @@
         methods: {
             update(params) {
                 this.can_doi = false
-                this.doi_file = "README.md"
+                this.doi_file = doiYML
+                this.message = "one"
 
                 var acc = (this.account !== undefined && this.account !== null)
                 var rep = this.repository.Public
@@ -44,7 +71,7 @@
                                 console.log("[RepoDOI] repo fetched, find required file")
                                 var entries = root.entries
                                 for (var entry of entries) {
-                                    if (entry.name && entry.name === this.doi_file) {
+                                    if (entry.name && entry.name === doiYML) {
                                         console.log("[RepoDOI] required file present")
                                         this.can_doi = true
                                         break
@@ -54,6 +81,7 @@
                             (error) => {
                                 console.log("[RepoDOI] error while trying to fetch repo")
                                 console.log(error)
+                                this.message = "two"
                             }
                     )
                 }
