@@ -2,7 +2,12 @@
     <div>
         <h3>Create DOI with the data of your current repository</h3>
 
-        <!-- handle unfulfilled requirements -->
+        <!-- create DOI -->
+        <div v-if="can_doi" class="form-group">
+            <button type="submit" class="btn btn-primary" @click="create">Create DOI</button>
+        </div>
+
+        <!-- handle unmet requirements -->
         <div v-if="!can_doi">
             <p>Currently you cannot create a DOI from your repository!</p>
             <div v-if="message == 'one'">
@@ -52,6 +57,10 @@
         mixins: [ Alert ],
 
         methods: {
+            create() {
+                console.log("[RepoDOI] create DOI")
+            },
+
             update(params) {
                 this.can_doi = false
                 this.doi_file = doiYML
