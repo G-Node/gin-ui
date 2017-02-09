@@ -1,6 +1,8 @@
 {
   "auth_url": "http://localhost:8081",
   "repo_url": "http://localhost:8082",
+  "doi_url": "http://localhost:8083",
+  "doi_file": "cloudberry.yml",
   "client_id": "gin",
   "client_secret": "secret"
 }
