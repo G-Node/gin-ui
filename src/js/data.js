@@ -12,6 +12,8 @@ export default class API {
     constructor(conf) {
         this.config   = { auth_url: conf.auth_url,
                             repo_url: conf.repo_url,
+                            doi_url: conf.doi_url,
+                            doi_file: conf.doi_file,
                             client_id: conf.client_id,
                             client_secret: conf.client_secret,
                             token: null }
