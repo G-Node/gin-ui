@@ -85,6 +85,12 @@
 
         methods: {
             update(params, old) {
+                console.log("[Repo] update repo")
+                if (this.account === undefined || this.account === null) {
+                    console.log("[Repo] race condition with App lost, no account, cannot update")
+                    return
+                }
+
                 const login_name = this.account ? this.account.login : null
                 const same_owner = old && old.username === params.username
                 const same_repo  = old && old.repository === params.repository
@@ -131,7 +137,13 @@
         },
 
         watch: {
+            "account": function() {
+                console.log("[Repo] account has changed, update")
+                this.update(this.$route.params, null)
+            },
+
             "$route.params": function (params, old) {
+                console.log("[Repo] route has changed, update")
                 this.update(params, old)
             }
         }

@@ -129,9 +129,9 @@
                 permissions: ["can-pull", "can-push", "is-admin"],
                 default_permission: "can-pull",
                 form: {
-                    description: this.repository.Description,
-                    is_public: this.repository.Public,
-                    shared: this.repository.Shared
+                    description: null,
+                    is_public: null,
+                    shared: [],
                 },
                 select: {
                     match: null,
@@ -142,9 +142,7 @@
         },
 
         mounted() {
-            if (this.form.shared.length !== undefined) {
-                this.form.shared.sort(sortCollaborators)
-            }
+            this.update()
         },
 
         props: {
@@ -155,6 +153,18 @@
         mixins: [ Alert ],
 
         methods: {
+            update() {
+                this.form.description = this.repository.Description
+                this.form.is_public = this.repository.Public
+                this.form.shared = this.repository.Shared
+
+                // Required against race condition in Repo.vue when fetching
+                // collaborators via promise.
+                if (this.form.shared.length !== undefined) {
+                    this.form.shared.sort(sortCollaborators)
+                }
+            },
+
             updateCollaborator(login_name, permission) {
                 const put_promise = api.repos.putCollaborator(this.$route.params.username,
                         this.$route.params.repository,
@@ -327,7 +337,16 @@
                     clearTimeout(searchBuffer)
                     searchBuffer = setTimeout(() => {this.search(search)}, 300)
                 }
-            }
+            },
+
+            // Required against race condition in Repo.vue when fetching
+            // collaborators via promise.
+            "repository.Shared": function (shared, old) {
+                console.log("[RepoSettings] repository collaborators has changed")
+                if (shared !== old) {
+                    this.update()
+                }
+            },
         }
     }
 </script>
