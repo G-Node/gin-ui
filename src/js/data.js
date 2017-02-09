@@ -9,10 +9,12 @@
 import { stateHash } from "./utils.js"
 
 export default class API {
-
-    constructor(auth_url, repo_url, cid, cs) {
-        this.config   = { auth_url: auth_url, repo_url: repo_url,
-            client_id: cid, client_secret: cs, token: null }
+    constructor(conf) {
+        this.config   = { auth_url: conf.auth_url,
+                            repo_url: conf.repo_url,
+                            client_id: conf.client_id,
+                            client_secret: conf.client_secret,
+                            token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
         this.repos    = new RepoAPI(this.config)
@@ -112,7 +114,6 @@ export default class API {
 }
 
 class AccountAPI {
-    
     constructor(config) {
         this.config = config
     }
@@ -193,7 +194,6 @@ class AccountAPI {
 }
 
 class SSHKeyAPI {
-
     constructor(config) {
         this.config = config
     }
@@ -240,7 +240,6 @@ class SSHKeyAPI {
 }
 
 class RepoAPI {
-
     constructor(config) {
         this.config = config
     }

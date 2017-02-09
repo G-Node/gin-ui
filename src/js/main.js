@@ -41,7 +41,7 @@ Vue.filter("filesize", filesize)
 Vue.use(VueRouter)
 Vue.use(VueCookies)
 
-window.api = new API(config.auth_url, config.repo_url, config.client_id, config.client_secret)
+window.api = new API(config)
 
 const router = new VueRouter({
     mode: "history",
