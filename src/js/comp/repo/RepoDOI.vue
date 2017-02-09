@@ -4,7 +4,7 @@
 
         <!-- create DOI -->
         <div v-if="can_doi" class="form-group">
-            <button type="submit" class="btn btn-primary" @click="create">Create DOI</button>
+            <button type="submit" class="btn btn-primary" @click="request">Request DOI</button>
         </div>
 
         <!-- handle unmet requirements -->
@@ -29,8 +29,6 @@
 </template>
 
 <script type="text/ecmascript-6">
-    const doiYML = "README.md"
-
     import { event } from "../../events.js"
     import Alert from "../Alert.js"
 
@@ -41,7 +39,7 @@
             return {
                 can_doi: null,
                 doi_file: null,
-                message: null,
+                message: null
             }
         },
 
@@ -51,19 +49,25 @@
 
         props: {
             repository: { required: true },
-            account: { required: true},
+            account: { required: true}
         },
 
         mixins: [ Alert ],
 
         methods: {
-            create() {
+            request() {
                 console.log("[RepoDOI] create DOI")
+                // TODO Currently only the master branch is handled.
+                // TODO Once different branches are supported, this has to be changed as well.
+                window.api.repos.requestDOI(this.account.login,
+                                            this.$route.params.username,
+                                            this.$route.params.repository,
+                                            "master")
             },
 
             update(params) {
                 this.can_doi = false
-                this.doi_file = doiYML
+                this.doi_file = window.api.config.doi_file
                 this.message = "one"
 
                 var acc = (this.account !== undefined && this.account !== null)
@@ -80,7 +84,7 @@
                                 console.log("[RepoDOI] repo fetched, find required file")
                                 var entries = root.entries
                                 for (var entry of entries) {
-                                    if (entry.name && entry.name === doiYML) {
+                                    if (entry.name && entry.name === this.doi_file) {
                                         console.log("[RepoDOI] required file present")
                                         this.can_doi = true
                                         break
