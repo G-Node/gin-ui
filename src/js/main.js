@@ -8,6 +8,7 @@
 
 import Vue                  from "vue"
 import VueRouter            from "vue-router"
+import VueCookies           from "vue-cookies"
 
 import API                  from "./data.js"
 import App                  from "./App.vue"
@@ -37,6 +38,7 @@ import { filesize }         from "./filters"
 
 Vue.filter("filesize", filesize)
 Vue.use(VueRouter)
+Vue.use(VueCookies)
 
 window.api = new API(config.auth_url, config.repo_url, config.client_id, config.client_secret)
 
