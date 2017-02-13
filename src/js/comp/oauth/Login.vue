@@ -13,23 +13,29 @@
 </template>
 
 <script type="text/ecmascript-6">
-    import { event } from "../../events.js"
-    import Alert from "../Alert.js"
+    import { stateHash }  from "../../utils.js"
+    import { event }      from "../../events.js"
+    import Alert          from "../Alert.js"
 
     event.init()
 
     export default {
         mounted() {
-            let promise = window.api.login(this.$route.query["access_token"])
-            promise.then(
-                    (account) => {
-                        event.emit("account-update")
-                        this.$router.push({path: "/"})
-                    },
-                    (error) => {
-                        this.reportError(error)
-                    }
-            )
+            if (this.$route.query["state"] !== stateHash(window.api.config.client_id, navigator.userAgent)) {
+                this.alertError("We encountered an error during login. Please repeat login procedure.")
+                this.$router.push({path: "/"})
+            } else {
+                let promise = window.api.login(this.$route.query["access_token"])
+                promise.then(
+                        (account) => {
+                            event.emit("account-update")
+                            this.$router.push({path: "/"})
+                        },
+                        (error) => {
+                            this.reportError(error)
+                        }
+                )
+            }
         },
 
         mixins: [ Alert ],
