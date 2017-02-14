@@ -6,6 +6,8 @@
 // modification, are permitted under the terms of the BSD License. See
 // LICENSE file in the root of the Project.
 
+import { stateHash } from "./utils.js"
+
 export default class API {
 
     constructor(auth_url, repo_url, cid, cs) {
@@ -19,7 +21,7 @@ export default class API {
     // Redirects to the gin-auth login page to request an access token and create a session.
     // A successful request will redirect back to gin-ui/oauth/login for the token validation.
     authorize() {
-        const state = "toBeDetermined"
+        const state = stateHash(this.config.client_id, navigator.userAgent)
         const url = this.config.auth_url + "/oauth/authorize?"
         const params = [
             ["response_type", "token"],
@@ -94,7 +96,7 @@ export default class API {
     }
 
     register() {
-        const state = "toBeDetermined"
+        const state = stateHash(this.config.client_id, navigator.userAgent)
         const uri = this.config.auth_url + "/oauth/registration_init?"
         const kv = [
             ["response_type", "client"],
