@@ -13,17 +13,19 @@
         <h1>Welcome to the <strong>GIN</strong> (<strong>G</strong>-Node <strong>IN</strong>frastructure)
             web services!</h1>
         <hr />
-        <p>This service aims to provide a free, secure and community driven alternative to other
-            proprietary cloud services.</p>
 
-        <p>We therefore provide free data synchronisation, hosting, publishing and sharing for
-            scientists to promote data sharing and collaboration within the scientific community!</p>
+        <div class="jumbotron">
+            <p>This service aims to provide a free, secure and community driven alternative to other
+                proprietary cloud services.</p>
 
-        <p>Therefore this service will always be free and Open Source - you can even setup your
-            own in-house instance of this service.</p>
+            <p>We therefore provide free data synchronisation, hosting, publishing and sharing for
+                scientists to promote data sharing and collaboration within the scientific community!</p>
 
-        <p>We also provide a free publishing service for data by issuing DOIs to public repositories.</p>
+            <p>Therefore this service will always be free and Open Source - you can even setup your
+                own in-house instance of this service.</p>
 
+            <p>We also provide a free publishing service for data by issuing DOIs to public repositories.</p>
+        </div>
 
 
         <h2>Features:</h2><hr />
