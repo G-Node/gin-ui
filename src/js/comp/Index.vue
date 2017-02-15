@@ -60,7 +60,7 @@
                 </ul>
             </li>
             <li><p class="text-primary"><br/><strong>Publish your data (DOI)
-                [in development]</strong></p>
+                <span class="label label-warning">in development</span></strong></p>
                 <ul>
                     <li>when you are hosting your data on the GIN server, we give you the option
                         to publish any of your public repositories. We will issue a DOI reliably hosting
@@ -68,7 +68,7 @@
                 </ul>
             </li>
             <li><p class="text-primary"><br/><strong>Enhanced search of your repositories
-                [in development]</strong></p>
+                <span class="label label-warning">in development</span></strong></p>
                 <ul>
                     <li>By indexing the repository contents it's easy to find the files you are looking for</li>
                     <li>When using the <a href="https://github.com/G-Node/nix">NIX</a> (Neuroscience Exchange format)
