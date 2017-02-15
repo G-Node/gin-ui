@@ -24,17 +24,20 @@
 
         <p>We also provide a free publishing service for data by issuing DOIs to public repositories.</p>
 
-        <h2>Features:</h2>
 
-        <ul>
-            <li>Choose how you want to use our service
+
+        <h2>Features:</h2><hr />
+
+        <ul class="list-unstyled">
+            <li><p class="text-primary"><strong>Choose how you want to use our service</strong></p>
                 <ul>
                     <li>register with the GIN services and use the provided infrastructure</li>
                     <li>set up and host your own in-house instance -
                         our software is open source, you can use it for free</li>
                 </ul>
             </li>
-            <li>Manage your data from anywhere
+            <li></li>
+            <li><p class="text-primary"><br/><strong>Manage your data from anywhere</strong></p>
                 <ul>
                     <li>upload your data on a repository based structure: you can create
                         as many repositories as you like.</li>
@@ -45,8 +48,9 @@
                         to the main repository.</li>
                     <li>version your data: when changing your files and uploading them to the server,
                         the history is automatically kept, you can always go back to a previous version.</li>
-                </ul></li>
-            <li>Share your data
+                </ul>
+            </li>
+            <li><p class="text-primary"><br/><strong>Share your data</strong></p>
                 <ul>
                     <li>make your data public: if you want to make your data accessible to the world,
                         just make your repository publicly available. The data will be accessible but
@@ -55,14 +59,16 @@
                         repositories with other users of the GIN service making it easy to jointly work on a project.</li>
                 </ul>
             </li>
-            <li>Publish your data (DOI) [in development]
+            <li><p class="text-primary"><br/><strong>Publish your data (DOI)
+                [in development]</strong></p>
                 <ul>
                     <li>when you are hosting your data on the GIN server, we give you the option
                         to publish any of your public repositories. We will issue a DOI reliably hosting
                         your data for your publications. </li>
                 </ul>
             </li>
-            <li>Enhanced search of your repositories [in development]
+            <li><p class="text-primary"><br/><strong>Enhanced search of your repositories
+                [in development]</strong></p>
                 <ul>
                     <li>By indexing the repository contents it's easy to find the files you are looking for</li>
                     <li>When using the <a href="https://github.com/G-Node/nix">NIX</a> (Neuroscience Exchange format)
@@ -73,7 +79,8 @@
             </li>
         </ul>
 
-        <h2>How to use the GIN services</h2>
+
+        <h2>How to use the GIN services</h2><hr/>
 
         <p>If you want to use our services</p>
         <ul>
@@ -83,11 +90,12 @@
             <li>access your data via the web services or download them on another machine using gin-cli.</li>
         </ul>
 
-        <h2>Set up your own in-house GIN service</h2>
+
+        <h2>Set up your own in-house GIN service</h2><hr/>
 
         <p>All of the GIN services are Open Source software, if you want to host your data solely
-            in-house on your own servers, this can easily be done and for free as well!<br/>
-            You can find the complete source code and documentation on github: </p>
+            in-house on your own servers, this can easily be done and for free as well!</p>
+        <p>You can find the complete source code and documentation on github: </p>
 
         <ul>
             <li><a href="https://github.com/G-Node/gin-ui">gin-ui</a>: The web interface for the GIN services.</li>
