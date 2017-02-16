@@ -1,5 +1,9 @@
 <template>
     <div>
+        <div v-if="!can_doi" class="bs-callout bs-callout-danger">
+            <p>Your repository does not fullfill all requirements to request a DOI. Yet... </p>
+        </div>
+
         <h3>Create DOI with the data of your current repository</h3>
 
         <!-- create DOI -->
@@ -9,7 +13,6 @@
 
         <!-- handle unmet requirements -->
         <div v-if="!can_doi">
-            <p>Currently you cannot create a DOI from your repository!</p>
             <div v-if="message == 'one'">
                 <p>Your repository is private, you can only publish your data,
                     if your repository is public.
