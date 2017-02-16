@@ -66,6 +66,12 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-heading">
+                What is a DOI and why would I want one?
+            </div>
+            <div class="panel-body">
+                DOI's are ... <span class="label label-warning">Under construction</span>
+            </div>
         </div>
 
         <div class="row">
