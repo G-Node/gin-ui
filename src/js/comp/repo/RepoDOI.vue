@@ -63,6 +63,10 @@
                     <span class="label label-warning">Under construction</span></p>
             </div>
         </div>
+        <div class="row">
+            <div class="col-sm-3"><span class="label label-info">Page under development</span></div>
+            <div class="col-sm-9"></div>
+        </div>
     </div>
 </template>
 
