@@ -95,8 +95,14 @@
 
         <h2>Set up your own in-house GIN service</h2><hr/>
 
-        <p>All of the GIN services are Open Source software, if you want to host your data solely
-            in-house on your own servers, this can easily be done and for free as well!</p>
+        <div class="bs-callout bs-callout-primary">
+            <div class="container"><div class="row">
+                <div class="col-sm-8">All of the GIN services are Open Source software, if you want to host your data solely
+                    in-house on your own servers, this can easily be done and for free as well!
+                </div>
+                <div class="col-sm-4"></div>
+            </div></div>
+        </div>
         <p>You can find the complete source code and documentation on github: </p>
 
         <ul>
