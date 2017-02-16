@@ -90,6 +90,9 @@
                                         break
                                     }
                                 }
+                                if (!this.can_doi) {
+                                    this.message = "two"
+                                }
                             },
                             (error) => {
                                 console.log("[RepoDOI] error while trying to fetch repo")
