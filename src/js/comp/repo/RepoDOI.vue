@@ -42,13 +42,21 @@
                 </p>
             </div>
             <div v-if="message == 'two'">
+                <hr>
+                Your repository is missing the DOI request file.
+                <hr>
                 <p>In order to request a DOI, the root of your repository must contain a file
-                    named "{{ doi_file }}".<br/>This file has to contain information about
+                    named <code>{{ doi_file }}</code>.<br/>This file has to contain information about
                     yourself and your project.
                 </p>
-                <p>Please add this file to your repository before continuing.</p>
-                <p>You can find a description about the content of this request file <a href="#">here</a>.</p>
-                <p>You can download an example file <a href="#">here</a>.</p>
+                <p>Please add this file to the root of your repository before proceeding.</p>
+
+                <hr>
+
+                <p>You can find a description about the content of this request file <a href="#">here</a>.
+                    <span class="label label-warning">Under construction</span></p>
+                <p>You can download an example file <a href="#">here</a>.
+                    <span class="label label-warning">Under construction</span></p>
             </div>
         </div>
     </div>
