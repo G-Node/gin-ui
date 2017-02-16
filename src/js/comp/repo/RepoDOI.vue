@@ -4,65 +4,70 @@
             <p>Your repository does not fullfill all requirements to request a DOI. Yet... </p>
         </div>
 
-        <h3>Create DOI with the data of your current repository</h3>
-
-        <!-- create DOI -->
-        <div v-if="can_doi" class="form-group">
-            <div class="bs-callout bs-callout-success">
-                <p>Your repository fullfills the requirements to request a DOI!
-                    But before you start the process, please make sure</p>
-                <ul>
-                    <li>
-                        that your repository actually contains all the information you
-                        want to submit. After you have started the process, you cannot add
-                        files ex post.
-                    </li>
-                    <li>
-                        that the information in your <code>{{ doi_file }}</code> file contains all
-                        information required to successfully submit your data to a DOI agency.
-                        If you are unsure, you can read up on the details <a href="#">here</a> before proceeding.
-                        <span class="label label-warning">Under construction</span></p>
-                    </li>
-                </ul>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                Create DOI from your current repository
             </div>
+            <div class="panel-body">
+                <!-- create DOI -->
+                <div v-if="can_doi" class="form-group">
+                    <div class="bs-callout bs-callout-success">
+                        <p>Your repository fullfills the requirements to request a DOI!
+                            But before you start the process, please make sure</p>
+                        <ul>
+                            <li>
+                                that your repository actually contains all the information you
+                                want to submit. After you have started the process, you cannot add
+                                files ex post.
+                            </li>
+                            <li>
+                                that the information in your <code>{{ doi_file }}</code> file contains all
+                                information required to successfully submit your data to a DOI agency.
+                                If you are unsure, you can read up on the details <a href="#">here</a> before proceeding.
+                                <span class="label label-warning">Under construction</span></p>
+                            </li>
+                        </ul>
+                    </div>
 
-            <div class="row">
-                <div class="col-sm-9"></div>
-                <div class="col-sm-3">
-                    <button type="submit" class="btn btn-success" @click="request">Request DOI</button>
+                    <div class="row">
+                        <div class="col-sm-9"></div>
+                        <div class="col-sm-3">
+                            <button type="submit" class="btn btn-success" @click="request">Request DOI</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- handle unmet requirements -->
+                <div v-if="!can_doi">
+                    <!-- handle private repository -->
+                    <div v-if="message == 'one'">
+                        Your repository is <strong>private</strong>.
+                        <hr>
+                        <p>A DOI can only be requested for a <strong>public</strong> repository</p>
+                        <p>Please change the repository visibility to public under the Settings tab before proceeding.</p>
+                    </div>
+
+                    <!-- handle missing doi_file -->
+                    <div v-if="message == 'two'">
+                        Your repository is missing the DOI request file.
+                        <hr>
+                        <p>In order to request a DOI, the root of your repository must contain a file
+                            named <code>{{ doi_file }}</code>.<br/>This file has to contain information about
+                            yourself and your project.
+                        </p>
+                        <p>Please add this file to the root of your repository before proceeding.</p>
+
+                        <hr>
+
+                        <p>You can find a description about the content of this request file <a href="#">here</a>.
+                            <span class="label label-warning">Under construction</span></p>
+                        <p>You can download an example file <a href="#">here</a>.
+                            <span class="label label-warning">Under construction</span></p>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <!-- handle unmet requirements -->
-        <div v-if="!can_doi">
-            <!-- handle private repository -->
-            <div v-if="message == 'one'">
-                Your repository is <strong>private</strong>.
-                <hr>
-                <p>A DOI can only be requested for a <strong>public</strong> repository</p>
-                <p>Please change the repository visibility to public under the Settings tab before proceeding.</p>
-            </div>
-
-            <!-- handle missing doi_file -->
-            <div v-if="message == 'two'">
-                <hr>
-                Your repository is missing the DOI request file.
-                <hr>
-                <p>In order to request a DOI, the root of your repository must contain a file
-                    named <code>{{ doi_file }}</code>.<br/>This file has to contain information about
-                    yourself and your project.
-                </p>
-                <p>Please add this file to the root of your repository before proceeding.</p>
-
-                <hr>
-
-                <p>You can find a description about the content of this request file <a href="#">here</a>.
-                    <span class="label label-warning">Under construction</span></p>
-                <p>You can download an example file <a href="#">here</a>.
-                    <span class="label label-warning">Under construction</span></p>
-            </div>
-        </div>
         <div class="row">
             <div class="col-sm-3"><span class="label label-info">Page under development</span></div>
             <div class="col-sm-9"></div>
