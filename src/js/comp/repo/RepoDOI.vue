@@ -36,11 +36,15 @@
 
         <!-- handle unmet requirements -->
         <div v-if="!can_doi">
+            <!-- handle private repository -->
             <div v-if="message == 'one'">
-                <p>Your repository is private, you can only publish your data,
-                    if your repository is public.
-                </p>
+                Your repository is <strong>private</strong>.
+                <hr>
+                <p>A DOI can only be requested for a <strong>public</strong> repository</p>
+                <p>Please change the repository visibility to public under the Settings tab before proceeding.</p>
             </div>
+
+            <!-- handle missing doi_file -->
             <div v-if="message == 'two'">
                 <hr>
                 Your repository is missing the DOI request file.
