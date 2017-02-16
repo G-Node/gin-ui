@@ -8,7 +8,30 @@
 
         <!-- create DOI -->
         <div v-if="can_doi" class="form-group">
-            <button type="submit" class="btn btn-primary" @click="request">Request DOI</button>
+            <div class="bs-callout bs-callout-success">
+                <p>Your repository fullfills the requirements to request a DOI!
+                    But before you start the process, please make sure</p>
+                <ul>
+                    <li>
+                        that your repository actually contains all the information you
+                        want to submit. After you have started the process, you cannot add
+                        files ex post.
+                    </li>
+                    <li>
+                        that the information in your <code>{{ doi_file }}</code> file contains all
+                        information required to successfully submit your data to a DOI agency.
+                        If you are unsure, you can read up on the details <a href="#">here</a> before proceeding.
+                        <span class="label label-warning">Under construction</span></p>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-9"></div>
+                <div class="col-sm-3">
+                    <button type="submit" class="btn btn-success" @click="request">Request DOI</button>
+                </div>
+            </div>
         </div>
 
         <!-- handle unmet requirements -->
