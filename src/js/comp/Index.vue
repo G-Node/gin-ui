@@ -99,7 +99,8 @@
                     <ul>
                         <li><a @click="register()">register</a> an account with us.</li>
                         <li>download the command line client <a href="https://github.com/G-Node/gin-cli">gin-cli</a>.</li>
-                        <li>upload your data using gin-cli.</li>
+                        <li>upload your data using gin-cli. You can find a tutorial <a href="#">here</a>.
+                            <strong><span class="label label-warning">in development</span></strong></li>
                         <li>access your data via the web services or download them on another machine using gin-cli.</li>
                     </ul>
                     </div>
@@ -130,10 +131,16 @@
                         <li><a href="https://github.com/G-Node/gin-auth">gin-auth</a>: The authentication server.</li>
                     </ul>
 
-                    <p>If you need any help setting up your own service, you can <a href="#">contact us</a>. [TBD]</p>
+                    <p>If you need any help setting up your own service, you can <a href="#">contact us</a>.
+                        <strong><span class="label label-warning">in development</span></strong></p>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-3"><span class="label label-info">Page under development</span></div>
+            <div class="col-sm-9"></div>
         </div>
     </div>
 </template>

@@ -9,10 +9,14 @@
 import { stateHash } from "./utils.js"
 
 export default class API {
-
-    constructor(auth_url, repo_url, cid, cs) {
-        this.config   = { auth_url: auth_url, repo_url: repo_url,
-            client_id: cid, client_secret: cs, token: null }
+    constructor(conf) {
+        this.config   = { auth_url: conf.auth_url,
+                            repo_url: conf.repo_url,
+                            doi_url: conf.doi_url,
+                            doi_file: conf.doi_file,
+                            client_id: conf.client_id,
+                            client_secret: conf.client_secret,
+                            token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
         this.repos    = new RepoAPI(this.config)
@@ -112,7 +116,6 @@ export default class API {
 }
 
 class AccountAPI {
-    
     constructor(config) {
         this.config = config
     }
@@ -193,7 +196,6 @@ class AccountAPI {
 }
 
 class SSHKeyAPI {
-
     constructor(config) {
         this.config = config
     }
@@ -240,7 +242,6 @@ class SSHKeyAPI {
 }
 
 class RepoAPI {
-
     constructor(config) {
         this.config = config
     }
@@ -472,5 +473,19 @@ class RepoAPI {
                 error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
             })
         })
+    }
+
+    requestDOI(user, owner, repo, branch) {
+        const uri = this.config.doi_url + "?"
+        const kv = [
+            ["user", user],
+            ["owner", owner],
+            ["repo", repo],
+            ["branch", branch]
+        ]
+        const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+
+        window.location.href = uri + query
+        window.event.returnValue = false
     }
 }
