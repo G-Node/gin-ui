@@ -18,13 +18,14 @@
             <p>This service aims to provide a free, secure and community driven alternative to other
                 proprietary cloud services.</p>
 
-            <p>We therefore provide free data synchronisation, hosting, publishing and sharing for
+            <p>We therefore provide free data synchronisation, hosting and publishing for
                 scientists to promote data sharing and collaboration within the scientific community!</p>
 
-            <p>Therefore this service will always be free and Open Source - you can even setup your
+            <p>Therefore this service will always be <strong>free and Open Source</strong> - you can even setup your
                 own in-house instance of this service.</p>
 
-            <p>We also provide a free publishing service for data by issuing DOIs to public repositories.</p>
+            <p>We also provide a free publishing service for data by issuing DOIs for your publications
+                from public repositories.</p>
         </div>
 
         <div class="panel-group" id="accordion">
@@ -90,7 +91,8 @@
                 </div>
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">How to use the GIN services</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                            How to use the G-Node GIN services</a>
                     </h4>
                 </div>
                 <div id="collapse2" class="panel-collapse collapse in">
@@ -116,8 +118,8 @@
                     <div class="bs-callout bs-callout-primary">
                         <div class="container"><div class="row">
                             <div class="col-sm-8">All of the GIN services are Open Source software,
-                                if you want to host your data solely
-                                in-house on your own servers, this can easily be done and for free as well!
+                                if you want to host your data solely in-house on your own servers,
+                                this can easily be done and for free as well!
                             </div>
                             <div class="col-sm-4"></div>
                         </div></div>
