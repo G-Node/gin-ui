@@ -149,6 +149,16 @@
 
 <script type="text/ecmascript-6">
     export default {
+
+        computed: {
+            mailto: function() {
+                return "mailto:"+ window.api.config.contact_email
+            },
+            contact: function() {
+                return window.api.config.contact_email
+            },
+        },
+
         methods: {
             register() {
                 window.api.register()
