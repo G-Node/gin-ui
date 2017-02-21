@@ -133,8 +133,8 @@
                         <li><a href="https://github.com/G-Node/gin-auth">gin-auth</a>: The authentication server.</li>
                     </ul>
 
-                    <p>If you need any help setting up your own service, you can <a href="#">contact us</a>.
-                        <strong><span class="label label-warning">in development</span></strong></p>
+                        <p>If you need any help setting up your own service, you can contact us at
+                            <a :href="mailto">{{ contact }}</a>.</p>
                     </div>
                 </div>
             </div>
