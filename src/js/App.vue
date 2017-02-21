@@ -67,7 +67,10 @@
     import LoginMenu from "./comp/LoginMenu.vue"
     import ErrorPage from "./comp/ErrorPage.vue"
 
+    // Project wide constants
     const default_title = "G-Node GIN"
+    const copyright_first_year = "2016"
+    const message_delay = 4000
 
     event.init()
 
@@ -90,7 +93,7 @@
         computed: {
             date_range: function () {
                 var d = new Date()
-                var y = "2016"
+                var y = copyright_first_year
                 if (d.getFullYear() > parseInt(y)) {
                     y = y +"-"+ d.getFullYear().toString()
                 }
@@ -142,7 +145,7 @@
 
                 this.alert = alert
 
-                setTimeout(() => { this.alert = null }, 4000)
+                setTimeout(() => { this.alert = null }, message_delay)
 
                 if (message.level === "danger" || message.level === "warning") {
                     console.error(message.content)
