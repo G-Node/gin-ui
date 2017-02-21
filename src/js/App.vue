@@ -50,6 +50,13 @@
                 <error-page v-bind:error="error"></error-page>
             </div>
         </div>
+
+        <footer>
+            <hr>
+            <div class="container">
+                © G-Node{{ date_range }}
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -78,6 +85,17 @@
             MainMenu,
             LoginMenu,
             ErrorPage
+        },
+
+        computed: {
+            date_range: function () {
+                var d = new Date()
+                var y = "2016"
+                if (d.getFullYear() > parseInt(y)) {
+                    y = y +"-"+ d.getFullYear().toString()
+                }
+                return ", "+ y
+            }
         },
 
         mounted() {
