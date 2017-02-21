@@ -53,9 +53,23 @@
 
         <footer>
             <hr>
-            <div class="container">
-                © G-Node{{ date_range }}
-            </div>
+            <div class="container navbar navbar-bottom">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <ul class="list-inline">
+                            <li>© G-Node{{ date_range }}</li>
+                            <li><a href="#">FAQ</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">About</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="list-inline pull-right">
+                            <li><a href="#">Terms of usage</a></li>
+                        </ul>
+                    </div>
+                </div>
+             </div>
         </footer>
     </div>
 </template>
