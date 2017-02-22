@@ -58,14 +58,15 @@
                     <div class="col-sm-9">
                         <ul class="list-inline">
                             <li>© G-Node{{ date_range }}</li>
+                            <li><a href="#">Terms of usage</a></li>
                             <li><a href="#">FAQ</a></li>
-                            <li><a href="#">Contact</a></li>
-                            <li><a href="#">About</a></li>
                         </ul>
                     </div>
                     <div class="col-sm-3">
                         <ul class="list-inline pull-right">
-                            <li><a href="#">Terms of usage</a></li>
+                            <li><router-link :to="{ name: 'about'}">About</router-link></li>
+                            <li><router-link :to="{ name: 'imprint'}">Imprint</router-link></li>
+                            <li><router-link :to="{ name: 'contact'}">Contact</router-link></li>
                         </ul>
                     </div>
                 </div>
