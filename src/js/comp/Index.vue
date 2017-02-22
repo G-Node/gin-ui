@@ -40,9 +40,9 @@
                     <ul class="list-unstyled">
                         <li><p class="text-primary"><strong>Choose how you want to use our service</strong></p>
                             <ul>
-                                <li>register with the GIN services and use the provided infrastructure</li>
+                                <li>register with the GIN services and use the provided infrastructure.</li>
                                 <li>set up and host your own in-house instance -
-                                    our software is open source, you can use it for free</li>
+                                    our software is open source, you can use it for free.</li>
                             </ul>
                         </li>
                         <li></li>
@@ -73,14 +73,14 @@
                             <ul>
                                 <li>when you are hosting your data on the GIN server, we give you the option
                                     to publish any of your public repositories. We will issue a DOI reliably hosting
-                                    your data for your publications. </li>
+                                    your data for your publications.</li>
                             </ul>
                         </li>
                         <li><p class="text-primary"><br/><strong>Enhanced search of your repositories
                             <span class="label label-warning">in development</span></strong></p>
                             <ul>
-                                <li>By indexing the repository contents it's easy to find the files you are looking for</li>
-                                <li>When using the <a href="https://github.com/G-Node/nix">NIX</a> (Neuroscience Exchange format)
+                                <li>by indexing the repository contents it's easy to find the files you are looking for.</li>
+                                <li>when using the <a href="https://github.com/G-Node/nix">NIX</a> (Neuroscience Exchange format)
                                     for scientific data and metadata, even the contents of these files will
                                     be indexed and searchable making it easy for you to identify even the data
                                     you are looking for.</li>
@@ -101,6 +101,7 @@
                     <ul>
                         <li><a @click="register()">register</a> an account with us.</li>
                         <li>download the command line client <a href="https://github.com/G-Node/gin-cli">gin-cli</a>.</li>
+                        <li>create a private or a public repository.</li>
                         <li>upload your data using gin-cli. You can find a tutorial <a href="#">here</a>.
                             <strong><span class="label label-warning">in development</span></strong></li>
                         <li>access your data via the web services or download them on another machine using gin-cli.</li>
@@ -115,23 +116,23 @@
                 </div>
                 <div id="collapse3" class="panel-collapse collapse">
                     <div class="panel-body">
-                    <div class="bs-callout bs-callout-primary">
-                        <div class="container"><div class="row">
-                            <div class="col-sm-8">All of the GIN services are Open Source software,
-                                if you want to host your data solely in-house on your own servers,
-                                this can easily be done and for free as well!
-                            </div>
-                            <div class="col-sm-4"></div>
-                        </div></div>
-                    </div>
-                    <p>You can find the complete source code and documentation on github: </p>
+                        <div class="bs-callout bs-callout-primary">
+                            <div class="container"><div class="row">
+                                <div class="col-sm-8">All of the GIN services are Open Source software,
+                                    if you want to host your data solely in-house on your own servers,
+                                    this can easily be done and for free as well!
+                                </div>
+                                <div class="col-sm-4"></div>
+                            </div></div>
+                        </div>
+                        <p>You can find the complete source code and documentation on github: </p>
 
-                    <ul>
-                        <li><a href="https://github.com/G-Node/gin-ui">gin-ui</a>: The web interface for the GIN services.</li>
-                        <li><a href="https://github.com/G-Node/gin-cli">gin-cli</a>: The command line client.</li>
-                        <li><a href="https://github.com/G-Node/gin-repo">gin-repo</a>: The repository server.</li>
-                        <li><a href="https://github.com/G-Node/gin-auth">gin-auth</a>: The authentication server.</li>
-                    </ul>
+                        <ul>
+                            <li><a href="https://github.com/G-Node/gin-ui">gin-ui</a>: The web interface for the GIN services.</li>
+                            <li><a href="https://github.com/G-Node/gin-cli">gin-cli</a>: The command line client.</li>
+                            <li><a href="https://github.com/G-Node/gin-repo">gin-repo</a>: The repository server.</li>
+                            <li><a href="https://github.com/G-Node/gin-auth">gin-auth</a>: The authentication server.</li>
+                        </ul>
 
                         <p>If you need any help setting up your own service, you can contact us at
                             <a :href="mailto">{{ contact }}</a>.</p>
