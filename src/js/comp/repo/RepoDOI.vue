@@ -24,7 +24,7 @@
                                 that the information in your <code>{{ doi_file }}</code> file contains all
                                 information required to successfully submit your data to a DOI agency.
                                 If you are unsure, you can read up on the details <a href="#">here</a> before proceeding.
-                                <span class="label label-warning">Under construction</span></p>
+                                <span class="label label-warning">Under construction</span>
                             </li>
                         </ul>
                     </div>
