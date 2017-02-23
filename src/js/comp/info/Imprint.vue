@@ -12,6 +12,7 @@
     <div class="container">
         <h2>Imprint</h2>
         <hr/><br/>
+
         <p>Verantwortlicher gemäß §6 TDG</p><br/>
         <dl class="dl-horizontal">
             <dd>Dr. Thomas Wachtler-Kulla</dd>
