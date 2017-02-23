@@ -102,7 +102,9 @@
         methods: {
             update(params, old) {
                 console.log("[Repo] update repo")
-                if (this.account === undefined || this.account === null) {
+                // checking if there is a token in storage is a bugfix to enable display a
+                // repository when a user is not logged in.
+                if ((this.account === undefined || this.account === null) && localStorage.getItem("token") !== null) {
                     console.log("[Repo] race condition with App lost, no account, cannot update")
                     return
                 }
