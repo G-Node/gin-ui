@@ -30,7 +30,7 @@
                     Files
                 </router-link>
             </li>
-            <li role="presentation">
+            <li role="presentation" v-if="this.account">
                 <router-link :to="{ name: 'repository-doi',
                         params: { username: $route.params.username, repository: $route.params.repository }}">
                     DOI
