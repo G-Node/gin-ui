@@ -11,7 +11,7 @@
 <template>
     <div>
         <div v-if="!can_doi" class="bs-callout bs-callout-danger">
-            <p>Your repository does not fullfill all requirements to request a DOI. Yet... </p>
+            <p>This repository does not fullfill all requirements to request a DOI. Yet... </p>
         </div>
 
         <div class="panel panel-default">
@@ -22,7 +22,7 @@
                 <!-- create DOI -->
                 <div v-if="can_doi" class="form-group">
                     <div class="bs-callout bs-callout-success">
-                        <p>Your repository fullfills the requirements to request a DOI!
+                        <p>This repository fullfills the requirements to request a DOI!
                             But before you start the process, please make sure</p>
                         <ul>
                             <li>
@@ -33,8 +33,11 @@
                             <li>
                                 that the information in your <code>{{ doi_file }}</code> file contains all
                                 information required to successfully submit your data to a DOI agency.
-                                If you are unsure, you can read up on the details <a href="#">here</a> before proceeding.
-                                <span class="label label-warning">Under construction</span>
+                                <!-- Deactivated until material can be supplied -->
+                                <!--
+                                    If you are unsure, you can read up on the details <a href="#">here</a> before proceeding.
+                                    <span class="label label-warning">Under construction</span>
+                                -->
                             </li>
                         </ul>
                     </div>
@@ -51,7 +54,7 @@
                 <div v-if="!can_doi">
                     <!-- handle private repository -->
                     <div v-if="message == 'one'">
-                        Your repository is <strong>private</strong>.
+                        This repository is <strong>private</strong>.
                         <hr>
                         <p>A DOI can only be requested for a <strong>public</strong> repository</p>
                         <p>Please change the repository visibility to public under the Settings tab before proceeding.</p>
@@ -62,32 +65,41 @@
                         Your repository is missing the DOI request file.
                         <hr>
                         <p>In order to request a DOI, the root of your repository must contain a file
-                            named <code>{{ doi_file }}</code>.<br/>This file has to contain information about
-                            yourself and your project.
-                        </p>
+                            named <code>{{ doi_file }}</code>.</p>
+                        <p>This file has to contain information about yourself and your project.</p>
                         <p>Please add this file to the root of your repository before proceeding.</p>
 
-                        <hr>
+                        <!-- Deactivated until material can be supplied -->
+                        <!--
+                            <hr>
 
-                        <p>You can find a description about the content of this request file <a href="#">here</a>.
-                            <span class="label label-warning">Under construction</span></p>
-                        <p>You can download an example file <a href="#">here</a>.
-                            <span class="label label-warning">Under construction</span></p>
+                            <p>You can find a description about the content of this request file <a href="#">here</a>.
+                                <span class="label label-warning">Under construction</span></p>
+                            <p>You can download an example file <a href="#">here</a>.
+                                <span class="label label-warning">Under construction</span></p>
+                        -->
+
                     </div>
                 </div>
             </div>
-            <div class="panel-heading">
-                What is a DOI and why would I want one?
-            </div>
-            <div class="panel-body">
-                DOI's are ... <span class="label label-warning">Under construction</span>
-            </div>
+            <!-- Deactivated until material can be supplied -->
+            <!--
+                <div class="panel-heading">
+                    What is a DOI and why would I want one?
+                </div>
+                <div class="panel-body">
+                    DOI's are ... <span class="label label-warning">Under construction</span>
+                </div>
+            -->
         </div>
 
+        <!-- Deactivated until material can be supplied -->
+        <!--
         <div class="row">
             <div class="col-sm-3"><span class="label label-info">Page under development</span></div>
             <div class="col-sm-9"></div>
         </div>
+        -->
     </div>
 </template>
 
@@ -123,9 +135,9 @@
                 // TODO Currently only the master branch is handled.
                 // TODO Once different branches are supported, this has to be changed as well.
                 window.api.repos.requestDOI(this.account.login,
-                                            this.$route.params.username,
-                                            this.$route.params.repository,
-                                            "master")
+                        this.$route.params.username,
+                        this.$route.params.repository,
+                        "master")
             },
 
             update(params) {
