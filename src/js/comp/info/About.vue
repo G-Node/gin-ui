@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2016, German Neuroinformatics Node (G-Node)
+    Copyright (c) 2017, German Neuroinformatics Node (G-Node)
 
     All rights reserved.
 
@@ -14,16 +14,18 @@
             <h2>About GIN</h2>
             <p>Management of scientific data, including consistent organization, annotation and storage of data,
                 is a challenging task. Accessing and managing data from multiple workplaces while keeping it in
-                sync, backed up, and easily accessible from within or outside the lab is even more demanding.
+                sync, backed up, and easily accessible from within or outside the lab is even more demanding.<br/><br/>
                 To minimize the time and effort scientists have to spend on these tasks,
                 we here present the GIN (G-Node Infrastructure) services <a href="#ref">[1]</a>,
                 a free data management system designed for comprehensive and reproducible management of scientific data.
+                <br/><br/>
                 It keeps track of changes to the contents and organization of the files and provides secure remote access
                 to the data. More specifically, once a directory has been put under GIN control, the contents will be synced
                 to a dedicated GIN server. With proper authorization, data can be accessed and changed from remote clients,
-                making it easy to work from multiple workplaces while keeping all data at hand and in sync.
+                making it easy to work from multiple workplaces while keeping all data at hand and in sync.<br/><br/>
                 Data can be managed from web and file browsers as well as through a command line interface,
                 which enables integrating data management and access into the data acquisition and analysis procedures.
+                <br/><br/>
                 The system handles any kinds of directory structures and file types, and tracks all changes, using Git
                 <a href="#ref">[2]</a> tracking mechanisms. This supports reproducible data workflows and in particular
                 keeps previous versions accessible when datasets are updated. The service furthermore makes it straightforward

@@ -10,25 +10,34 @@
 
 <template>
     <div class="container">
-        Verantwortlicher gemäß §6 TDG
-        Dr. Thomas Wachtler-Kulla
-        Biozentrum
-        Ludwig-Maximilians-Universität München
-        Großhaderner Straße 2
-        82152 Martinsried-Planegg
-        Germany
-        <br />
-        e-mail: wachtler at bio.lmu.de
-        Tel: +49 89 2180 74810
-        Fax: +49 89 2180 74803
-        <br />
-        Inhaltlich Verantwortlicher gemäß §10 Absatz 3 MDStV
-        Dr. Thomas Wachtler-Kulla (Anschrift wie oben)
-        <br />
-        Haftungshinweis
-        Trotz sorgfältiger inhaltlicher Kontrolle Übernehmen wir keine Haftung für
+        <h2>Imprint</h2>
+        <hr/><br/>
+        <p>Verantwortlicher gemäß §6 TDG</p><br/>
+        <dl class="dl-horizontal">
+            <dd>Dr. Thomas Wachtler-Kulla</dd>
+            <dd>Biozentrum</dd>
+            <dd>Ludwig-Maximilians-Universität München</dd>
+            <dd>Großhaderner Straße 2</dd>
+            <dd>82152 Martinsried-Planegg</dd>
+            <dd>Germany</dd>
+        </dl>
+        <br/>
+        <dl class="dl-horizontal">
+            <dt>Phone</dt>
+            <dd>+49 (0)89 2180 74810</dd>
+            <dt>Fax</dt>
+            <dd>+49 89 2180 74803</dd>
+            <dt>eMail</dt>
+            <dd>wachtler at bio.lmu.de</dd>
+        </dl>
+        <br/>
+        Inhaltlich Verantwortlicher gemäß §10 Absatz 3 MDStV<br/>
+        Dr. Thomas Wachtler-Kulla (Anschrift wie oben)<br />
+        <br/>
+        <h3>Haftungshinweis</h3>
+        <p>Trotz sorgfältiger inhaltlicher Kontrolle Übernehmen wir keine Haftung für
         die Inhalte externer Links. Für den Inhalt der verlinkten Seiten sind
-        ausschließlich deren Betreiber verantwortlich.
+        ausschließlich deren Betreiber verantwortlich.</p>
     </div>
 </template>
 
