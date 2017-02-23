@@ -30,7 +30,7 @@
                     Files
                 </router-link>
             </li>
-            <li role="presentation" v-if="this.account">
+            <li role="presentation" v-if="is_repo_owned">
                 <router-link :to="{ name: 'repository-doi',
                         params: { username: $route.params.username, repository: $route.params.repository }}">
                     DOI
@@ -90,7 +90,16 @@
 
                     return name && repo && (repo.Owner === name || (collaborator && collaborator.indexOf(name) >= 0))
                 }
-            }
+            },
+
+            is_repo_owned: {
+                get() {
+                    const name = this.account ? this.account.login : null
+                    const repo = this.repository
+
+                    return name && repo && (repo.Owner === name)
+                }
+            },
         },
 
         props: {
