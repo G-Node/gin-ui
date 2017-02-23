@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2016, German Neuroinformatics Node (G-Node)
+    Copyright (c) 2017, German Neuroinformatics Node (G-Node)
 
     All rights reserved.
 
@@ -10,24 +10,30 @@
 
 <template>
     <div class="container">
-        <p>
-            G-Node (German Neuroinformatics Node)
-            <br />
-            Biozentrum
-            Ludwig-Maximilians-Universität München
-            Großhaderner Straße 2
-            82152 Martinsried-Planegg
-            Germany
-            <br />
-            Phone: +49 (0)89 2180 74810
-            Fax: +49 89 2180 74803
-            eMail: <a :href="mailto">{{ contact }}</a>
-            <br />
-            <a href="https://www.google.de/maps/place/G-Node/@48.109108,11.459057,15z/data=!4m5!3m4!1s0x0:0x1d6841c041030d33!8m2!3d48.109108!4d11.459057">
-                G-Node location
-            </a>
-            <br />
-        </p>
+        <h2>Contact</h2>
+        <hr/><br>
+        <dl class="dl-horizontal">
+            <dt>G-Node</dt>
+            <dd>Biozentrum</dd>
+            <dd>Ludwig-Maximilians-Universität München</dd>
+            <dd>Großhaderner Straße 2</dd>
+            <dd>82152 Martinsried-Planegg</dd>
+            <dd>Germany</dd>
+        </dl>
+        <br/>
+        <dl class="dl-horizontal">
+            <dt>Phone</dt>
+            <dd>+49 (0)89 2180 74810</dd>
+            <dt>Fax</dt>
+            <dd>+49 89 2180 74803</dd>
+            <dt>eMail</dt>
+            <dd><a :href="mailto">{{ contact }}</a></dd>
+        </dl>
+        <br/>
+        <dl class="dl-horizontal">
+            <dt></dt>
+            <dd><a href="https://goo.gl/maps/WxwiKB9Kyo62">G-Node location</a></dd>
+        </dl>
     </div>
 </template>
 
