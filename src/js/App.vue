@@ -58,8 +58,11 @@
                     <div class="col-sm-9">
                         <ul class="list-inline">
                             <li>© G-Node{{ date_range }}</li>
-                            <li><a href="#">Terms of usage</a></li>
-                            <li><a href="#">FAQ</a></li>
+                            <li><router-link :to="{ name: 'terms'}">Terms of usage</router-link></li>
+                            <!-- deactivate until content is provided -->
+                            <!--
+                                <li><a href="#">FAQ</a></li>
+                            -->
                         </ul>
                     </div>
                     <div class="col-sm-3">

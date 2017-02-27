@@ -38,6 +38,7 @@ import RepoDOI              from "./comp/repo/RepoDOI.vue"
 import RepoSettings         from "./comp/repo/RepoSettings.vue"
 import RepoCreate           from "./comp/repo/RepoCreate.vue"
 
+import Terms                from "./comp/info/Terms.vue"
 import About                from "./comp/info/About.vue"
 import Contact              from "./comp/info/Contact.vue"
 import Imprint              from "./comp/info/Imprint.vue"
@@ -62,6 +63,7 @@ const router = new VueRouter({
         { path: "/oauth/authorize", component: Authorize,
             name: "oauth-authorize" },
 
+        { path: "/info/terms", component: Terms, name: "terms" },
         { path: "/info/about", component: About, name: "about" },
         { path: "/info/contact", component: Contact, name: "contact" },
         { path: "/info/imprint", component: Imprint, name: "imprint" },
