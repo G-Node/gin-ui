@@ -10,42 +10,38 @@
 
 <template>
     <div>
-        <h1>Welcome to the <strong>GIN</strong> (<strong>G</strong>-Node <strong>IN</strong>frastructure)
-            web services!</h1>
+        <h1>Welcome to the G-Node Neuroscience Data Infrastructure services</h1>
         <hr />
-
-        <div class="jumbotron">
-            <p>This service aims to provide a free, secure and community driven alternative to other
-                proprietary cloud services.</p>
-
-            <p>We therefore provide free data synchronisation, hosting and publishing for
-                scientists to promote data sharing and collaboration within the scientific community!</p>
-
-            <p>Therefore this service will always be <strong>free and Open Source</strong> - you can even setup your
-                own in-house instance of this service.</p>
-
-            <p>We also provide a free publishing service for data by issuing DOIs for your publications
-                from public repositories.</p>
-        </div>
 
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">Features</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
+                            A service for management and sharing of research data in neuroscience
+                        </a>
                     </h4>
                 </div>
-                <div id="collapse1" class="panel-collapse collapse">
+                <div id="collapse1" class="panel-collapse collapse in">
+                    <div class="panel-body">
+                        <ul>
+                            <li>Versioned storage, backup, access and sharing of research data,
+                                integrated into your lab data management routines.</li>
+                            <li>Access your data from anywhere.</li>
+                            <li>Collaborate with colleagues using fine-grained access control.</li>
+                            <li>Publish datasets using persistent identifiers (DOI).</li>
+                            <li>Use the G-Node servers, or install locally in your lab.</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Features</a>
+                    </h4>
+                </div>
+                <div id="collapse2" class="panel-collapse collapse">
                     <div class="panel-body">
                     <ul class="list-unstyled">
-                        <li><p class="text-primary"><strong>Choose how you want to use our service</strong></p>
-                            <ul>
-                                <li>register with the GIN services and use the provided infrastructure.</li>
-                                <li>set up and host your own in-house instance -
-                                    our software is open source, you can use it for free.</li>
-                            </ul>
-                        </li>
-                        <li></li>
                         <li><p class="text-primary"><br/><strong>Manage your data from anywhere</strong></p>
                             <ul>
                                 <li>upload your data on a repository based structure: you can create
@@ -55,8 +51,6 @@
                                 <li>synchronize your data: you can download complete or partial repositories
                                     on any workplace you like, work on them locally and upload the changes back
                                     to the main repository.</li>
-                                <li>version your data: when changing your files and uploading them to the server,
-                                    the history is automatically kept, you can always go back to a previous version.</li>
                             </ul>
                         </li>
                         <li><p class="text-primary"><br/><strong>Share your data</strong></p>
@@ -68,6 +62,13 @@
                                     repositories with other users of the GIN service making it easy to jointly work on a project.</li>
                             </ul>
                         </li>
+                        <li><p class="text-primary"><br/><strong>Version your data</strong></p>
+                            <ul>
+                                <li>when changing your files and uploading them to the server,
+                                    the history is automatically kept, you can always go back to a previous version.</li>
+                            </ul>
+                        </li>
+
                         <li><p class="text-primary"><br/><strong>Publish your data (DOI)
                             <span class="label label-warning">in development</span></strong></p>
                             <ul>
@@ -86,16 +87,23 @@
                                     you are looking for.</li>
                             </ul>
                         </li>
+                        <li><p class="text-primary"><br/><strong>Choose how you want to use our service</strong></p>
+                            <ul>
+                                <li>register with the GIN services and use the provided infrastructure.</li>
+                                <li>set up and host your own in-house instance -
+                                    our software is open source, you can use it for free.</li>
+                            </ul>
+                        </li>
                     </ul>
                 </div>
                 </div>
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
                             How to use the G-Node GIN services</a>
                     </h4>
                 </div>
-                <div id="collapse2" class="panel-collapse collapse in">
+                <div id="collapse3" class="panel-collapse collapse">
                     <div class="panel-body">
                     <p>If you want to use our services</p>
                     <ul>
@@ -114,11 +122,11 @@
                 </div>
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
                             Set up your own in-house GIN service</a>
                     </h4>
                 </div>
-                <div id="collapse3" class="panel-collapse collapse">
+                <div id="collapse4" class="panel-collapse collapse">
                     <div class="panel-body">
                         <div class="bs-callout bs-callout-primary">
                             <div class="container"><div class="row">
