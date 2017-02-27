@@ -58,7 +58,7 @@
                     <div class="col-sm-9">
                         <ul class="list-inline">
                             <li>© G-Node{{ date_range }}</li>
-                            <li><router-link :to="{ name: 'terms'}">Terms of usage</router-link></li>
+                            <li><a href="http://www.g-node.org/gin_terms">Terms of usage</a></li>
                             <!-- deactivate until content is provided -->
                             <!--
                                 <li><a href="#">FAQ</a></li>

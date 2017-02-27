@@ -63,7 +63,8 @@ const router = new VueRouter({
         { path: "/oauth/authorize", component: Authorize,
             name: "oauth-authorize" },
 
-        { path: "/info/terms", component: Terms, name: "terms" },
+        { path: "/terms", component: Terms, name: "terms" },
+
         { path: "/info/about", component: About, name: "about" },
         { path: "/info/contact", component: Contact, name: "contact" },
         { path: "/info/imprint", component: Imprint, name: "imprint" },
