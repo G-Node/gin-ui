@@ -30,12 +30,15 @@
                     Files
                 </router-link>
             </li>
+            <!-- deactivated until proper DOI content is available -->
+            <!--
             <li role="presentation" v-if="is_repo_owned">
                 <router-link :to="{ name: 'repository-doi',
                         params: { username: $route.params.username, repository: $route.params.repository }}">
                     DOI
                 </router-link>
             </li>
+            -->
             <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }"
                                     v-if="is_repo_writeable">
                 <router-link :to="{ name: 'repository-settings',
