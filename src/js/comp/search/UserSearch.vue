@@ -20,7 +20,7 @@
                     </div>
                     <div class="panel-body">
                             <div v-if="user.affiliation">
-                                Institute: {{ user.affiliation.institute }}<br />
+                                Institution: {{ user.affiliation.institute }}<br />
                                 Department: {{ user.affiliation.department }} <br/>
                                 City: {{ user.affiliation.city }} <br />
                                 Country: {{ user.affiliation.country }}
