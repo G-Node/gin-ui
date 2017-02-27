@@ -50,6 +50,31 @@
                 <error-page v-bind:error="error"></error-page>
             </div>
         </div>
+
+        <footer>
+            <hr>
+            <div class="container navbar navbar-bottom">
+                <div class="row">
+                    <div class="col-sm-9">
+                        <ul class="list-inline">
+                            <li>© G-Node{{ date_range }}</li>
+                            <li><a href="http://www.g-node.org/gin_terms">Terms of usage</a></li>
+                            <!-- deactivate until content is provided -->
+                            <!--
+                                <li><a href="#">FAQ</a></li>
+                            -->
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <ul class="list-inline pull-right">
+                            <li><router-link :to="{ name: 'about'}">About</router-link></li>
+                            <li><router-link :to="{ name: 'imprint'}">Imprint</router-link></li>
+                            <li><router-link :to="{ name: 'contact'}">Contact</router-link></li>
+                        </ul>
+                    </div>
+                </div>
+             </div>
+        </footer>
     </div>
 </template>
 
@@ -60,7 +85,10 @@
     import LoginMenu from "./comp/LoginMenu.vue"
     import ErrorPage from "./comp/ErrorPage.vue"
 
+    // Project wide constants
     const default_title = "G-Node GIN"
+    const copyright_first_year = "2016"
+    const message_delay = 4000
 
     event.init()
 
@@ -78,6 +106,17 @@
             MainMenu,
             LoginMenu,
             ErrorPage
+        },
+
+        computed: {
+            date_range: function () {
+                var d = new Date()
+                var y = copyright_first_year
+                if (d.getFullYear() > parseInt(y)) {
+                    y = y +"-"+ d.getFullYear().toString()
+                }
+                return ", "+ y
+            }
         },
 
         mounted() {
@@ -124,7 +163,7 @@
 
                 this.alert = alert
 
-                setTimeout(() => { this.alert = null }, 4000)
+                setTimeout(() => { this.alert = null }, message_delay)
 
                 if (message.level === "danger" || message.level === "warning") {
                     console.error(message.content)

@@ -16,9 +16,9 @@
         <div class="panel-body">
             <div class="form-horizontal">
                 <div class="form-group" :class="{ 'has-error': reasons.institute }">
-                    <label for="institute" class="col-sm-3 control-label">Institute</label>
+                    <label for="institute" class="col-sm-3 control-label">Institution</label>
                     <div class="col-sm-9">
-                        <input class="form-control" id="institute" placeholder="Institute" v-model="form.institute">
+                        <input class="form-control" id="institute" placeholder="Institution" v-model="form.institute">
                         <span class="help-block" v-if="reasons.institute">{{ reasons.institute }}</span>
                     </div>
                 </div>

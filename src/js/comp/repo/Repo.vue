@@ -30,12 +30,15 @@
                     Files
                 </router-link>
             </li>
-            <li role="presentation">
+            <!-- deactivated until proper DOI content is available -->
+            <!--
+            <li role="presentation" v-if="is_repo_owned">
                 <router-link :to="{ name: 'repository-doi',
                         params: { username: $route.params.username, repository: $route.params.repository }}">
                     DOI
                 </router-link>
             </li>
+            -->
             <li role="presentation" :class="{ 'active': $route.name === 'repository-settings' }"
                                     v-if="is_repo_writeable">
                 <router-link :to="{ name: 'repository-settings',
@@ -90,7 +93,16 @@
 
                     return name && repo && (repo.Owner === name || (collaborator && collaborator.indexOf(name) >= 0))
                 }
-            }
+            },
+
+            is_repo_owned: {
+                get() {
+                    const name = this.account ? this.account.login : null
+                    const repo = this.repository
+
+                    return name && repo && (repo.Owner === name)
+                }
+            },
         },
 
         props: {
@@ -102,7 +114,9 @@
         methods: {
             update(params, old) {
                 console.log("[Repo] update repo")
-                if (this.account === undefined || this.account === null) {
+                // checking if there is a token in storage is a bugfix to enable display a
+                // repository when a user is not logged in.
+                if ((this.account === undefined || this.account === null) && localStorage.getItem("token") !== null) {
                     console.log("[Repo] race condition with App lost, no account, cannot update")
                     return
                 }

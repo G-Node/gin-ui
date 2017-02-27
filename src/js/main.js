@@ -13,17 +13,21 @@ import VueCookies           from "vue-cookies"
 import API                  from "./data.js"
 import App                  from "./App.vue"
 import Index                from "./comp/Index.vue"
+
 import Authorize            from "./comp/oauth/Authorize.vue"
 import OAuthLogin           from "./comp/oauth/Login.vue"
+
 import Search               from "./comp/search/Search.vue"
 import RepoSearch           from "./comp/search/RepoSearch.vue"
 import UserSearch           from "./comp/search/UserSearch.vue"
+
 import Settings             from "./comp/account/Settings.vue"
 import ProfileSettings      from "./comp/account/ProfileSettings.vue"
 import PasswordSettings     from "./comp/account/PasswordSettings.vue"
 import EmailSettings        from "./comp/account/EmailSettings.vue"
 import SSHKeySettings       from "./comp/account/SSHKeySettings.vue"
 import AffiliationSettings  from "./comp/account/AffiliationSettings.vue"
+
 import Repos                from "./comp/account/Repos.vue"
 import ReposOwn             from "./comp/account/ReposOwn.vue"
 import ReposShared          from "./comp/account/ReposShared.vue"
@@ -33,6 +37,11 @@ import RepoFiles            from "./comp/repo/RepoFiles.vue"
 import RepoDOI              from "./comp/repo/RepoDOI.vue"
 import RepoSettings         from "./comp/repo/RepoSettings.vue"
 import RepoCreate           from "./comp/repo/RepoCreate.vue"
+
+import Terms                from "./comp/info/Terms.vue"
+import About                from "./comp/info/About.vue"
+import Contact              from "./comp/info/Contact.vue"
+import Imprint              from "./comp/info/Imprint.vue"
 
 import config               from "./config.json"
 import { filesize }         from "./filters"
@@ -48,10 +57,18 @@ const router = new VueRouter({
     routes: [
         { path: "/", component: Index,
             name: "index" },
+
         { path: "/oauth/login", component: OAuthLogin,
             name: "oauth-login" },
         { path: "/oauth/authorize", component: Authorize,
             name: "oauth-authorize" },
+
+        { path: "/terms", component: Terms, name: "terms" },
+
+        { path: "/info/about", component: About, name: "about" },
+        { path: "/info/contact", component: Contact, name: "contact" },
+        { path: "/info/imprint", component: Imprint, name: "imprint" },
+
         { path: "/account/settings", component: Settings,
             children: [
                 { path: "profile", component: ProfileSettings,
@@ -66,8 +83,7 @@ const router = new VueRouter({
                     name: "affiliation-settings", title: "Affiliation Settings" }
             ]
         },
-        { path: "/account/repository-create", component: RepoCreate,
-            name: "repository-create", title: "Create new repository" },
+
         { path: "/search", component: Search,
             name: "search", title: "Public Data",
             children: [
@@ -77,6 +93,9 @@ const router = new VueRouter({
                     name: "search-users", title: "Search Users" }
             ]
         },
+
+        { path: "/account/repository-create", component: RepoCreate,
+            name: "repository-create", title: "Create new repository" },
         { path: "/:username/repositories", component: Repos,
             name: "repositories", title: "Repositories",
             children: [

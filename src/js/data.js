@@ -16,6 +16,7 @@ export default class API {
                             doi_file: conf.doi_file,
                             client_id: conf.client_id,
                             client_secret: conf.client_secret,
+                            contact_email: conf.contact_email,
                             token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
