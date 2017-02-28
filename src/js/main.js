@@ -44,9 +44,12 @@ import Contact              from "./comp/info/Contact.vue"
 import Imprint              from "./comp/info/Imprint.vue"
 
 import config               from "./config.json"
-import { filesize }         from "./filters"
+
+import { filesize }                 from "./filters"
+import { reLabelCollaborator }      from "./filters"
 
 Vue.filter("filesize", filesize)
+Vue.filter("reLabelCollaborator", reLabelCollaborator)
 Vue.use(VueRouter)
 Vue.use(VueCookies)
 

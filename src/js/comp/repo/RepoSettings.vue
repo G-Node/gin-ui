@@ -61,10 +61,10 @@
                                                     <button v-if="(permissions.indexOf(text.AccessLevel) > -1 &&
                                                             permissions.indexOf(level) <= permissions.indexOf(text.AccessLevel))"
                                                             @click="updateCollaborator(text.User, level)"
-                                                            class="btn btn-success btn-xs">{{ level }}</button>
+                                                            class="btn btn-success btn-xs">{{ level | reLabelCollaborator }}</button>
                                                     <button v-else
                                                             @click="updateCollaborator(text.User, level)"
-                                                            class="btn btn-xs">{{ level }}</button>
+                                                            class="btn btn-xs">{{ level | reLabelCollaborator }}</button>
                                                 </span>
                                             </td>
                                             <td class="text-right">
