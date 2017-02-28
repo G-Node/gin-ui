@@ -31,7 +31,7 @@
 <script type="text/ecmascript-6">
     export default {
         props: {
-            public_repo: { required: true }
+            public_repo: {required: true}
         }
     }
 </script>
