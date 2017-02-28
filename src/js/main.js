@@ -6,6 +6,9 @@
 // modification, are permitted under the terms of the BSD License. See
 // LICENSE file in the root of the Project.
 
+// Be advised: here be ugly dragons, if someone can read this,
+// save me from js and vue 2.0!
+
 import Vue                  from "vue"
 import VueRouter            from "vue-router"
 import VueCookies           from "vue-cookies"
@@ -46,10 +49,13 @@ import Imprint              from "./comp/info/Imprint.vue"
 import config               from "./config.json"
 
 import { filesize }                 from "./filters"
+import { privacyLabel }             from "./filters"
 import { reLabelCollaborator }      from "./filters"
 
 Vue.filter("filesize", filesize)
+Vue.filter("privacyLabel", privacyLabel)
 Vue.filter("reLabelCollaborator", reLabelCollaborator)
+
 Vue.use(VueRouter)
 Vue.use(VueCookies)
 
