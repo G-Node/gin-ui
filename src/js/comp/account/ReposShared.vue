@@ -10,8 +10,8 @@
 
 <template>
     <div>
-        <ul class="list-unstyled" v-if="repos">
-            <li v-for="repo in repos">
+        <ul class="list-unstyled" v-if="repos_modified">
+            <li v-for="repo in repos_modified">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <router-link :to="{ name: 'repository-info',
@@ -20,13 +20,16 @@
                         </router-link>
                     </div>
                     <div class="panel-body">
-                        {{ repo.Description }} <br/> <br/>
+                        Owner {{ repo.FullName }}<br/>
                         {{ repo.Public | privacyLabel }}
+                        <br/><br/>
+                        {{ repo.Description }}
+                        <span v-if="!repo.Description">No description for this repository.</span>
                     </div>
                 </div>
             </li>
         </ul>
-        <ul class="list-unstyled" v-if="!repos">
+        <ul class="list-unstyled" v-if="!repos_modified">
             <li class="panel panel-default">
                 <div class="panel-body">
                     There are no available repositories
@@ -44,7 +47,7 @@
     export default {
         data() {
             return {
-                repos: null
+                repos_modified: null
             }
         },
 
@@ -72,7 +75,7 @@
             // the logged in user repositories that are shared with the owner of the current
             // repository list?
             sharedRepos(params) {
-                this.repos = null
+                var repo_list = []
 
                 const repos_shared = api.repos.listShared()
                 repos_shared.then(
@@ -81,11 +84,28 @@
                                 let repo_filter = Array.from(repos)
                                                        .filter((r) => { return r.Owner === params.username})
                                 if (repo_filter.length > 0) {
-                                    this.repos = repo_filter
+                                    repo_list = repo_filter
                                 }
                             } else {
-                                this.repos = repos
+                                repo_list = repos
                             }
+
+                            const user_search = api.accounts.search()
+                            user_search.then(
+                                    (u) => {
+                                        var names_map = new Map()
+                                        for (var j = 0; j < u.length; j++) {
+                                            names_map.set(u[j].login, u[j].first_name+" "+u[j].last_name)
+                                        }
+
+                                        this.repos_modified = []
+                                        for (var i = 0; i < repo_list.length; i++) {
+                                            var el = Object.assign({}, repo_list[i],
+                                                    { FullName: names_map.get(repo_list[i].Owner) })
+                                            this.repos_modified.push(el)
+                                        }
+                                    }
+                            )
                         },
                         (error) => {
                             console.error(error)
