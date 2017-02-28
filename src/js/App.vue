@@ -16,7 +16,7 @@
 
 <template>
     <div id="main">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <!-- collapsed menu button -->
@@ -27,7 +27,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!-- navbar branding -->
-                    <router-link class="navbar-brand-gnode" :to="{ name: 'index' }"></router-link>
+                    <router-link class="navbar-brand-gin" :to="{ name: 'index' }"></router-link>
                 </div>
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
