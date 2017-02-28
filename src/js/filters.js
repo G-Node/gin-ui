@@ -31,7 +31,7 @@ export function filesize(input) {
  * if it is supposed to be written back to gin-repo. Therefore
  * different labels are mapped to an access level when displaying to a user.
  *
- * @param {string} lvl gin-repo access level.
+ * @param lvl {string} gin-repo access level.
  * @return {string} Label mapped to the gin-repo access level.
  */
 export function reLabelCollaborator(lvl) {
@@ -48,4 +48,19 @@ export function reLabelCollaborator(lvl) {
 
     }
     return out
+}
+
+/**
+ * privacyLabel is a custom filter providing a proper label
+ * whether a repository is public or not.
+ *
+ * @param is_public {boolean}
+ * @returns {string}
+ */
+export function privacyLabel(is_public) {
+    var out = "public"
+    if (!is_public) {
+        out = "private"
+    }
+    return "This repository is "+ out
 }
