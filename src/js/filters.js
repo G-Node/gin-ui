@@ -21,3 +21,31 @@ export function filesize(input) {
     
     return num.toFixed(1) + " " + prefixes[i] + "B"
 }
+
+
+/**
+ * reLabelCollaborator is a custom filter to map different labels
+ * to the collaborator access levels from gin-repo.
+ *
+ * The value of a gin-repo access level should never change
+ * if it is supposed to be written back to gin-repo. Therefore
+ * different labels are mapped to an access level when displaying to a user.
+ *
+ * @param {string} lvl gin-repo access level.
+ * @return {string} Label mapped to the gin-repo access level.
+ */
+export function reLabelCollaborator(lvl) {
+    var out
+    switch(lvl) {
+        case "is-admin":
+            out = "is-admin"
+            break
+        case "can-push":
+            out = "can-write"
+            break
+        default:
+            out = "can-read"
+
+    }
+    return out
+}
