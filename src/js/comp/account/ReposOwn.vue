@@ -20,8 +20,7 @@
                         </router-link>
                     </div>
                     <div class="panel-body">
-                        Head: {{ repo.Head }} <br/>
-                        Description: {{ repo.Description }} <br/>
+                        {{ repo.Description }} <br/> <br/>
                         {{ repo.Public | privacyLabel }}
                     </div>
                 </div>
