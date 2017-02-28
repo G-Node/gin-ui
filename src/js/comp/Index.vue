@@ -19,6 +19,7 @@
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse1">
                             A service for management and sharing of research data in neuroscience
+                            <b class="caret"></b>
                         </a>
                     </h4>
                 </div>
@@ -36,7 +37,9 @@
                 </div>
                 <div class="panel-heading panel-heading-accordion">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">Features</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                            Features <b class="caret"></b>
+                        </a>
                     </h4>
                 </div>
                 <div id="collapse2" class="panel-collapse collapse">
@@ -100,7 +103,9 @@
                 <div class="panel-heading panel-heading-accordion">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                            How to use the G-Node GIN services</a>
+                            How to use the G-Node GIN services
+                            <b class="caret"></b>
+                        </a>
                     </h4>
                 </div>
                 <div id="collapse3" class="panel-collapse collapse">
@@ -123,7 +128,9 @@
                 <div class="panel-heading panel-heading-accordion">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
-                            Set up your own in-house GIN service</a>
+                            Set up your own in-house GIN service
+                            <b class="caret"></b>
+                        </a>
                     </h4>
                 </div>
                 <div id="collapse4" class="panel-collapse collapse">
