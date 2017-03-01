@@ -16,7 +16,7 @@
 
 <template>
     <div id="main">
-        <nav class="navbar navbar-inverse navbar-fixed-top">
+        <nav class="navbar navbar-default navbar-fixed-top">
             <div class="container">
                 <div class="navbar-header">
                     <!-- collapsed menu button -->
@@ -27,7 +27,7 @@
                         <span class="icon-bar"></span>
                     </button>
                     <!-- navbar branding -->
-                    <router-link class="navbar-brand-gnode" :to="{ name: 'index' }"></router-link>
+                    <router-link class="navbar-brand-gin" :to="{ name: 'index' }"></router-link>
                 </div>
                 <!-- left hand side navigation items -->
                 <div id="navbar" class="navbar-collapse collapse">
@@ -51,11 +51,13 @@
             </div>
         </div>
 
-        <footer>
-            <hr>
-            <div class="container navbar navbar-bottom">
-                <div class="row">
-                    <div class="col-sm-9">
+        <nav class="navbar navbar-fixed-bottom navbar-default">
+            <div class="container">
+                <div class="row display-table">
+                    <div class="col-sm-1 display-cell">
+                        <a class="navbar-footer-brand-gin" href="http://www.g-node.org"></a>
+                    </div>
+                    <div class="col-sm-6 display-cell">
                         <ul class="list-inline">
                             <li>© G-Node{{ date_range }}</li>
                             <li><a href="http://www.g-node.org/gin_terms">Terms of usage</a></li>
@@ -65,7 +67,7 @@
                             -->
                         </ul>
                     </div>
-                    <div class="col-sm-3">
+                    <div class="col-sm-6 display-cell">
                         <ul class="list-inline pull-right">
                             <li><router-link :to="{ name: 'about'}">About</router-link></li>
                             <li><router-link :to="{ name: 'imprint'}">Imprint</router-link></li>
@@ -73,8 +75,8 @@
                         </ul>
                     </div>
                 </div>
-             </div>
-        </footer>
+            </div>
+        </nav>
     </div>
 </template>
 

@@ -61,10 +61,10 @@
                                                     <button v-if="(permissions.indexOf(text.AccessLevel) > -1 &&
                                                             permissions.indexOf(level) <= permissions.indexOf(text.AccessLevel))"
                                                             @click="updateCollaborator(text.User, level)"
-                                                            class="btn btn-success btn-xs">{{ level }}</button>
+                                                            class="btn btn-success btn-xs">{{ level | reLabelCollaborator }}</button>
                                                     <button v-else
                                                             @click="updateCollaborator(text.User, level)"
-                                                            class="btn btn-xs">{{ level }}</button>
+                                                            class="btn btn-xs">{{ level | reLabelCollaborator }}</button>
                                                 </span>
                                             </td>
                                             <td class="text-right">
@@ -100,6 +100,30 @@
                             <div class="col-sm-2">
                                 <button class="btn btn-primary btn-block" @click="addShare(select.text)">Add</button>
                             </div>
+                        </div>
+                    </div>
+
+                    <hr>
+                    <div class="row">
+                        <div class="col-sm-3 card card-block"></div>
+                        <div class="col-sm-3 card card-block">
+                            <p class="card-text">
+                                <span class="label label-success">can-read</span> <br/> <br/>
+                                Collaborator has read only access to a repository.
+                            </p>
+                        </div>
+                        <div class="col-sm-3 card card-block">
+                            <p class="card-text">
+                                <span class="label label-success">can-write</span> <br/> <br/>
+                                Collaborator can add, edit and remove files.
+                            </p>
+                        </div>
+                        <div class="col-sm-3 card card-block">
+                            <p class="card-text">
+                                <span class="label label-success">is-admin</span> <br/> <br/>
+                                As write, collaborator can also change repository settings
+                                and add further collaborators.
+                            </p>
                         </div>
                     </div>
                 </div>
