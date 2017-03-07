@@ -134,8 +134,7 @@
                 console.log("[RepoDOI] create DOI")
                 // TODO Currently only the master branch is handled.
                 // TODO Once different branches are supported, this has to be changed as well.
-                window.api.repos.requestDOI(this.account.login,
-                        this.$route.params.username,
+                window.api.repos.requestDOI(this.$route.params.username,
                         this.$route.params.repository,
                         "master")
             },
