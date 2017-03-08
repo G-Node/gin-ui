@@ -30,7 +30,7 @@
                             Repositories ({{ public_repo.length }})
                         </router-link>
                     </li>
-                    <li role="presentation" :class="{ 'active': $route.name === 'search-users' }">
+                    <li v-if="has_login" role="presentation" :class="{ 'active': $route.name === 'search-users' }">
                         <router-link :to="{ name: 'search-users' }">
                             Users ({{ users.length }})
                         </router-link>
@@ -56,7 +56,8 @@
             return {
                 users: null,
                 search_text: null,
-                public_repo: null
+                public_repo: null,
+                has_login: null
             }
         },
 
@@ -66,6 +67,10 @@
 
         methods: {
             search() {
+                // TODO looking for a token in localStorage is a workaround the race condition
+                // with account in APP.vue. Refactor when race condition issue has been addressed.
+                // Enable "Users" tab dependent on login.
+                (localStorage.getItem("token") !== null) ? this.has_login = true : this.has_login = false
 
                 const all_public = api.repos.listPublic()
                 all_public.then(
