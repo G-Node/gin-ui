@@ -72,14 +72,6 @@
                             </ul>
                         </li>
 
-                        <li><p class="text-primary"><br/><strong>Publish your data (DOI)
-                            <span class="label label-warning">in development</span></strong></p>
-                            <ul>
-                                <li>when you are hosting your data on the GIN server, we give you the option
-                                    to publish any of your public repositories. We will issue a DOI reliably hosting
-                                    your data for your publications.</li>
-                            </ul>
-                        </li>
                         <li><p class="text-primary"><br/><strong>Enhanced search of your repositories
                             <span class="label label-warning">in development</span></strong></p>
                             <ul>
@@ -100,15 +92,39 @@
                     </ul>
                 </div>
                 </div>
+
                 <div class="panel-heading panel-heading-accordion">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                            How to use the G-Node GIN services
+                            Publish your data (DOI)
                             <b class="caret"></b>
                         </a>
                     </h4>
                 </div>
                 <div id="collapse3" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <p>gin-doi is the G-Node Infrastructure DOI service. A Service which can copy your
+                            public repository, packs everything into an archive file,
+                            stores it in a super save location and provides you with a DOI such that you can
+                            cite this data. gin-doi fulfills the Data Cite standard which (according to Wikipedia)
+                            tries to:</p>
+                        <ul>
+                            <li>Establish easier access to research data on the Internet</li>
+                            <li>Increase acceptance of research data as legitimate, citable contributions to the scholarly record</li>
+                            <li>Support data archiving that will permit results to be verified and re-purposed for future study.</li>
+                        </ul>
+                        <p>You can find datasets already published with the gin-doi service at <a :href="doid">{{ doid }}</a>.</p>
+                    </div>
+                </div>
+                <div class="panel-heading panel-heading-accordion">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
+                            How to use the G-Node GIN services
+                            <b class="caret"></b>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse4" class="panel-collapse collapse">
                     <div class="panel-body">
                     <p>If you want to use our services</p>
                     <ul>
@@ -133,7 +149,7 @@
                         </a>
                     </h4>
                 </div>
-                <div id="collapse4" class="panel-collapse collapse">
+                <div id="collapse5" class="panel-collapse collapse">
                     <div class="panel-body">
                         <div class="bs-callout bs-callout-primary">
                             <div class="container"><div class="row">
@@ -172,6 +188,9 @@
             },
             contact: function() {
                 return window.api.config.contact_email
+            },
+            doid: function() {
+                return window.api.config.doid_url
             },
         },
 
