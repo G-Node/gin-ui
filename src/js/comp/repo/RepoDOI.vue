@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2016, German Neuroinformatics Node (G-Node)
+    Copyright (c) 2017, German Neuroinformatics Node (G-Node)
 
     All rights reserved.
 
@@ -113,13 +113,18 @@
         data() {
             return {
                 can_doi: null,
-                doi_file: null,
                 message: null
             }
         },
 
         mounted() {
             this.update(this.$route.params)
+        },
+
+        computed: {
+            doi_file: function() {
+                return window.api.config.doi_file
+            }
         },
 
         props: {
@@ -141,7 +146,6 @@
 
             update(params) {
                 this.can_doi = false
-                this.doi_file = window.api.config.doi_file
                 this.message = "one"
 
                 var acc = (this.account !== undefined && this.account !== null)
