@@ -14,6 +14,7 @@ export default class API {
                             repo_url: conf.repo_url,
                             doi_url: conf.doi_url,
                             doi_file: conf.doi_file,
+                            doid_url: conf.doid_url,
                             client_id: conf.client_id,
                             client_secret: conf.client_secret,
                             contact_email: conf.contact_email,
