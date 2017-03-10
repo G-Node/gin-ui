@@ -84,7 +84,7 @@
             <pre>
                 keywords:
                     - Neuroscience
-                    - Electrophysiology
+                    - Pseudoscience
             </pre>
         </p>
 
@@ -111,8 +111,7 @@
             <code>references</code> are additional references associated with the data publication.
             <br/><br/>
             <pre>
-                references:
-                    - Example et. al.
+                references: Example1 et. al., Example2 et. al., ...
             </pre>
         </p>
     </div>
