@@ -24,6 +24,7 @@
                     </div>
                     <div class="panel-body">
                         {{ repo.Description }}
+                        <span v-if="!repo.Description">No description for this repository.</span>
                     </div>
                 </div>
             </li>
