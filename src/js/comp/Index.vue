@@ -12,6 +12,10 @@
     <div>
         <h1>Welcome to the G-Node Neuroscience Data Infrastructure services</h1>
         <hr />
+        <div class="bs-callout bs-callout-success">
+            <a @click="register()">Register</a> an account with us, download the command line client
+            <a :href="client_dl">gin-cli</a> for your operating system and start using our services.
+        </div>
 
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
@@ -208,6 +212,9 @@
             doid: function() {
                 return window.api.config.doid_url
             },
+            client_dl: function() {
+                return window.api.config.client_dl
+            }
         },
 
         methods: {
