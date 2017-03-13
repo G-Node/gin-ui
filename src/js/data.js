@@ -482,7 +482,9 @@ class RepoAPI {
     requestDOI(owner, repo, branch) {
         const uri = this.config.doi_url + "?"
         const kv = [
-            ["repo", branch+":"+owner+"/"+repo]
+            ["repo", branch+":"+owner+"/"+repo],
+            ["user", this.config.token.login],
+            ["token", "Bearer "+ this.config.token.jti]
         ]
         const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
 
