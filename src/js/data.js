@@ -14,6 +14,9 @@ export default class API {
                             repo_url: conf.repo_url,
                             doi_url: conf.doi_url,
                             doi_file: conf.doi_file,
+                            doi_example: conf.doi_example,
+                            doid_url: conf.doid_url,
+                            client_dl: conf.client_dl,
                             client_id: conf.client_id,
                             client_secret: conf.client_secret,
                             contact_email: conf.contact_email,
@@ -476,13 +479,12 @@ class RepoAPI {
         })
     }
 
-    requestDOI(user, owner, repo, branch) {
+    requestDOI(owner, repo, branch) {
         const uri = this.config.doi_url + "?"
         const kv = [
-            ["user", user],
-            ["owner", owner],
-            ["repo", repo],
-            ["branch", branch]
+            ["repo", branch+":"+owner+"/"+repo],
+            ["user", this.config.token.login],
+            ["token", "Bearer "+ this.config.token.jti]
         ]
         const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
 

@@ -18,10 +18,13 @@
                                             params: { username: repo.Owner, repository: repo.Name } }">
                             {{ repo.Owner }}/{{ repo.Name }}
                         </router-link>
+
+                        <strong v-if="repo.Public"><span class="label label-success pull-right">public</span></strong>
+                        <strong v-if="!repo.Public"><span class="label label-danger pull-right">private</span></strong>
                     </div>
                     <div class="panel-body">
-                        {{ repo.Description }} <br/> <br/>
-                        {{ repo.Public | privacyLabel }}
+                        {{ repo.Description }}
+                        <span v-if="!repo.Description">No description for this repository.</span>
                     </div>
                 </div>
             </li>

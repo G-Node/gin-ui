@@ -45,6 +45,7 @@ import Terms                from "./comp/info/Terms.vue"
 import About                from "./comp/info/About.vue"
 import Contact              from "./comp/info/Contact.vue"
 import Imprint              from "./comp/info/Imprint.vue"
+import DOI                  from "./comp/info/DOI.vue"
 
 import config               from "./config.json"
 
@@ -77,6 +78,7 @@ const router = new VueRouter({
         { path: "/info/about", component: About, name: "about" },
         { path: "/info/contact", component: Contact, name: "contact" },
         { path: "/info/imprint", component: Imprint, name: "imprint" },
+        { path: "/info/doi", component: DOI, name: "doi" },
 
         { path: "/account/settings", component: Settings,
             children: [

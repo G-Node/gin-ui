@@ -1,5 +1,5 @@
 <!--
-    Copyright (c) 2016, German Neuroinformatics Node (G-Node)
+    Copyright (c) 2017, German Neuroinformatics Node (G-Node)
 
     All rights reserved.
 
@@ -33,11 +33,9 @@
                             <li>
                                 that the information in your <code>{{ doi_file }}</code> file contains all
                                 information required to successfully submit your data to a DOI agency.
-                                <!-- Deactivated until material can be supplied -->
-                                <!--
-                                    If you are unsure, you can read up on the details <a href="#">here</a> before proceeding.
-                                    <span class="label label-warning">Under construction</span>
-                                -->
+
+                                If you are unsure, you can read up on the details
+                                <router-link :to="{ name: 'doi' }">here</router-link> before proceeding.
                             </li>
                         </ul>
                     </div>
@@ -56,8 +54,8 @@
                     <div v-if="message == 'one'">
                         This repository is <strong>private</strong>.
                         <hr>
-                        <p>A DOI can only be requested for a <strong>public</strong> repository</p>
-                        <p>Please change the repository visibility to public under the Settings tab before proceeding.</p>
+                        <p>A DOI can only be requested for a <strong>public</strong> repository.</p>
+                        <p>Please change the repository visibility to public at the Settings tab before proceeding.</p>
                     </div>
 
                     <!-- handle missing doi_file -->
@@ -65,41 +63,47 @@
                         Your repository is missing the DOI request file.
                         <hr>
                         <p>In order to request a DOI, the root of your repository must contain a file
-                            named <code>{{ doi_file }}</code>.</p>
-                        <p>This file has to contain information about yourself and your project.</p>
-                        <p>Please add this file to the root of your repository before proceeding.</p>
-
-                        <!-- Deactivated until material can be supplied -->
-                        <!--
-                            <hr>
-
-                            <p>You can find a description about the content of this request file <a href="#">here</a>.
-                                <span class="label label-warning">Under construction</span></p>
-                            <p>You can download an example file <a href="#">here</a>.
-                                <span class="label label-warning">Under construction</span></p>
-                        -->
-
+                            named <code>{{ doi_file }}</code>. Please add this file to the
+                            root of your repository before proceeding.</p>
                     </div>
                 </div>
             </div>
-            <!-- Deactivated until material can be supplied -->
-            <!--
-                <div class="panel-heading">
-                    What is a DOI and why would I want one?
-                </div>
-                <div class="panel-body">
-                    DOI's are ... <span class="label label-warning">Under construction</span>
-                </div>
-            -->
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                How to get a DOI
+            </div>
+            <div class="panel-body">
+                <ul>
+                    <li>Make the repository <strong>public</strong>.</li>
+                    <li>Provide a valid DOI request file called <code>{{ doi_file }}</code>
+                        at the root of the repository.</li>
+                    <li>Hit "Submit" and follow the instructions on gin-doi.</li>
+                </ul>
+                <ul>
+                    <li>Here you can find a <router-link :to="{ name: 'doi' }">
+                        detailed description about the DOI request file</router-link>.</li>
+                    <li>You can also download an <a :href="doi_example">example DOI request file</a>.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                What is a DOI and why would I want one?
+            </div>
+            <div class="panel-body">
+                <p>A <a href="https://www.doi.org/">DOI (Digital Object Identifier)</a> <strong>permanently</strong> identifies a resource.</p>
+                <p>For your research this means:</p>
+                <ul>
+                    <li>Make any of your data sets <strong>citable</strong>. You will get a permanent link
+                    to the data set you provide. If you use the gin-doi service, your data will be hosted for free.</li>
+                    <li>You can also make your scripts, software, laboratory protocols citable
+                    by giving them a DOI and gaining credit for your work that cannot be normally published.</li>
+                </ul>
+                <p>Note that you cannot change or remove a resource once a DOI has been assigned to it.</p>
+            </div>
         </div>
 
-        <!-- Deactivated until material can be supplied -->
-        <!--
-        <div class="row">
-            <div class="col-sm-3"><span class="label label-info">Page under development</span></div>
-            <div class="col-sm-9"></div>
-        </div>
-        -->
     </div>
 </template>
 
@@ -113,13 +117,21 @@
         data() {
             return {
                 can_doi: null,
-                doi_file: null,
                 message: null
             }
         },
 
         mounted() {
             this.update(this.$route.params)
+        },
+
+        computed: {
+            doi_file: function() {
+                return window.api.config.doi_file
+            },
+            doi_example: function() {
+                return window.api.config.doi_example
+            }
         },
 
         props: {
@@ -134,15 +146,13 @@
                 console.log("[RepoDOI] create DOI")
                 // TODO Currently only the master branch is handled.
                 // TODO Once different branches are supported, this has to be changed as well.
-                window.api.repos.requestDOI(this.account.login,
-                        this.$route.params.username,
+                window.api.repos.requestDOI(this.$route.params.username,
                         this.$route.params.repository,
                         "master")
             },
 
             update(params) {
                 this.can_doi = false
-                this.doi_file = window.api.config.doi_file
                 this.message = "one"
 
                 var acc = (this.account !== undefined && this.account !== null)
