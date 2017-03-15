@@ -19,17 +19,17 @@
         <li>
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button"
                aria-haspopup="true" aria-expanded="false">
-                {{ account ? display_name : "Sign In"}} <span class="caret"></span>
+                {{ account ? display_name : "Sign in"}} <span class="caret"></span>
             </a>
 
             <ul class="dropdown-menu" v-if="!account" style="padding: 1em">
                 <!-- login form (shown if not logged in) -->
                 <li>
-                    <a href="#" @click="signIn">Sign In</a>
+                    <a href="#" @click="signIn">Sign in</a>
                 </li>
                 <li role="separator" class="divider"></li>
                 <li>
-                    <a href="#" @click="register">Get a G-Node Account</a>
+                    <a href="#" @click="register">Get an account</a>
                 </li>
             </ul>
 
@@ -51,7 +51,7 @@
                     <router-link :to="{ name: 'sshkey-settings'}">Manage SSH Keys</router-link>
                 </li>
                 <li role="separator" class="divider"></li>
-                <li><a href="#" @click="signOut">Sign Out</a></li>
+                <li><a href="#" @click="signOut">Sign out</a></li>
             </ul>
         </li>
     </ul>
