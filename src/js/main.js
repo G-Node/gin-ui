@@ -52,10 +52,12 @@ import config               from "./config.json"
 import { filesize }                 from "./filters"
 import { privacyLabel }             from "./filters"
 import { reLabelCollaborator }      from "./filters"
+import { fileSysLabel }             from "./filters"
 
 Vue.filter("filesize", filesize)
 Vue.filter("privacyLabel", privacyLabel)
 Vue.filter("reLabelCollaborator", reLabelCollaborator)
+Vue.filter("fileSysLabel", fileSysLabel)
 
 Vue.use(VueRouter)
 Vue.use(VueCookies)

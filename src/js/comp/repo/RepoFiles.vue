@@ -51,14 +51,14 @@
                             {{ item.name }}
                         </router-link>
                     </td>
-                    <td>{{ item.type }}</td>
+                    <td>{{ item.type | fileSysLabel }}</td>
                     <td>{{ item.id }}</td>
                 </tr>
 
                 <tr v-for="item in content_files">
                     <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
                     <td>{{ item.name }}</td>
-                    <td>{{ item.type }}</td>
+                    <td>{{ item.type | fileSysLabel }}</td>
                     <td>{{ item.id }}</td>
                 </tr>
             </tbody>
