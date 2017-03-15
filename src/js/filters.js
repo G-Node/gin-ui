@@ -64,3 +64,18 @@ export function privacyLabel(is_public) {
     }
     return "This repository is "+ out
 }
+
+/**
+ * fileSysLabel is a custom filter providing a file system
+ * like label translating git "tree" and "blob" to
+ * "dir" and "file".
+ * @param git_label
+ * @returns {string}
+ */
+export function fileSysLabel(git_label) {
+    var out = "file"
+    if (git_label === "tree") {
+        out = "dir"
+    }
+    return out
+}
