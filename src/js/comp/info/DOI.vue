@@ -115,8 +115,7 @@
             relation to the dataset and, if possible, a digital identifier.
             <br/><br/>
             <pre>
-                references: OriginalPublication, Author et al (2017) Title. Journal, DOI 10.xxx/yyyy;
-                Relation2, Citation2, Identifier2
+                references: OriginalPublication, Author et al (2017) Title. Journal, DOI 10.xxx/yyyy; Relation2, Citation2, Identifier2
             </pre>
         </p>
     </div>
