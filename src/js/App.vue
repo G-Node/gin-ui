@@ -60,7 +60,7 @@
                     <div class="col-sm-6 display-cell">
                         <ul class="list-inline">
                             <li>© G-Node{{ date_range }}</li>
-                            <li><a href="http://www.g-node.org/gin_terms">Terms of usage</a></li>
+                            <li><a href="http://www.g-node.org/gin_terms">Terms of Use</a></li>
                             <!-- deactivate until content is provided -->
                             <!--
                                 <li><a href="#">FAQ</a></li>

@@ -12,11 +12,6 @@
     <div>
         <h1>Welcome to the G-Node Neuroscience Data Infrastructure services</h1>
         <hr />
-        <div class="bs-callout bs-callout-success">
-            <a @click="register()">Register</a> an account with us, download the command line client
-            <a :href="client_dl">gin-cli</a> for your operating system and start using our services.
-        </div>
-
         <div class="panel-group" id="accordion">
             <div class="panel panel-default">
                 <div class="panel-heading panel-heading-accordion">
@@ -51,46 +46,49 @@
                     <ul class="list-unstyled">
                         <li><p class="text-primary"><br/><strong>Manage your data from anywhere</strong></p>
                             <ul>
-                                <li>upload your data on a repository based structure: you can create
+                                <li>Upload your data on a repository based structure: you can create
                                     as many repositories as you like.</li>
-                                <li>access your data from anywhere: once the data is at the main repository
-                                    service you can access your data from anywhere you like.</li>
-                                <li>synchronize your data: you can download complete or partial repositories
+                                <li>Access your data from anywhere: once the data is at the main repository
+                                    service you can securely access your data from anywhere you like.</li>
+                                <li>Synchronize your data: you can download complete or partial repositories
                                     on any workplace you like, work on them locally and upload the changes back
                                     to the main repository.</li>
                             </ul>
                         </li>
-                        <li><p class="text-primary"><br/><strong>Share your data</strong></p>
-                            <ul>
-                                <li>make your data public: if you want to make your data accessible to the world,
-                                    just make your repository publicly available. The data will be accessible but
-                                    only you will be able to change it.</li>
-                                <li>share your data with collaborators: you can also share your public or private
-                                    repositories with other users of the GIN service
-                                    making it easy to jointly work on a project.</li>
-                            </ul>
-                        </li>
                         <li><p class="text-primary"><br/><strong>Version your data</strong></p>
                             <ul>
-                                <li>when changing your files and uploading them to the server,
+                                <li>When changing your files and uploading them to the server,
                                     the history is automatically kept, you can always go back to a previous version.</li>
+                            </ul>
+                        </li>
+                        <li><p class="text-primary"><br/><strong>Share your data</strong></p>
+                            <ul>
+                                <li>Make your data public: if you want to make your data accessible to the world,
+                                    just make your repository publicly available. The data will be accessible but
+                                    only you will be able to change it.</li>
+                                <li>Share your data with collaborators: you can also share
+                                    repositories with other users of the GIN service
+                                    making it easy to jointly work on a project.</li>
+                                <li>Make your data citable: through the gin DOI service you can obtain
+                                    registered identifiers for your public datasets.
+                                </li>
                             </ul>
                         </li>
 
                         <li><p class="text-primary"><br/><strong>Enhanced search of your repositories
                             <span class="label label-warning">in development</span></strong></p>
                             <ul>
-                                <li>by indexing the repository contents it's easy to find the files you are looking for.</li>
-                                <li>when using the <a href="https://github.com/G-Node/nix">NIX</a>
-                                    (Neuroscience Exchange format) for scientific data and metadata,
+                                <li>By indexing the repository contents it's easy to find the files you are looking for.</li>
+                                <li>When using the <a href="https://github.com/G-Node/nix">NIX</a>
+                                    data format for scientific data and metadata,
                                     even the contents of these files will be indexed and searchable making
                                     it easy for you to identify even the data you are looking for.</li>
                             </ul>
                         </li>
                         <li><p class="text-primary"><br/><strong>Choose how you want to use our service</strong></p>
                             <ul>
-                                <li>register with the GIN services and use the provided infrastructure.</li>
-                                <li>set up and host your own in-house instance -
+                                <li>Register with the GIN services and use the provided infrastructure.</li>
+                                <li>Set up and host your own in-house instance -
                                     our software is open source, you can use it for free.</li>
                             </ul>
                         </li>
@@ -108,21 +106,22 @@
                 </div>
                 <div id="collapse3" class="panel-collapse collapse">
                     <div class="panel-body">
-                        <p>A <a href="https://www.doi.org/">DOI (Digital Object Identifier)</a> <strong>permanently</strong> identifies a resource.</p>
+                        <p>A <a href="https://www.doi.org/">DOI (Digital Object Identifier)</a>
+                            <strong>permanently</strong> identifies a digital resource.</p>
                         <p>For your research this means:</p>
                         <ul>
-                            <li>Make any of your data sets <strong>citable</strong>. You will get a permanent link
-                                to the data set you provide. If you use the gin-doi service, your data will be hosted for free.</li>
-                            <li>You can also make your scripts, software, laboratory protocols citable
-                                by giving them a DOI and gaining credit for your work that cannot be normally published.</li>
+                            <li>You can make any of your public data sets <strong>citable</strong>. You will get a
+                                permanent link to the data set you provide, your data will be hosted on the
+                                gin infrastructure.</li>
+                            <li>You can also make your <strong>scripts, software, laboratory protocols</strong>
+                                citable by giving them a DOI and gaining credit for your work.</li>
                         </ul>
 
                         <hr>
-                        <p>gin-doi is the G-Node Infrastructure DOI service. A Service which can copy your
-                            public repository, packs everything into an archive file,
-                            stores it in a location and provides you with a DOI such that you can
-                            cite this data. gin-doi fulfills the <a href="https://www.datacite.org/">Data Cite</a>
-                            standard which (according to Wikipedia) tries to:</p>
+                        <p>gin-doi is the G-Node Infrastructure DOI service. A Service which archives your
+                            public repository and stores it in a location and provides you with a DOI such
+                            that you can cite this data. gin-doi fulfills the
+                            <a href="https://www.datacite.org/">Data Cite</a> standard which tries to:</p>
                         <ul>
                             <li>Establish easier access to research data on the Internet.</li>
                             <li>Increase acceptance of research data as legitimate,
@@ -137,16 +136,16 @@
                 <div class="panel-heading panel-heading-accordion">
                     <h4 class="panel-title">
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapse4">
-                            How to use the G-Node GIN services
+                            Quickstart
                             <b class="caret"></b>
                         </a>
                     </h4>
                 </div>
                 <div id="collapse4" class="panel-collapse collapse">
                     <div class="panel-body">
-                    <p>If you want to use our services</p>
+                    <p><strong>To use infrastructure provided by the G-Node:</strong></p>
                     <ul>
-                        <li><a @click="register()">register</a> an account with us.</li>
+                        <li><span style="cursor: pointer"><a @click="register()">register</a></span> an account.</li>
                         <li>download the command line client
                             <a :href="client_dl">gin-cli</a> for your operating system.</li>
                         <li>create a private or a public repository.</li>
@@ -156,26 +155,17 @@
                             <strong><span class="label label-warning">in development</span></strong>
                             -->
                         </li>
-                        <li>access your data via the web services
-                            or download them on another machine using the command line client.</li>
+                        <li>browse your files via the web services or access your data
+                            using the command line client.</li>
                     </ul>
-                    </div>
-                </div>
-                <div class="panel-heading panel-heading-accordion">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
-                            Set up your own in-house GIN service
-                            <b class="caret"></b>
-                        </a>
-                    </h4>
-                </div>
-                <div id="collapse5" class="panel-collapse collapse">
-                    <div class="panel-body">
+
+                    <hr>
+                    <p><strong>Set up your own in-house GIN service</strong></p>
                         <div class="bs-callout bs-callout-primary">
                             <div class="container"><div class="row">
-                                <div class="col-sm-8">All of the GIN services are Open Source software,
-                                    if you want to host your data solely in-house on your own servers,
-                                    this can easily be done and for free as well!
+                                <div class="col-sm-8">All of the GIN services are Open Source software.
+                                    If you want to manage your data solely within your lab on your own servers,
+                                    this can easily be done,
                                 </div>
                                 <div class="col-sm-4"></div>
                             </div></div>

@@ -41,7 +41,7 @@
                              v-bind:public_repo="public_repo"></router-view>
             </div>
             <div v-if="!search_text">
-                Search for public repositories or users
+                Search for public repositories
             </div>
         </div>
     </div>

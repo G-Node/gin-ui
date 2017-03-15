@@ -46,8 +46,8 @@
             <br/><br/>
             <pre>
                 authors:
-                  - FamilyName1, GivenName1, Institution1, Department1
-                  - FamilyName2, GivenName2, Institution2, Department2
+                  - FamilyName1, GivenName1, Affiliation1, AuthorID1 (e.g. ORCID)
+                  - FamilyName2, GivenName2, Affiliation2
                   - FamilyName3, GivenName3
             </pre>
         </p>
@@ -66,7 +66,7 @@
         <h3>description</h3>
         <hr/>
         <p>
-            <code>description</code> contains any extended information about your dataset.
+            <code>description</code> contains extended information about your dataset.
             <br/><br/>
             <pre>
                 description: |
@@ -79,12 +79,13 @@
         <h3>keywords</h3>
         <hr/>
         <p>
-            <code>keywords</code> is a list of buzzwords the dataset is associated with.
+            <code>keywords</code> is a list of terms the dataset is associated with.
+            Use as many as appropriate to characterize the dataset
             <br/><br/>
             <pre>
                 keywords:
                     - Neuroscience
-                    - Pseudoscience
+                    - Electrophysiology
             </pre>
         </p>
 
@@ -99,6 +100,7 @@
                 <li>CC-BY (<a href="http://creativecommons.org/licenses/by/4.0/">
                     http://creativecommons.org/licenses/by/4.0/</a>)</li>
             </ul>
+            <p>If you use a different license, please provide a url to the license specification.</p>
 
             <pre>
                 license: CC0
@@ -108,10 +110,13 @@
         <h3>references</h3>
         <hr/>
         <p>
-            <code>references</code> are additional references associated with the data publication.
+            <code>references</code> are additional references associated with the data set,
+            such as a research article that is based on the data. Please provide also the kind of
+            relation to the dataset and, if possible, a digital identifier.
             <br/><br/>
             <pre>
-                references: Example1 et. al., Example2 et. al., ...
+                references: OriginalPublication, Author et al (2017) Title. Journal, DOI 10.xxx/yyyy;
+                Relation2, Citation2, Identifier2
             </pre>
         </p>
     </div>
