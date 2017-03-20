@@ -1,6 +1,8 @@
 {
   "name": "gin-ui",
-  "description": "User interface for G-Node services",
+  "description": "User interface for the G-Node gin services",
+  "version": "1.0.0",
+  "license": "BSD 3",
   "author": "A. Stoewer <adrian.stoewer@rz.ifi.lmu.de>",
   "private": true,
   "scripts": {
@@ -10,7 +12,8 @@
   "dependencies": {
     "vue": "^2.0.1",
     "vue-router": "2.0.0",
-    "babel-runtime": "^6.0.0"
+    "babel-runtime": "^6.0.0",
+    "md5": "^2.2.1"
   },
   "devDependencies": {
     "cross-env": "^1.0.6",
@@ -31,7 +34,6 @@
     "gulp-sourcemaps": "^1.6.0",
     "vinyl-named": "^1.1.0",
     "webpack-stream": "^3.2.0",
-    "md5": "^2.2.1",
     "vue-cookies": "1.2.0"
   }
 }
