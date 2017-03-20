@@ -27,12 +27,12 @@
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
                         <router-link :to="{ name: 'search-repos' }">
-                            Repositories ({{ public_repo.length }})
+                            Repositories <span class="label label-primary">{{ public_repo.length }}</span>
                         </router-link>
                     </li>
                     <li v-if="has_login" role="presentation" :class="{ 'active': $route.name === 'search-users' }">
                         <router-link :to="{ name: 'search-users' }">
-                            Users ({{ users.length }})
+                            Users <span class="label label-primary">{{ users.length }}</span>
                         </router-link>
                     </li>
                 </ul>
