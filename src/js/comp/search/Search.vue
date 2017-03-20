@@ -40,8 +40,10 @@
                 <router-view v-bind:users="users"
                              v-bind:public_repo="public_repo"></router-view>
             </div>
-            <div v-if="!search_text">
-                Search for public repositories
+            <div v-if="!search_text" class="panel panel-default">
+                <div class="panel-body">
+                    Search for public repositories<span v-if="has_login"> and users</span>.
+                </div>
             </div>
         </div>
     </div>
