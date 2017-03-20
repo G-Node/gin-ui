@@ -31,6 +31,13 @@
                     </div>
                 </div>
             </li>
+            <li v-if="users.length < 1">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        No user fits your search.
+                    </div>
+                </div>
+            </li>
         </ul>
     </div>
 </template>
