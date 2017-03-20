@@ -413,13 +413,13 @@ class RepoAPI {
     create(account_login, repo_form) {
         return new Promise((resolve, reject) => {
             let name = repo_form.name || ""
-            if (!name.match(/^[a-zA-Z0-9_\-]*$/)) {
+            if (!name.match(/^[a-zA-Z0-9\-_.]*$/)) {
                 reject(Error("Use only alphanumeric characters without whitespaces as repository name."))
                 return
             }
 
-            if (name.length < 2 || name.length > 20) {
-                reject(Error("Repository name must be between 2 and 20 characters long"))
+            if (name.length < 3 || name.length > 20) {
+                reject(Error("Repository name must be between 3 and 20 characters long"))
                 return
             }
 
