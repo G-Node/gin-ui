@@ -41,14 +41,24 @@
         <p>
             <code>authors</code> are the main researchers involved working on the data,
             or the authors of the publication in priority order. It may be a corporate/institutional
-            or personal name.<br/>
-            Please provide the authors as list items, each item indented and prefixed with <code>-</code>.
+            or personal name. <code>affiliation</code> and <code>id</code> are optional fields.<br/>
+            Please provide the authors as list items, each item indented and prefixed with <code>-</code>,
+            each of the author keywords indented as described below.
             <br/><br/>
             <pre>
                 authors:
-                  - FamilyName1, GivenName1, Affiliation1, AuthorID1 (e.g. ORCID)
-                  - FamilyName2, GivenName2, Affiliation2
-                  - FamilyName3, GivenName3
+                  -
+                    firstname: "GivenName1"
+                    lastname: "FamilyName1"
+                    affiliation: "Affiliation1"
+                    id: "AuthorID1 (e.g. ORCID)"
+                  -
+                    firstname: "GivenName2"
+                    lastname: "FamilyName2"
+                    affiliation: "Affiliation2"
+                  -
+                    firstname: "GivenName3"
+                    lastname: "FamilyName3"
             </pre>
         </p>
 
@@ -59,7 +69,7 @@
             Do not use linebreaks in the title.
             <br/><br/>
             <pre>
-                title: Example Title
+                title: "Example Title"
             </pre>
         </p>
 
@@ -70,9 +80,9 @@
             <br/><br/>
             <pre>
                 description: |
-                    Example description
-                    that can contain linebreaks
-                    but has to maintain indentation.
+                  Example description
+                  that can contain linebreaks
+                  but has to maintain indentation.
             </pre>
         </p>
 
@@ -84,8 +94,8 @@
             <br/><br/>
             <pre>
                 keywords:
-                    - Neuroscience
-                    - Electrophysiology
+                  - Neuroscience
+                  - Electrophysiology
             </pre>
         </p>
 
@@ -100,10 +110,13 @@
                 <li>CC-BY (<a href="http://creativecommons.org/licenses/by/4.0/">
                     http://creativecommons.org/licenses/by/4.0/</a>)</li>
             </ul>
-            <p>If you use a different license, please provide a url to the license specification.</p>
+            <p>Please provide both a license <code>name</code> and a <code>url</code> to the license,
+                both indented as shown in the example below.</p>
 
             <pre>
-                license: CC0
+                license:
+                  name: "CC0"
+                  url: "http://creativecommons.org/publicdomain/zero/1.0"
             </pre>
         </p>
 
@@ -114,8 +127,29 @@
             such as a research article that is based on the data. Please provide also the kind of
             relation to the dataset and, if possible, a digital identifier.
             <br/><br/>
+        <pre>
+                references:
+                  -
+                    doi: "10.xxx/yyyy"
+                    reftype: "IsPartOf"
+                    name: "PublicationName"
+                  -
+                    doi: "10.xxx/zzzz"
+                    reftype: "IsSupplementTo"
+                    name: "PublicationName"
+            </pre>
+        </p>
+
+        <h3>funding</h3>
+        <hr/>
+        <p>
+            <code>funding</code> is a list of items to indicate
+            any funding received to produce the referenced dataset.
+            <br/><br/>
             <pre>
-                references: OriginalPublication, Author et al (2017) Title. Journal, DOI 10.xxx/yyyy; Relation2, Citation2, Identifier2
+                funding:
+                  - "DFG, DFG.12345"
+                  - "EU, EU.12345"
             </pre>
         </p>
     </div>
