@@ -1,3 +1,4 @@
+[![Docker Automated build](https://img.shields.io/docker/automated/gnode/gin-ui.svg)](https://hub.docker.com/r/gnode/gin-ui)
 # About gin-ui
 
 gin-ui is the web interface for the **GIN** (**G**-Node **IN**frastructure) services.
