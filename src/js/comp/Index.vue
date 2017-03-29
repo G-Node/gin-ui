@@ -150,7 +150,10 @@
                             <a :href="client_dl">gin-cli</a> for your operating system.</li>
                         <li>create a private or a public repository.</li>
                         <li>upload your data using the client.
-                            You can find a tutorial <a href="https://github.com/G-Node/gin-cli/wiki/Tutorial">here</a>.
+                            <!-- deactivated until material can be supplied -->
+                            <!-- You can find a tutorial <a href="#">here</a>.
+                            <strong><span class="label label-warning">in development</span></strong>
+                            -->
                         </li>
                         <li>browse your files via the web services or access your data
                             using the command line client.</li>
@@ -162,11 +165,11 @@
                             <div class="container"><div class="row">
                                 <div class="col-sm-8">All of the GIN services are Open Source software.
                                     If you want to manage your data solely within your lab on your own servers,
-                                    this can easily be done.
+                                    this can easily be done! Find instructions <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">below</a>
                                 </div>
                                 <div class="col-sm-4"></div>
                             </div></div>
-                        </div>
+                        </div>                        
                         <p>You can find the complete source code and documentation on github: </p>
 
                         <ul>
@@ -176,6 +179,72 @@
                             <li><a href="https://github.com/G-Node/gin-auth">gin-auth</a>: The authentication server.</li>
                         </ul>
 
+                        <p>If you need any help setting up your own service, you can contact us at
+                            <a :href="mailto">{{ contact }}</a>.</p>
+                    </div>
+                </div>
+                <div class="panel-heading panel-heading-accordion">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapse5">
+                            You(r) own gin
+                            <b class="caret"></b>
+                        </a>
+                    </h4>
+                </div>
+                <div id="collapse5" class="panel-collapse collapse">
+                    <div class="panel-body">
+                        <p class="text-primary"> <strong>Setup your own Gin Service using prebuild Docker containers </strong> </p>
+                        In order to get you started you need to setup our three main gin microservices:
+                        <hr>
+                        <ul>
+                            <li><a href="https://github.com/G-Node/gin-auth">gin-auth</a>: The authentication server.</li>
+                            <li><a href="https://github.com/G-Node/gin-repo">gin-repo</a>: The repository server.</li>
+                            <li><a href="https://github.com/G-Node/gin-ui">gin-ui</a>: The web interface for the GIN services.</li>
+                        </ul>
+                        For all three we provide pre build docker images which you just need to pull and run with
+                        appropriate instructions. In case you need it, a docker image with a working postgres installation
+                        is also provided. A short run trough follows:                        
+                        <hr>
+                        <p> <strong>Setup Docker</strong> </p>
+                        First you need a working Docker installation. Find instruction <a href="https://www.docker.com/">here</a>
+                        <hr>
+                        <p> <strong>Setup gin-auth</strong> </p>
+                        Second you need a working gin authentication server, to store userdata on. For that to work you need a running database 
+                        server with a database setup as gin-auth expects it (see 
+                        <a href="https://github.com/G-Node/gin-auth/blob/master/resources/conf/migrations/1_initial-schema.sql">here</a> for details).
+                        You can also download and run our prebuild postgres docker image which has everything you need. Download it 
+                        to your Server using the following command:
+                        <pre><code>docker pull gnode/gin-pgres</code></pre>
+                        followed by
+                        <pre><code>docker run --name ginpres gin-pgres</code></pre>
+                        to get up and running <p>
+                        you can check whether it worked by issuing:
+                        <pre><code>docker ps</code></pre> 
+                        which should report smth like:
+                        <pre><code>CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES 2bd4e61e37ff        gin-pgres            "/bin/bash."   24 seconds ago      Up 23 seconds       5432   ginpgres
+                        </code></pre>
+                        indicating that a docker container by the name gingpgres bases on the image gin-pgres is running with a exposed port 5432. You can always issue <code>docker ps</code> to check
+                        for running docker container.<p>
+                        Now we are ready to get the gin-auth docker for which we issue:
+                        <pre><code>docker pull gnode/gin-auth</code></pre>
+                        We need to start that image with:
+                        <pre><code>docker run --name ginauth  -v &lt;localconf&gt;:/conf gnode/gin-auth</code></pre>
+                        This probably fails but hang own, it should. We first need to do some configuration.
+                        code>&lt;localconf&gt;</code> should be replaces with an absolute path to a location on your server where you 
+                        can put configuration files for gin-auth. Those files should look like the ones provided <a href="https://github.com/G-Node/gin-auth/tree/master/resources/conf">here</a>
+                        which you could simply download to that location. <p>
+                        Now its time to modify the file <code>dbconf.yml</code> such that it matches the postgres server.
+                        If you use our postgres image,  lets find the ip adress of the pgres server by issuing:
+                        <pre><code>docker inspect '\{\{ .NetworkSettings.IPAddress \}\}' ginpgres</code></pre>
+                        assuming that you have indeed named your container (--name ginpgres) this should return the servers internal ip. 
+                        You can now change the second line in <code>dbconf.yml</code> such that it reads:
+                        <pre><code>open: host= &lt;ip&gt; dbname=gin_auth user=test password=test sslmode=disable</code></pre>
+                        (replace <code>&lt;ip&gt;</code> with the ip you just determined) and now the server should start when yoy write:
+                        <pre><code>docker run --name ginauth  -v &lt;localconf&gt;:/conf gnode/gin-auth</code></pre>
+                        which you can verify with:
+                        <pre><code>docker ps</code></pre>
+                        <hr>
+                        <p> <strong>Setup gin-repo</strong> </p>
                         <p>If you need any help setting up your own service, you can contact us at
                             <a :href="mailto">{{ contact }}</a>.</p>
                     </div>
