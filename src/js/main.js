@@ -16,6 +16,7 @@ import VueCookies           from "vue-cookies"
 import API                  from "./data.js"
 import App                  from "./App.vue"
 import Index                from "./comp/Index.vue"
+import NotFound             from "./comp/NotFound.vue"
 
 import Authorize            from "./comp/oauth/Authorize.vue"
 import OAuthLogin           from "./comp/oauth/Login.vue"
@@ -131,7 +132,8 @@ const router = new VueRouter({
                     name: "repository-doi", title: "Create DOI"
                 }
             ]
-        }
+        },
+        { path: "*", component: NotFound }
     ]
 })
 
