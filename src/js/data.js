@@ -20,6 +20,7 @@ export default class API {
                             client_id: conf.client_id,
                             client_secret: conf.client_secret,
                             contact_email: conf.contact_email,
+                            static_content: conf.static_content,
                             token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
