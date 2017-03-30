@@ -8,5 +8,11 @@
   "client_dl": "https://github.com/G-Node/gin-cli/wiki/Downloads",
   "client_id": "gin",
   "client_secret": "secret",
-  "contact_email": "dev@example.com"
+  "contact_email": "dev@example.com",
+  "static_content": {
+    "terms_use": "",
+    "about": "",
+    "imprint": "",
+    "contact": ""
+  }
 }
