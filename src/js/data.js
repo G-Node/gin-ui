@@ -117,6 +117,24 @@ export default class API {
         window.location.href = uri + query
         window.event.returnValue = false
     }
+
+    /**
+     * getStaticFile returns the content of a file found at the url location.
+     *
+     * @param url {string}
+     * @returns {Promise}
+     */
+    getStaticFile(url) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: url,
+                type: "GET",
+                contentType: "application/html",
+                success: (text) => resolve(text),
+                error: (error) => reject(error)
+            })
+        })
+    }
 }
 
 class AccountAPI {
