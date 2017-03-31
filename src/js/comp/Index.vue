@@ -216,7 +216,7 @@
                         to your Server using the following command:
                         <pre><code>docker pull gnode/gin-pgres</code></pre>
                         followed by
-                        <pre><code>docker run --name ginpres gin-pgres</code></pre>
+                        <pre><code>docker run --name ginpgres -d  gnode/gin-pgres</code></pre>
                         to get up and running <p>
                         you can check whether it worked by issuing:
                         <pre><code>docker ps</code></pre> 
@@ -227,24 +227,37 @@
                         for running docker container.<p>
                         Now we are ready to get the gin-auth docker for which we issue:
                         <pre><code>docker pull gnode/gin-auth</code></pre>
-                        We need to start that image with:
-                        <pre><code>docker run --name ginauth  -v &lt;localconf&gt;:/conf gnode/gin-auth</code></pre>
-                        This probably fails but hang own, it should. We first need to do some configuration.
-                        code>&lt;localconf&gt;</code> should be replaces with an absolute path to a location on your server where you 
+                        We ncould dtart the start that image with:
+                        <pre><code>docker run --name ginauth -d -v &lt;localconf&gt;:/conf --link ginpgres gnode/gin-auth</code></pre>
+                        but hang on as this most probably fails. We first need to do some configuration.
+                        <code>&lt;localconf&gt;</code> should be replaces with an absolute path to a location on your server where you 
                         can put configuration files for gin-auth. Those files should look like the ones provided <a href="https://github.com/G-Node/gin-auth/tree/master/resources/conf">here</a>
                         which you could simply download to that location. <p>
                         Now its time to modify the file <code>dbconf.yml</code> such that it matches the postgres server.
-                        If you use our postgres image,  lets find the ip adress of the pgres server by issuing:
-                        <pre><code>docker inspect '\{\{ .NetworkSettings.IPAddress \}\}' ginpgres</code></pre>
-                        assuming that you have indeed named your container (--name ginpgres) this should return the servers internal ip. 
-                        You can now change the second line in <code>dbconf.yml</code> such that it reads:
-                        <pre><code>open: host= &lt;ip&gt; dbname=gin_auth user=test password=test sslmode=disable</code></pre>
-                        (replace <code>&lt;ip&gt;</code> with the ip you just determined) and now the server should start when yoy write:
-                        <pre><code>docker run --name ginauth  -v &lt;localconf&gt;:/conf gnode/gin-auth</code></pre>
-                        which you can verify with:
+                        Assuming that you have indeed named your postgres container (--name ginpgres) you can now change 
+                        the second line in <code>dbconf.yml</code> such that it reads:
+                        <pre><code>open: host= ginpgres dbname=gin_auth user=test password=test sslmode=disable</code></pre>
+                        You also need to modify <code>server.yml</code> and remove localhost from the line that starts 
+                        with Host (leave it empty for now such that it reads <code>Host: </code>)
+                        Now we can start the server with:
+                        <pre><code>docker run --name ginauth -v &lt;localconf&gt;:/conf --link ginpgres gnode/gin-auth</code></pre>
+                        which you can verify again with:
                         <pre><code>docker ps</code></pre>
                         <hr>
                         <p> <strong>Setup gin-repo</strong> </p>
+                        Again we start with pulling the docker image with:
+                        <pre><code>docker pull gnode/gin-repo</code></pre>
+                        Th command to start the repository server is:
+                        <pre><code> docker run --name ginrepo -d -v &lt;localdata&gt;:/data --link ginauth gnode/gin-repo</code></pre>
+                        But agian we need do configure things beforehand.
+                        &lt;localdata&gt; should be a location on you local server which has enough space to hold the
+                        gin repositories and is writable. Furthermore, in that location, ginrepo expects a file called 
+                        <code>user.store</code> which has the follwoing line:
+                        <pre><code>ginauth@http://ginauth:8081</code></pre>
+                        This instructs ginrepo to look for a authentication server at ginauth (the name of you ginauth
+                        server container) at port 8081.
+                        <code>docker ps</code> can again be used to check whether everything went fine.
+                        
                         <p>If you need any help setting up your own service, you can contact us at
                             <a :href="mailto">{{ contact }}</a>.</p>
                     </div>
