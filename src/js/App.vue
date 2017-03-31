@@ -128,17 +128,12 @@
 
         methods: {
             updateTitle(route) {
-                this.error = null
-
                 if (route.matched) {
                     let complete_title = default_title
-                    if (route.title) {
-                        complete_title = complete_title + ": " + route.title
+                    if (route.meta !== undefined && route.meta.title) {
+                        complete_title = "GIN: "+ route.meta.title
                     }
                     document.title = complete_title
-                } else {
-                    this.error = "Page does not exist"
-                    document.title = default_title + ": " + this.error
                 }
             },
 
