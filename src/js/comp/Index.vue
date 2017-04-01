@@ -240,15 +240,16 @@
                         You also need to modify <code>server.yml</code> and remove localhost from the line that starts 
                         with Host (leave it empty for now such that it reads <code>Host: </code>)
                         Now we can start the server with:
-                        <pre><code>docker run --name ginauth -v &lt;localconf&gt;:/conf --link ginpgres gnode/gin-auth</code></pre>
+                        <pre><code>docker run --name ginauth -v &lt;localconf&gt;:/conf --link ginpgres -p 8081:8081 -d gnode/gin-auth</code></pre>
                         which you can verify again with:
                         <pre><code>docker ps</code></pre>
                         <hr>
+                        
                         <p> <strong>Setup gin-repo</strong> </p>
-                        Again we start with pulling the docker image with:
+                        Again we start by pulling the docker image with:
                         <pre><code>docker pull gnode/gin-repo</code></pre>
                         Th command to start the repository server is:
-                        <pre><code> docker run --name ginrepo -d -v &lt;localdata&gt;:/data --link ginauth gnode/gin-repo</code></pre>
+                        <pre><code> docker run --name ginrepo -d -v &lt;localdata&gt;:/data --link ginauth -p 8022:22 -p 8082:8082 gnode/gin-repo</code></pre>
                         But agian we need do configure things beforehand.
                         &lt;localdata&gt; should be a location on you local server which has enough space to hold the
                         gin repositories and is writable. Furthermore, in that location, ginrepo expects a file called 
@@ -257,6 +258,101 @@
                         This instructs ginrepo to look for a authentication server at ginauth (the name of you ginauth
                         server container) at port 8081.
                         <code>docker ps</code> can again be used to check whether everything went fine.
+
+
+                        <p> <strong>Setup gin-ui</strong> </p>
+                        Lets pull the image:
+                        <pre><code>docker pull gnode/gin-ui</code></pre>
+                        Before starting some configuration is needed. gin-ui is configured with
+                        <a href="https://github.com/G-Node/gin-ui/blob/master/src/js/config.json">config file</a>
+                        calles <code>config.json</code>
+                        the we could place into the same location as the auth configuration. The content of the file
+                        should be modifies to look like this:
+                        <pre><code>
+{
+  "auth_url": "http://&lt;authurl&gt;:&lt;authport&gt;",
+  "repo_url": "http://&lt;repourl&gt;:&lt;repoport&gt;",
+  "doi_example": "/dl/cloudberry.yml",
+  "doid_url": "http://doid.gin.g-node.org",
+  "client_dl": "https://web.gin.g-node.org/release/",
+  "client_id": "gin",
+  "client_secret": "secret",
+  "contact_email": "dev@example.com"
+}                       </code></pre>
+                        where authurl, authprt,repourl,repopoport should be replaces by the corresponidng adresses and 
+                        portnumbers of the respective services. Eg. for our real server this looks as fellows:
+                        <pre><code>
+{
+"auth_url": "https://auth.gin.g-node.org",
+"repo_url": "https://repo.gin.g-node.org",
+"doi_example": "/dl/cloudberry.yml",
+"doid_url": "http://doid.gin.g-node.org",
+"client_dl": "https://web.gin.g-node.org/release/",
+"client_id": "gin",
+"client_secret": "secret",
+"contact_email": "dev@example.com"
+}                       </code></pre>
+                        for a purely local install, with auth and repo running on ports 8081, 8082 respectively 
+                        this could look like this:
+                        <pre><code>
+{
+"auth_url": "http://localhost:8081",
+"repo_url": "http://localhost:8082",
+"doi_example": "/dl/cloudberry.yml",
+"doid_url": "http://doid.gin.g-node.org",
+"client_dl": "https://web.gin.g-node.org/release/",
+"client_id": "gin",
+"client_secret": "secret",
+"contact_email": "dev@example.com"
+}                       </code></pre>
+                        or like this for an install in you local network on a machine called ginny:
+                        <pre><code>
+{
+"auth_url": "http://ginny:8081",
+"repo_url": "http://ginny:8082",
+"doi_example": "/dl/cloudberry.yml",
+"doid_url": "http://doid.gin.g-node.org",
+"client_dl": "https://web.gin.g-node.org/release/",
+"client_id": "gin",
+"client_secret": "secret",
+"contact_email": "dev@example.com"
+}                       </code></pre>
+                        We can start the image with
+                        <pre><code>docker run --name ginui -it -p 8080:80 gnode/gin-ui </code></pre>
+                        The terminal should be attached to the runing ui session now and you can redirect a browder to:
+                        <code>http://localhost:8080</code> and be greated with the gin-ui page.
+                        <hr>
+                        
+                        <p> <strong>Finalizing the configuration</strong> </p>
+                        To get login and repo creation working we still need to work on the configuration files for 
+                        gin-auth and gin-ui which you already provided locally. We start by shutting down both services:
+                        <pre><code>docker stop ginui && docker stop ginauth && docker rm ginui && docker rm ginauth </code></pre>
+                        First we  modify <code>clients.yml</code>. such that the entry gin looks somewhat like this:
+                        <pre><code>
+- UUID: 8b14d6bb-cae7-4163-bbd1-f3be46e43e31
+  Name: gin
+  Secret: &lt;ginsecret&gt;
+  ScopeProvided:
+    account-create: Create an account
+    account-read: Read access to your account data
+    account-write: Write access to your account data
+    account-admin: Administrator access to accounts.
+    repo-read: Read access to your repositories and repositories shared with you
+    repo-write: Write access to your repositories and repositories you have write access to
+  ScopeWhitelist:
+    - account-create
+    - account-read
+    - account-write
+    - repo-read
+    - repo-write
+  ScopeBlacklist:
+    - account-admin
+  RedirectURIs:
+    - http://&lt;uiurl&gt;:&lt;uiport&gt;/oauth/login
+    - http://&lt;uiurl&gt;:&lt;uiport&gt;/
+                          </code></pre>
+                        where &lt;ginsecret&gt; is a unique string that we now need to also put into <code>config.json</code>
+                        as entry value for clientsecret.
                         
                         <p>If you need any help setting up your own service, you can contact us at
                             <a :href="mailto">{{ contact }}</a>.</p>
