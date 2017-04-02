@@ -18,4 +18,6 @@ RUN npm install
 
 EXPOSE 80
 
-ENTRYPOINT npm run build && cp -r /gin-ui/build/* /var/www/html/ && /etc/init.d/apache2 start&&/bin/bash
+ADD ./UiApacheSite.conf /etc/apache2/sites-available/000-default.conf
+
+ENTRYPOINT npm run build && a2enmod rewrite && /etc/init.d/apache2 start && /bin/bash
