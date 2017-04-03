@@ -150,10 +150,7 @@
                             <a :href="client_dl">gin-cli</a> for your operating system.</li>
                         <li>create a private or a public repository.</li>
                         <li>upload your data using the client.
-                            <!-- deactivated until material can be supplied -->
-                            <!-- You can find a tutorial <a href="#">here</a>.
-                            <strong><span class="label label-warning">in development</span></strong>
-                            -->
+                            You can find a tutorial <a href="https://github.com/G-Node/gin-cli/wiki/Tutorial">here</a>.
                         </li>
                         <li>browse your files via the web services or access your data
                             using the command line client.</li>
