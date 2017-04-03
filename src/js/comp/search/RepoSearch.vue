@@ -10,8 +10,16 @@
 
 <template>
     <div>
+        <!-- pagination -->
+        <nav v-if="has_result">
+            <ul class="pager">
+                <li class="previous"><a @click="previous">Previous</a></li>
+                <li class="next"><a @click="next">Next</a></li>
+            </ul>
+        </nav>
+
         <ul class="list-unstyled">
-            <li v-for="repo in repos_modified">
+            <li v-for="repo in repos_displayed">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <router-link :to="{ name: 'repository-info',
