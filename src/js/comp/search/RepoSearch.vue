@@ -27,6 +27,13 @@
                     </div>
                 </div>
             </li>
+            <li v-if="!has_result">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        No available repository matches your search.
+                    </div>
+                </div>
+            </li>
         </ul>
     </div>
 </template>
@@ -35,7 +42,8 @@
     export default {
         data() {
             return {
-                repos_modified: null
+                repos_modified: null,
+                has_result: false
             }
         },
 
@@ -59,10 +67,12 @@
                                 }
 
                                 this.repos_modified = []
+                                this.has_result = false
                                 for (var i = 0; i < this.public_repo.length; i++) {
                                     var el = Object.assign({}, this.public_repo[i],
                                             { FullName: names_map.get(this.public_repo[i].Owner) })
                                     this.repos_modified.push(el)
+                                    this.has_result = true
                                 }
                             }
                     )

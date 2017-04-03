@@ -27,12 +27,12 @@
                 <ul class="nav nav-tabs">
                     <li role="presentation" :class="{ 'active': $route.name === 'search-repos' }">
                         <router-link :to="{ name: 'search-repos' }">
-                            Repositories ({{ public_repo.length }})
+                            Repositories <span class="label label-primary">{{ public_repo.length }}</span>
                         </router-link>
                     </li>
                     <li v-if="has_login" role="presentation" :class="{ 'active': $route.name === 'search-users' }">
                         <router-link :to="{ name: 'search-users' }">
-                            Users ({{ users.length }})
+                            Users <span class="label label-primary">{{ users.length }}</span>
                         </router-link>
                     </li>
                 </ul>
@@ -40,8 +40,10 @@
                 <router-view v-bind:users="users"
                              v-bind:public_repo="public_repo"></router-view>
             </div>
-            <div v-if="!search_text">
-                Search for public repositories
+            <div v-if="!search_text" class="panel panel-default">
+                <div class="panel-body">
+                    Search for public repositories<span v-if="has_login"> and users</span>.
+                </div>
             </div>
         </div>
     </div>

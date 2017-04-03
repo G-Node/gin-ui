@@ -16,6 +16,7 @@ import VueCookies           from "vue-cookies"
 import API                  from "./data.js"
 import App                  from "./App.vue"
 import Index                from "./comp/Index.vue"
+import NotFound             from "./comp/NotFound.vue"
 
 import Authorize            from "./comp/oauth/Authorize.vue"
 import OAuthLogin           from "./comp/oauth/Login.vue"
@@ -68,70 +69,71 @@ const router = new VueRouter({
     mode: "history",
     routes: [
         { path: "/", component: Index,
-            name: "index" },
+                name: "index", meta: { title: "G-Node Infrastructure Services" } },
 
-        { path: "/oauth/login", component: OAuthLogin,
-            name: "oauth-login" },
-        { path: "/oauth/authorize", component: Authorize,
-            name: "oauth-authorize" },
+        { path: "/oauth/login", component: OAuthLogin, name: "oauth-login" },
+        { path: "/oauth/authorize", component: Authorize, name: "oauth-authorize" },
 
-        { path: "/terms", component: Terms, name: "terms" },
+        { path: "/terms", component: Terms,
+                name: "terms", meta: { title: "Terms of Use" } },
 
-        { path: "/info/about", component: About, name: "about" },
-        { path: "/info/contact", component: Contact, name: "contact" },
-        { path: "/info/imprint", component: Imprint, name: "imprint" },
-        { path: "/info/doi", component: DOI, name: "doi" },
+        { path: "/info/about", component: About,
+                name: "about", meta: { title: "About" } },
+        { path: "/info/contact", component: Contact, name: "contact", meta:  { title: "Contact" } },
+        { path: "/info/imprint", component: Imprint, name: "imprint", meta:  { title: "Imprint" } },
+        { path: "/info/doi", component: DOI, name: "doi", meta:  { title: "DOI file about" } },
 
         { path: "/account/settings", component: Settings,
             children: [
                 { path: "profile", component: ProfileSettings,
-                    name: "profile-settings", title: "Profile Settings" },
+                        name: "profile-settings", meta:  { title: "Profile Settings" } },
                 { path: "password", component: PasswordSettings,
-                    name: "password-settings", title: "Password Settings" },
+                        name: "password-settings", meta:  { title: "Password Settings" } },
                 { path: "email", component: EmailSettings,
-                    name: "email-settings", title: "E-Mail Settings" },
+                        name: "email-settings", meta:  { title: "E-Mail Settings" } },
                 { path: "sshkey", component: SSHKeySettings,
-                    name: "sshkey-settings", title: "SSH Key Settings" },
+                        name: "sshkey-settings", meta:  { title: "SSH Key Settings" } },
                 { path: "affiliation", component: AffiliationSettings,
-                    name: "affiliation-settings", title: "Affiliation Settings" }
+                        name: "affiliation-settings", meta:  { title: "Affiliation Settings" } }
             ]
         },
 
         { path: "/search", component: Search,
-            name: "search", title: "Public Data",
+                name: "search", meta:  { title: "Public Data" },
             children: [
                 { path: "repos", component: RepoSearch,
-                    name: "search-repos", title: "Search Repositories" },
+                        name: "search-repos", meta:  { title: "Search Repositories" } },
                 { path: "users", component: UserSearch,
-                    name: "search-users", title: "Search Users" }
+                        name: "search-users", meta:  { title: "Search Users" } }
             ]
         },
 
         { path: "/account/repository-create", component: RepoCreate,
-            name: "repository-create", title: "Create new repository" },
+                name: "repository-create", meta:  { title: "Create new repository" } },
         { path: "/:username/repositories", component: Repos,
-            name: "repositories", title: "Repositories",
+                name: "repositories", meta:  { title: "Repositories" },
             children: [
                 { path: "own", component: ReposOwn,
-                    name: "own-repositories", title: "Own Repositories" },
+                        name: "own-repositories", meta:  { title: "Own Repositories" } },
                 { path: "shared", component: ReposShared,
-                    name: "shared-repositories", title: "Shared Repositories" }
+                        name: "shared-repositories", meta:  { title: "Shared Repositories" } }
             ]
         },
         { path: "/:username/:repository", component: Repo,
-            name: "repository", title: "Repository Overview",
+                name: "repository", meta:  { title: "Repository Overview" },
             children: [
                 { path: "info", component: RepoReadme,
-                    name: "repository-info", title: "Repository info"},
+                        name: "repository-info", meta:  { title: "Repository info"} },
                 { path: "settings", component: RepoSettings,
-                    name: "repository-settings", title: "Repository Settings" },
+                        name: "repository-settings", meta:  { title: "Repository Settings" } },
                 { path: "files/:root", component: RepoFiles,
-                    name: "repository-files", title: "Browse Repository Files" },
+                        name: "repository-files", meta:  { title: "Browse Repository Files" } },
                 { path: "doi", component: RepoDOI,
-                    name: "repository-doi", title: "Create DOI"
+                        name: "repository-doi", meta:  { }
                 }
             ]
-        }
+        },
+        { path: "*", component: NotFound, name: "not-found", meta:  { title: "Page not found" } },
     ]
 })
 
