@@ -62,6 +62,7 @@
 
         methods: {
             augment() {
+                console.log(ll +" augment search")
                 if (this.public_repo !== null && this.public_repo !== undefined) {
                     const user_search = api.accounts.search()
                     user_search.then(
@@ -72,12 +73,18 @@
                                 }
 
                                 this.repos_modified = []
+                                this.repos_displayed = []
+                                this.repo_index = 0
                                 this.has_result = false
                                 for (var i = 0; i < this.public_repo.length; i++) {
                                     var el = Object.assign({}, this.public_repo[i],
                                             { FullName: names_map.get(this.public_repo[i].Owner) })
                                     this.repos_modified.push(el)
                                     this.has_result = true
+
+                                    var len = n_displayed > this.repos_modified.length ?
+                                            this.repos_modified.length : n_displayed
+                                    this.repos_displayed = this.repos_modified.slice(0, len)
                                 }
                             }
                     )
