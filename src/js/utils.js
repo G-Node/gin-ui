@@ -39,3 +39,28 @@ export function pagerPrevious(arr_in, idx, n_ret) {
 
     return { arr: arr_in.slice(idx, len), index: idx }
 }
+
+/**
+ * pagerNext returns a number of elements of a given array,
+ * starting after a given index.
+ *
+ * @param arr_in {Array} Array from which to return a subset from.
+ * @param idx {number} Starting index within the array.
+ * @param n_ret Number of elements to be returned.
+ * @returns {*} Returns subset array and the new staring index.
+ */
+export function pagerNext(arr_in, idx, n_ret) {
+    if (arr_in === undefined || arr_in.length <= n_ret) {
+        return { arr: arr_in, index: idx }
+    }
+
+    if (arr_in.length < idx + n_ret) {
+        return { arr: arr_in.slice(idx, arr_in.length), index: idx }
+    }
+
+    idx = idx + n_ret
+
+    let len = idx + n_ret > arr_in.length ? arr_in.length : idx + n_ret
+
+    return { arr: arr_in.slice(idx, len), index: idx }
+}
