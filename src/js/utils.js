@@ -18,3 +18,24 @@ export function stateHash(client_id, user_agent) {
         )
     )
 }
+
+/**
+ * paginationPrevious returns a number of elements of a given array,
+ * starting before a given index.
+ *
+ * @param main_array {Array} complete array from which to return a subset from.
+ * @param idx {number} starting index from last displayed array subset.
+ * @param n_displayed {number} number of elements to be displayed.
+ * @returns { Array, number}
+ */
+export function paginationPrevious(main_array, idx, n_displayed) {
+    if (main_array === undefined || main_array.length <= n_displayed) {
+        return { arr: main_array, index: idx}
+    }
+
+    idx = idx - n_displayed < 0 ? 0 : idx - n_displayed
+
+    let len = idx + n_displayed > main_array.length ? main_array.length : idx + n_displayed
+
+    return { arr: main_array.slice(idx, len), index: idx}
+}
