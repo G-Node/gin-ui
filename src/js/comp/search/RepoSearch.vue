@@ -102,6 +102,29 @@
                 this.repo_index + n_displayed
 
                 this.repos_displayed = this.repos_modified.slice(this.repo_index, len)
+            },
+
+            next() {
+                console.log(ll +" next")
+                console.log(this.repos_modified)
+                if (this.repos_modified === undefined || this.repos_modified.length <= n_displayed) {
+                    this.repos_displayed = this.repos_modified
+                    return
+                }
+
+                if (this.repos_modified.length < this.repo_index + n_displayed) {
+                    return
+                }
+
+                // get start index
+                this.repo_index = this.repo_index + n_displayed
+
+                // get end index
+                var len = this.repo_index + n_displayed > this.repos_modified.length ?
+                        this.repos_modified.length :
+                this.repo_index + n_displayed
+
+                this.repos_displayed = this.repos_modified.slice(this.repo_index, len)
             }
         },
 
