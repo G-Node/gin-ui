@@ -47,6 +47,8 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { pagerPrevious, pagerNext } from "../../utils.js"
+
     const ll = "[Repo Search]"
     const n_displayed = 5
 
@@ -100,46 +102,15 @@
             },
 
             previous() {
-                console.log(ll +" previous")
-                console.log(this.repos_modified)
-
-                if (this.repos_modified === undefined || this.repos_modified.length <= n_displayed) {
-                    this.repos_displayed = this.repos_modified
-                    return
-                }
-
-                this.repo_index = this.repo_index - n_displayed
-                if (this.repo_index < 0) {
-                    this.repo_index = 0
-                }
-                var len = this.repo_index + n_displayed > this.repos_modified.length ?
-                        this.repos_modified.length :
-                this.repo_index + n_displayed
-
-                this.repos_displayed = this.repos_modified.slice(this.repo_index, len)
+                let prev = pagerPrevious(this.repos_modified, this.repo_index, n_displayed)
+                this.repos_displayed = prev.arr
+                this.repo_index = prev.index
             },
 
             next() {
-                console.log(ll +" next")
-                console.log(this.repos_modified)
-                if (this.repos_modified === undefined || this.repos_modified.length <= n_displayed) {
-                    this.repos_displayed = this.repos_modified
-                    return
-                }
-
-                if (this.repos_modified.length < this.repo_index + n_displayed) {
-                    return
-                }
-
-                // get start index
-                this.repo_index = this.repo_index + n_displayed
-
-                // get end index
-                var len = this.repo_index + n_displayed > this.repos_modified.length ?
-                        this.repos_modified.length :
-                this.repo_index + n_displayed
-
-                this.repos_displayed = this.repos_modified.slice(this.repo_index, len)
+                let nxt = pagerNext(this.repos_modified, this.repo_index, n_displayed)
+                this.repos_displayed = nxt.arr
+                this.repo_index = nxt.index
             }
         },
 
