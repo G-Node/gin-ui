@@ -20,22 +20,22 @@ export function stateHash(client_id, user_agent) {
 }
 
 /**
- * paginationPrevious returns a number of elements of a given array,
+ * pagerPrevious returns a number of elements of a given array,
  * starting before a given index.
  *
- * @param main_array {Array} complete array from which to return a subset from.
- * @param idx {number} starting index from last displayed array subset.
- * @param n_displayed {number} number of elements to be displayed.
- * @returns { Array, number}
+ * @param arr_in {Array} Array from which to return a subset from.
+ * @param idx {number} Starting index within the array.
+ * @param n_ret {number} Number of elements to be returned.
+ * @returns {*} Returns subset array and the new staring index.
  */
-export function paginationPrevious(main_array, idx, n_displayed) {
-    if (main_array === undefined || main_array.length <= n_displayed) {
-        return { arr: main_array, index: idx}
+export function pagerPrevious(arr_in, idx, n_ret) {
+    if (arr_in === undefined || arr_in.length <= n_ret) {
+        return { arr: arr_in, index: idx }
     }
 
-    idx = idx - n_displayed < 0 ? 0 : idx - n_displayed
+    idx = idx - n_ret < 0 ? 0 : idx - n_ret
 
-    let len = idx + n_displayed > main_array.length ? main_array.length : idx + n_displayed
+    let len = idx + n_ret > arr_in.length ? arr_in.length : idx + n_ret
 
-    return { arr: main_array.slice(idx, len), index: idx}
+    return { arr: arr_in.slice(idx, len), index: idx }
 }
