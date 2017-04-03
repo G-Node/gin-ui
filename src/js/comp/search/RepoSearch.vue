@@ -39,10 +39,15 @@
 </template>
 
 <script type="text/ecmascript-6">
+    const ll = "[Repo Search]"
+    const n_displayed = 5
+
     export default {
         data() {
             return {
                 repos_modified: null,
+                repos_displayed: null,
+                repo_index: 0,
                 has_result: false
             }
         },
@@ -77,6 +82,26 @@
                             }
                     )
                 }
+            },
+
+            previous() {
+                console.log(ll +" previous")
+                console.log(this.repos_modified)
+
+                if (this.repos_modified === undefined || this.repos_modified.length <= n_displayed) {
+                    this.repos_displayed = this.repos_modified
+                    return
+                }
+
+                this.repo_index = this.repo_index - n_displayed
+                if (this.repo_index < 0) {
+                    this.repo_index = 0
+                }
+                var len = this.repo_index + n_displayed > this.repos_modified.length ?
+                        this.repos_modified.length :
+                this.repo_index + n_displayed
+
+                this.repos_displayed = this.repos_modified.slice(this.repo_index, len)
             }
         },
 
