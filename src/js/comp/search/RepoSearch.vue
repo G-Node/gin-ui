@@ -30,7 +30,7 @@
             <li v-if="!has_result">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        No available repository fits your search.
+                        No available repository matches your search.
                     </div>
                 </div>
             </li>

@@ -13,7 +13,7 @@
         <h1>Page not found</h1>
         <hr>
 
-        <p>We looked hard, but could found nothing at this location.
+        <p>We looked hard, but found nothing at this location.
             The Lag Biest must have hidden what you were looking for.</p>
     </div>
 </template>

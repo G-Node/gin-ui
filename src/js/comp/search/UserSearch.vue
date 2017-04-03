@@ -34,7 +34,7 @@
             <li v-if="users.length < 1">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        No user fits your search.
+                        No user matches your search.
                     </div>
                 </div>
             </li>
