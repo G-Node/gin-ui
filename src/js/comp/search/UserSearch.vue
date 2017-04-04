@@ -11,7 +11,7 @@
 <template>
     <div>
         <ul class="list-unstyled">
-            <li v-for="user in users">
+            <li v-for="user in users_displayed">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <router-link :to="{ name: 'own-repositories', params: { username: user.login } }">
@@ -44,8 +44,32 @@
 
 <script type="text/ecmascript-6">
     export default {
+        data() {
+            return {
+                users_displayed: null
+            }
+        },
+
         props: {
             users: {required: true}
+        },
+
+        mounted() {
+            this.update()
+        },
+
+        methods: {
+            update() {
+                if (this.users !== undefined && this.users !== null) {
+                    this.users_displayed = this.users
+                }
+            }
+        },
+
+        watch: {
+            "users": function() {
+                this.update()
+            }
         }
     }
 </script>
