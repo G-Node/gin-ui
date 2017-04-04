@@ -54,7 +54,7 @@ export function pagerNext(arr_in, idx, n_ret) {
         return { arr: arr_in, index: idx }
     }
 
-    if (arr_in.length < idx + n_ret) {
+    if (arr_in.length <= idx + n_ret) {
         return { arr: arr_in.slice(idx, arr_in.length), index: idx }
     }
 
