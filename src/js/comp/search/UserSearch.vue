@@ -10,6 +10,14 @@
 
 <template>
     <div>
+        <!-- pagination -->
+        <nav v-if="has_result">
+            <ul class="pager">
+                <li class="previous"><a @click="prev">Previous</a></li>
+                <li class="next"><a @click="next">Next</a></li>
+            </ul>
+        </nav>
+
         <ul class="list-unstyled">
             <li v-for="user in users_displayed">
                 <div class="panel panel-default">
@@ -43,10 +51,16 @@
 </template>
 
 <script type="text/ecmascript-6">
+    import { pagerPrevious, pagerNext } from "../../utils.js"
+
+    const n_displayed = 5
+
     export default {
         data() {
             return {
-                users_displayed: null
+                users_displayed: null,
+                has_result: false,
+                idx: 0
             }
         },
 
@@ -60,9 +74,29 @@
 
         methods: {
             update() {
-                if (this.users !== undefined && this.users !== null) {
+                this.has_result = false
+                this.users_displayed = []
+                if (this.users !== undefined && this.users !== null && this.users.length > 0) {
+                    this.has_result = true
                     this.users_displayed = this.users
+                    this.idx = 0
+
+                    var len = n_displayed > this.users.length ?
+                            this.users.length : n_displayed
+                    this.users_displayed = this.users.slice(this.idx, len)
                 }
+            },
+
+            prev() {
+                let prev = pagerPrevious(this.users, this.idx, n_displayed)
+                this.users_displayed = prev.arr
+                this.idx = prev.index
+            },
+
+            next() {
+                let nxt = pagerNext(this.users, this.idx, n_displayed)
+                this.users_displayed = nxt.arr
+                this.idx = nxt.index
             }
         },
 
