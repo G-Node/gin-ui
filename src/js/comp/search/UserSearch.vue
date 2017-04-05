@@ -11,14 +11,14 @@
 <template>
     <div>
         <!-- pagination -->
-        <nav v-if="has_result">
+        <nav v-if="users_displayed">
             <ul class="pager">
                 <li class="previous"><a @click="prev">Previous</a></li>
                 <li class="next"><a @click="next">Next</a></li>
             </ul>
         </nav>
 
-        <ul class="list-unstyled">
+        <ul class="list-unstyled" v-if="users_displayed">
             <li v-for="user in users_displayed">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -39,11 +39,12 @@
                     </div>
                 </div>
             </li>
-            <li v-if="users.length < 1">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        No user matches your search.
-                    </div>
+        </ul>
+
+        <ul class="list-unstyled" v-if="!users_displayed">
+            <li class="panel panel-default">
+                <div class="panel-body">
+                    No user matches your search.
                 </div>
             </li>
         </ul>
@@ -59,13 +60,12 @@
         data() {
             return {
                 users_displayed: null,
-                has_result: false,
                 idx: 0
             }
         },
 
         props: {
-            users: {required: true}
+            users: { required: true }
         },
 
         mounted() {
@@ -74,10 +74,8 @@
 
         methods: {
             update() {
-                this.has_result = false
-                this.users_displayed = []
+                this.users_displayed = null
                 if (this.users !== undefined && this.users !== null && this.users.length > 0) {
-                    this.has_result = true
                     this.users_displayed = this.users
                     this.idx = 0
 
