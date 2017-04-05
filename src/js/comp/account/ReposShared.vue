@@ -41,8 +41,9 @@
 </template>
 
 <script type="text/ecmascript-6">
-    // TODO merge this file with ReposOwn and adjust routes in main accordingly.
     import Alert from "../Alert.js"
+
+    const ll = "[ReposOwn]"
 
     export default {
         data() {
@@ -63,49 +64,54 @@
 
         methods: {
 
-            // If the logged in user is the owner of the current repository list,
-            // display all repositories shared with the user.
-            //
-            // If the logged in user is not the owner of the current repository list
-            // filter only those repositories the user shares with this owner
-            // TODO in the second case: should the repositories displayed actually be all
-            // the logged in user repositories that are shared with the owner of the current
-            // repository list?
             update(params) {
-                var repo_list = []
+                console.log(ll +" update")
+                this.repos_modified = null
 
                 const repos_shared = api.repos.listShared()
                 repos_shared.then(
                         (repos) => {
-                            if (this.account.login !== params.username) {
-                                let repo_filter = Array.from(repos)
-                                        .filter((r) => { return r.Owner === params.username})
-                                if (repo_filter.length > 0) {
-                                    repo_list = repo_filter
-                                }
-                            } else {
-                                repo_list = repos
-                            }
+                            if (repos !== undefined && repos !== null && repos.length > 0) {
+                                var repo_list = repos
 
-                            const user_search = api.accounts.search()
-                            user_search.then(
-                                    (u) => {
-                                        var names_map = new Map()
-                                        for (var j = 0; j < u.length; j++) {
-                                            names_map.set(u[j].login, u[j].first_name+" "+u[j].last_name)
-                                        }
-
-                                        this.repos_modified = []
-                                        for (var i = 0; i < repo_list.length; i++) {
-                                            var el = Object.assign({}, repo_list[i],
-                                                    { FullName: names_map.get(repo_list[i].Owner) })
-                                            this.repos_modified.push(el)
-                                        }
+                                // A logged in user can pre-filter repositories shared
+                                // by another repository owner via the route.
+                                if (this.account.login !== params.username) {
+                                    console.log(ll +" pre filter for owner "+ params.username)
+                                    let repo_filter = Array.from(repos)
+                                            .filter((r) => { return r.Owner === params.username })
+                                    if (repo_filter.length > 0) {
+                                        repo_list = repo_filter
+                                    } else {
+                                        return
                                     }
-                            )
+                                }
+
+                                // Update repository list with full name of the repository owners.
+                                const user_search = api.accounts.search()
+                                user_search.then(
+                                        (u) => {
+                                            var names_map = new Map()
+                                            for (var j = 0; j < u.length; j++) {
+                                                names_map.set(u[j].login, u[j].first_name+" "+u[j].last_name)
+                                            }
+
+                                            this.repos_modified = []
+                                            for (var i = 0; i < repo_list.length; i++) {
+                                                var el = Object.assign({}, repo_list[i],
+                                                        { FullName: names_map.get(repo_list[i].Owner) })
+                                                this.repos_modified.push(el)
+                                            }
+                                        },
+                                        (error) => {
+                                            console.log(ll +" error fetching user for shared repos")
+                                            console.log(error)
+                                        })
+                            }
                         },
                         (error) => {
-                            console.error(error)
+                            console.log(ll +" error fetching shared repos")
+                            console.log(error)
                         })
             }
         },
