@@ -11,14 +11,14 @@
 <template>
     <div>
         <!-- pagination -->
-        <nav v-if="has_result">
+        <nav v-if="repos_modified">
             <ul class="pager">
-                <li class="previous"><a @click="previous">Previous</a></li>
+                <li class="previous"><a @click="prev">Previous</a></li>
                 <li class="next"><a @click="next">Next</a></li>
             </ul>
         </nav>
 
-        <ul class="list-unstyled">
+        <ul class="list-unstyled" v-if="repos_modified">
             <li v-for="repo in repos_displayed">
                 <div class="panel panel-default">
                     <div class="panel-heading">
@@ -35,11 +35,12 @@
                     </div>
                 </div>
             </li>
-            <li v-if="!has_result">
-                <div class="panel panel-default">
-                    <div class="panel-body">
-                        No available repository matches your search.
-                    </div>
+        </ul>
+
+        <ul class="list-unstyled" v-if="!repos_modified">
+            <li class="panel panel-default">
+                <div class="panel-body">
+                    No available repository matches your search.
                 </div>
             </li>
         </ul>
@@ -57,8 +58,7 @@
             return {
                 repos_modified: null,
                 repos_displayed: null,
-                repo_index: 0,
-                has_result: false
+                idx: 0
             }
         },
 
@@ -73,7 +73,10 @@
         methods: {
             augment() {
                 console.log(ll +" augment search")
-                if (this.public_repo !== null && this.public_repo !== undefined) {
+                this.repos_modified = null
+                this.repos_displayed = null
+
+                if (this.public_repo !== null && this.public_repo !== undefined && this.public_repo.length > 0) {
                     const user_search = api.accounts.search()
                     user_search.then(
                             (u) => {
@@ -83,34 +86,31 @@
                                 }
 
                                 this.repos_modified = []
-                                this.repos_displayed = []
-                                this.repo_index = 0
-                                this.has_result = false
                                 for (var i = 0; i < this.public_repo.length; i++) {
                                     var el = Object.assign({}, this.public_repo[i],
                                             { FullName: names_map.get(this.public_repo[i].Owner) })
                                     this.repos_modified.push(el)
-                                    this.has_result = true
-
-                                    var len = n_displayed > this.repos_modified.length ?
-                                            this.repos_modified.length : n_displayed
-                                    this.repos_displayed = this.repos_modified.slice(0, len)
                                 }
+
+                                this.idx = 0
+                                var len = n_displayed > this.repos_modified.length ?
+                                        this.repos_modified.length : n_displayed
+                                this.repos_displayed = this.repos_modified.slice(this.idx, len)
                             }
                     )
                 }
             },
 
-            previous() {
-                let prev = pagerPrevious(this.repos_modified, this.repo_index, n_displayed)
+            prev() {
+                let prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = prev.arr
-                this.repo_index = prev.index
+                this.idx = prev.index
             },
 
             next() {
-                let nxt = pagerNext(this.repos_modified, this.repo_index, n_displayed)
+                let nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = nxt.arr
-                this.repo_index = nxt.index
+                this.idx = nxt.index
             }
         },
 
