@@ -300,7 +300,7 @@ class RepoAPI {
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                error: (error) => reject(error)
             }
 
             if (this.config.token) {
