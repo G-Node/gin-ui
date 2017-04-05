@@ -10,8 +10,16 @@
 
 <template>
     <div>
+        <!-- pagination -->
+        <nav v-if="repos_modified">
+            <ul class="pager">
+                <li class="previous"><a @click="prev">Previous</a></li>
+                <li class="next"><a @click="next">Next</a></li>
+            </ul>
+        </nav>
+
         <ul class="list-unstyled" v-if="repos_modified">
-            <li v-for="repo in repos_modified">
+            <li v-for="repo in repos_displayed">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <router-link :to="{ name: 'repository-info',
@@ -42,13 +50,17 @@
 
 <script type="text/ecmascript-6">
     import Alert from "../Alert.js"
+    import { pagerPrevious, pagerNext } from "../../utils.js"
 
-    const ll = "[ReposOwn]"
+    const ll = "[ReposShared]"
+    const n_displayed = 5
 
     export default {
         data() {
             return {
-                repos_modified: null
+                repos_modified: null,
+                repos_displayed: null,
+                idx: 0
             }
         },
 
@@ -67,6 +79,7 @@
             update(params) {
                 console.log(ll +" update")
                 this.repos_modified = null
+                this.repos_displayed = null
 
                 const repos_shared = api.repos.listShared()
                 repos_shared.then(
@@ -102,6 +115,11 @@
                                                         { FullName: names_map.get(repo_list[i].Owner) })
                                                 this.repos_modified.push(el)
                                             }
+
+                                            this.idx = 0
+                                            var len = n_displayed > this.repos_modified.length ?
+                                                    this.repos_modified.length : n_displayed
+                                            this.repos_displayed = this.repos_modified.slice(this.idx, len)
                                         },
                                         (error) => {
                                             console.log(ll +" error fetching user for shared repos")
@@ -113,6 +131,18 @@
                             console.log(ll +" error fetching shared repos")
                             console.log(error)
                         })
+            },
+
+            prev() {
+                let prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
+                this.repos_displayed = prev.arr
+                this.idx = prev.index
+            },
+
+            next() {
+                let nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
+                this.repos_displayed = nxt.arr
+                this.idx = nxt.index
             }
         },
 
