@@ -42,7 +42,6 @@
 
 <script type="text/ecmascript-6">
     // TODO merge this file with ReposOwn and adjust routes in main accordingly.
-
     import Alert from "../Alert.js"
 
     export default {
@@ -63,9 +62,6 @@
         mixins: [ Alert ],
 
         methods: {
-            update(params) {
-                this.sharedRepos(params)
-            },
 
             // If the logged in user is the owner of the current repository list,
             // display all repositories shared with the user.
@@ -75,7 +71,7 @@
             // TODO in the second case: should the repositories displayed actually be all
             // the logged in user repositories that are shared with the owner of the current
             // repository list?
-            sharedRepos(params) {
+            update(params) {
                 var repo_list = []
 
                 const repos_shared = api.repos.listShared()
@@ -83,7 +79,7 @@
                         (repos) => {
                             if (this.account.login !== params.username) {
                                 let repo_filter = Array.from(repos)
-                                                       .filter((r) => { return r.Owner === params.username})
+                                        .filter((r) => { return r.Owner === params.username})
                                 if (repo_filter.length > 0) {
                                     repo_list = repo_filter
                                 }
