@@ -10,8 +10,16 @@
 
 <template>
     <div>
+        <!-- pagination -->
+        <nav v-if="repos">
+            <ul class="pager">
+                <li class="previous"><a @click="prev">Previous</a></li>
+                <li class="next"><a @click="next">Next</a></li>
+            </ul>
+        </nav>
+
         <ul class="list-unstyled" v-if="repos">
-            <li v-for="repo in repos">
+            <li v-for="repo in repos_displayed">
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <router-link :to="{ name: 'repository-info',
@@ -29,6 +37,7 @@
                 </div>
             </li>
         </ul>
+
         <ul class="list-unstyled" v-if="!repos">
             <li class="panel panel-default">
                 <div class="panel-body">
@@ -41,11 +50,17 @@
 
 <script type="text/ecmascript-6">
     import Alert from "../Alert.js"
+    import { pagerPrevious, pagerNext } from "../../utils.js"
+
+    const ll = "[ReposOwn]"
+    const n_displayed = 6
 
     export default {
         data() {
             return {
-                repos: null
+                repos: null,
+                repos_displayed: null,
+                idx: 0
             }
         },
 
@@ -61,16 +76,39 @@
 
         methods: {
             update(params) {
+                console.log(ll +" update")
+                this.repos = null
+                this.repos_displayed = null
+
                 const promise_own = api.repos.listUserRepos(params.username)
                 promise_own.then(
                         (repos) => {
-                            this.repos = repos
+                            if (repos !== undefined && repos !== null && repos.length > 0) {
+                                this.repos = repos
+                                this.idx = 0
+
+                                var len = n_displayed > repos.length ? repos.length : n_displayed
+                                this.repos_displayed = repos.slice(this.idx, len)
+                            }
                         },
                         (error) => {
-                            this.repos = null
+                            console.log(ll +" error fetching owner repo list")
+                            console.log(error)
                             this.reportError(error)
                         }
                 )
+            },
+
+            prev() {
+                let prev = pagerPrevious(this.repos, this.idx, n_displayed)
+                this.repos_displayed = prev.arr
+                this.idx = prev.index
+            },
+
+            next() {
+                let nxt = pagerNext(this.repos, this.idx, n_displayed)
+                this.repos_displayed = nxt.arr
+                this.idx = nxt.index
             }
         },
 

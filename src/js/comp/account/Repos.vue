@@ -96,7 +96,7 @@
                     if (this.account_is_owner) {
                         return "Repositories shared with You"
                     } else {
-                        return "Repositories shared with " + this.owner_name
+                        return "Repositories shared by " + this.owner_name
                     }
                 }
             },

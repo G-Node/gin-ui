@@ -20,6 +20,7 @@ export default class API {
                             client_id: conf.client_id,
                             client_secret: conf.client_secret,
                             contact_email: conf.contact_email,
+                            static_content: conf.static_content,
                             token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
@@ -116,6 +117,24 @@ export default class API {
         const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
         window.location.href = uri + query
         window.event.returnValue = false
+    }
+
+    /**
+     * getStaticFile returns the content of a file found at the url location.
+     *
+     * @param url {string}
+     * @returns {Promise}
+     */
+    getStaticFile(url) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: url,
+                type: "GET",
+                contentType: "application/html",
+                success: (text) => resolve(text),
+                error: (error) => reject(error)
+            })
+        })
     }
 }
 
@@ -281,7 +300,7 @@ class RepoAPI {
                 type: "GET",
                 dataType: "json",
                 success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                error: (error) => reject(error)
             }
 
             if (this.config.token) {
