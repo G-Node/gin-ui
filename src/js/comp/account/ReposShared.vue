@@ -50,7 +50,11 @@
 
 <script type="text/ecmascript-6">
     import Alert from "../Alert.js"
-    import { pagerPrevious, pagerNext } from "../../utils.js"
+    import {
+            pagerPrevious,
+            pagerNext,
+            addRepoUserFullName
+    } from "../../utils.js"
 
     const ll = "[ReposShared]"
     const n_displayed = 5
@@ -104,17 +108,7 @@
                                 const user_search = api.accounts.search()
                                 user_search.then(
                                         (u) => {
-                                            var names_map = new Map()
-                                            for (var j = 0; j < u.length; j++) {
-                                                names_map.set(u[j].login, u[j].first_name+" "+u[j].last_name)
-                                            }
-
-                                            this.repos_modified = []
-                                            for (var i = 0; i < repo_list.length; i++) {
-                                                var el = Object.assign({}, repo_list[i],
-                                                        { FullName: names_map.get(repo_list[i].Owner) })
-                                                this.repos_modified.push(el)
-                                            }
+                                            this.repos_modified = addRepoUserFullName(u, repo_list)
 
                                             this.idx = 0
                                             var len = n_displayed > this.repos_modified.length ?
