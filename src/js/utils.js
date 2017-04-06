@@ -64,3 +64,27 @@ export function pagerNext(arr_in, idx, n_ret) {
 
     return { arr: arr_in.slice(idx, len), index: idx }
 }
+
+/**
+ * addRepoUserFullName adds the full name of a repository owner
+ * to each entry of an array of repositories and returns the new array.
+ *
+ * @param repos {Array} of repositories, contains login of the owner
+ *                      in field repos.Owner.
+ * @param users {Array} of users, contains login, first name and last name of a user.
+ * @returns {Array} Returns array of repositories with added FullName of each repository owner.
+ */
+export function addRepoUserFullName(users, repos) {
+    let names_map = new Map()
+    for (let j = 0; j < users.length; j++) {
+        names_map.set(users[j].login, users[j].first_name+" "+users[j].last_name)
+    }
+
+    let repos_modified = []
+    for (let i = 0; i < repos.length; i++) {
+        let el = Object.assign({}, repos[i], { FullName: names_map.get(repos[i].Owner) })
+        repos_modified.push(el)
+    }
+
+    return repos_modified
+}
