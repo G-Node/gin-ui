@@ -318,11 +318,11 @@
 
                             accounts = accounts
                                     .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
-                                    .map(acc => { return { label: accountLabel(acc), login: acc.login, active: false}})
+                                    .map(acc => { return Object.assign({},
+                                            { label: accountLabel(acc), login: acc.login, active: false })})
 
                             const idx = accounts.findIndex(acc => acc.login === text)
                             if (idx >= 0) {
-                                accounts.splice(idx, 1)
                                 this.select.match = text
                             } else {
                                 this.select.match = null
