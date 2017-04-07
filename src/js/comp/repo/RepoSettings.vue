@@ -138,6 +138,8 @@
 
     // Timeout in ms before the search for collaborators is updated.
     const search_collaborators_timeout = 250
+    // Minimal search content length before search for collaborators is updated.
+    const search_collaborators_minlength = 3
 
     event.init()
 
@@ -302,7 +304,7 @@
             },
 
             search(text) {
-                if (text && text.length > 0) {
+                if (text && text.length >= search_collaborators_minlength) {
                     console.log("[ReposSettings] update search: "+ text)
                     // TODO currently every new character entered leads to a request to the auth server.
                     // Check if this could be done more efficiently to reduce either the number of
