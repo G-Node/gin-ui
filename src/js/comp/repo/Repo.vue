@@ -11,11 +11,15 @@
 <template>
     <div>
         <header>
-            <h2>{{$route.params.username}}/{{$route.params.repository}}</h2>
+            <h2>{{$route.params.username}}/{{$route.params.repository}} <span v-if="!repository">not found</span></h2>
             <h4 v-if="repository">{{ repository.Description }}</h4>
         </header>
 
         <hr />
+
+        <div v-if="!repository">
+            Please check the spelling of user and repository name if you feel you received this message in error.
+        </div>
 
         <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
@@ -149,6 +153,7 @@
                                             this.repository.Shared = collaborators
                                         },
                                         (error) => {
+                                            this.repository = null
                                             console.error(error)
                                             if (error.code != 404) {
                                                 this.alertError(error.status)
@@ -157,6 +162,7 @@
                                 )
                             },
                             (error) => {
+                                this.repository = null
                                 console.error(error)
                                 if (error.code != 404) {
                                     this.alertError(error.status)
