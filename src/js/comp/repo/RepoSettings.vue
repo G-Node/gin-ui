@@ -181,6 +181,12 @@
         },
 
         mounted() {
+            // When tampering with the route w/o proper access,
+            // the hand shall be rudely removed from the cookie jar.
+            if (!this.is_repo_writeable) {
+                console.error("No access, be gone!")
+                this.$router.push({path: "/not-found"})
+            }
             this.update()
         },
 
