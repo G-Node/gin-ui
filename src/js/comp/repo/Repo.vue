@@ -118,7 +118,6 @@
                     return
                 }
 
-                const login_name = this.account ? this.account.login : null
                 const same_owner = old && old.username === params.username
                 const same_repo  = old && old.repository === params.repository
 
