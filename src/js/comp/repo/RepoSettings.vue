@@ -136,6 +136,9 @@
     import { event } from "../../events.js"
     import Alert from "../Alert.js"
 
+    // Timeout in ms before the search for collaborators is updated.
+    const search_collaborators_timeout = 250
+
     event.init()
 
     function accountLabel(acc) {
@@ -165,7 +168,7 @@
                 form: {
                     description: null,
                     is_public: null,
-                    shared: [],
+                    shared: []
                 },
                 select: {
                     match: null,
@@ -300,6 +303,7 @@
 
             search(text) {
                 if (text && text.length > 0) {
+                    console.log("[ReposSettings] update search: "+ text)
                     // TODO currently every new character entered leads to a request to the auth server.
                     // Check if this could be done more efficiently to reduce either the number of
                     // requests all together or at least the amount of transferred data using an
@@ -369,7 +373,7 @@
             "select.text": function (search, old) {
                 if (search !== old) {
                     clearTimeout(searchBuffer)
-                    searchBuffer = setTimeout(() => {this.search(search)}, 300)
+                    searchBuffer = setTimeout(() => {this.search(search)}, search_collaborators_timeout)
                 }
             },
 
@@ -380,7 +384,7 @@
                 if (shared !== old) {
                     this.update()
                 }
-            },
+            }
         }
     }
 </script>
