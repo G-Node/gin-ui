@@ -284,23 +284,27 @@
             },
 
             selectionUp() {
-                let idx = this.select.all.findIndex(acc => acc.active)
-                if (idx < 1) {
-                    this.select.all[0].active = false
-                    idx = this.select.all.length
-                } else {
-                    this.select.all[idx].active = false
+                if (this.select.all.length > 0) {
+                    let idx = this.select.all.findIndex(acc => acc.active)
+                    if (idx < 1) {
+                        this.select.all[0].active = false
+                        idx = this.select.all.length
+                    } else {
+                        this.select.all[idx].active = false
+                    }
+                    this.select.all[idx - 1].active = true
                 }
-                this.select.all[idx - 1].active = true
             },
 
             selectionDown() {
-                let idx = this.select.all.findIndex(acc => acc.active)
-                if (idx >= 0) {
-                    this.select.all[idx].active = false
+                if (this.select.all.length > 0) {
+                    let idx = this.select.all.findIndex(acc => acc.active)
+                    if (idx >= 0) {
+                        this.select.all[idx].active = false
+                    }
+                    const idx_next = (idx + 1) % this.select.all.length
+                    this.select.all[idx_next].active = true
                 }
-                const idx_next = (idx + 1) % this.select.all.length
-                this.select.all[idx_next].active = true
             },
 
             search(text) {
