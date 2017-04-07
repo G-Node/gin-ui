@@ -128,7 +128,10 @@
                                 this.owner = acc
                             },
                             (error) => {
-                                this.reportError(error)
+                                console.error(error)
+                                if (error.code != 404) {
+                                    this.alertError(error)
+                                }
                             }
                     )
                 }
@@ -146,12 +149,18 @@
                                             this.repository.Shared = collaborators
                                         },
                                         (error) => {
-                                            this.reportError(error)
+                                            console.error(error)
+                                            if (error.code != 404) {
+                                                this.alertError(error.status)
+                                            }
                                         }
                                 )
                             },
                             (error) => {
-                                this.reportError(error.message)
+                                console.error(error)
+                                if (error.code != 404) {
+                                    this.alertError(error.status)
+                                }
                             }
                     )
                 }
