@@ -152,6 +152,7 @@
 
             alertEvent(message) {
                 const alert = Object.assign({}, message)
+                // gin-auth error responses provide JSON objects containing the field "message".
                 if (alert.content.hasOwnProperty("message")) {
                     alert.content = alert.content.message
                 } else {
