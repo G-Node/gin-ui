@@ -82,12 +82,12 @@
                         <div class="form-group">
                             <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
                             <div class="col-sm-8">
-                                <div class="dropdown">
+                                <div id="collabdd" class="dropdown">
                                     <input type="text" class="form-control" id="select" data-toggle="dropdown"
                                            aria-haspopup="true" aria-expanded="true" v-model="select.text"
                                            @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()"
                                            @keyup.down="selectionDown()">
-                                    <ul v-if="select.all.length > 0" class="dropdown-menu"
+                                    <ul v-if="select.all.length > 0" class="dropdown-menu open"
                                         aria-labelledby="select" style="width: 100%">
                                         <li v-for="acc in select.all" :class="{active: acc.active}">
                                             <a @click="selectShare(acc.login)">
@@ -136,6 +136,11 @@
     import { event } from "../../events.js"
     import Alert from "../Alert.js"
 
+    // Timeout in ms before the search for collaborators is updated.
+    const search_collaborators_timeout = 250
+    // Minimal search content length before search for collaborators is updated.
+    const search_collaborators_minlength = 3
+
     event.init()
 
     function accountLabel(acc) {
@@ -165,7 +170,7 @@
                 form: {
                     description: null,
                     is_public: null,
-                    shared: [],
+                    shared: []
                 },
                 select: {
                     match: null,
@@ -176,6 +181,12 @@
         },
 
         mounted() {
+            // When tampering with the route w/o proper access,
+            // the hand shall be rudely removed from the cookie jar.
+            if (!this.is_repo_writeable) {
+                console.error("No access, be gone!")
+                this.$router.push({path: "/not-found"})
+            }
             this.update()
         },
 
@@ -279,27 +290,32 @@
             },
 
             selectionUp() {
-                let idx = this.select.all.findIndex(acc => acc.active)
-                if (idx < 1) {
-                    this.select.all[0].active = false
-                    idx = this.select.all.length
-                } else {
-                    this.select.all[idx].active = false
+                if (this.select.all.length > 0) {
+                    let idx = this.select.all.findIndex(acc => acc.active)
+                    if (idx < 1) {
+                        this.select.all[0].active = false
+                        idx = this.select.all.length
+                    } else {
+                        this.select.all[idx].active = false
+                    }
+                    this.select.all[idx - 1].active = true
                 }
-                this.select.all[idx - 1].active = true
             },
 
             selectionDown() {
-                let idx = this.select.all.findIndex(acc => acc.active)
-                if (idx >= 0) {
-                    this.select.all[idx].active = false
+                if (this.select.all.length > 0) {
+                    let idx = this.select.all.findIndex(acc => acc.active)
+                    if (idx >= 0) {
+                        this.select.all[idx].active = false
+                    }
+                    const idx_next = (idx + 1) % this.select.all.length
+                    this.select.all[idx_next].active = true
                 }
-                const idx_next = (idx + 1) % this.select.all.length
-                this.select.all[idx_next].active = true
             },
 
             search(text) {
-                if (text && text.length > 0) {
+                if (text && text.length >= search_collaborators_minlength) {
+                    console.log("[ReposSettings] update search: "+ text)
                     // TODO currently every new character entered leads to a request to the auth server.
                     // Check if this could be done more efficiently to reduce either the number of
                     // requests all together or at least the amount of transferred data using an
@@ -312,16 +328,20 @@
 
                             accounts = accounts
                                     .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
-                                    .map(acc => { return { label: accountLabel(acc), login: acc.login, active: false}})
+                                    .map(acc => { return Object.assign({},
+                                            { label: accountLabel(acc), login: acc.login, active: false })})
 
                             const idx = accounts.findIndex(acc => acc.login === text)
                             if (idx >= 0) {
-                                accounts.splice(idx, 1)
                                 this.select.match = text
                             } else {
                                 this.select.match = null
                             }
                             this.select.all = accounts
+
+                            // Make sure collaborator suggestion dropdown is always displayed on reload,
+                            // even if a user toggled dropdown display before.
+                            $('#collabdd.dropdown').toggleClass('open', true)
                         },
                         (error) => {
                             this.alertError(error)
@@ -369,7 +389,7 @@
             "select.text": function (search, old) {
                 if (search !== old) {
                     clearTimeout(searchBuffer)
-                    searchBuffer = setTimeout(() => {this.search(search)}, 300)
+                    searchBuffer = setTimeout(() => {this.search(search)}, search_collaborators_timeout)
                 }
             },
 
@@ -380,7 +400,7 @@
                 if (shared !== old) {
                     this.update()
                 }
-            },
+            }
         }
     }
 </script>

@@ -8,14 +8,30 @@
     LICENSE file in the root of the Project.
 -->
 
+<style>
+    .plainbox {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 0.5em;
+    }
+    .contextual-backgrounds div {
+        padding: 1em;
+    }
+</style>
+
 <template>
     <div>
         <header>
-            <h2>{{$route.params.username}}/{{$route.params.repository}}</h2>
+            <h2>{{$route.params.username}}/{{$route.params.repository}} <span v-if="!repository">not found</span></h2>
             <h4 v-if="repository">{{ repository.Description }}</h4>
         </header>
 
         <hr />
+
+        <div class="plainbox contextual-backgrounds" v-if="!repository">
+            <div class="bg-info">Please check the spelling of user and repository name
+                if you feel you received this message in error.</div>
+        </div>
 
         <ul class="nav nav-tabs" v-if="repository && owner">
             <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
@@ -118,7 +134,6 @@
                     return
                 }
 
-                const login_name = this.account ? this.account.login : null
                 const same_owner = old && old.username === params.username
                 const same_repo  = old && old.repository === params.repository
 
@@ -129,7 +144,10 @@
                                 this.owner = acc
                             },
                             (error) => {
-                                this.reportError(error)
+                                console.error(error)
+                                if (error.code != 404) {
+                                    this.alertError(error)
+                                }
                             }
                     )
                 }
@@ -147,12 +165,20 @@
                                             this.repository.Shared = collaborators
                                         },
                                         (error) => {
-                                            this.reportError(error)
+                                            this.repository = null
+                                            console.error(error)
+                                            if (error.code != 404) {
+                                                this.alertError(error.status)
+                                            }
                                         }
                                 )
                             },
                             (error) => {
-                                this.reportError(error.message)
+                                this.repository = null
+                                console.error(error)
+                                if (error.code != 404) {
+                                    this.alertError(error.status)
+                                }
                             }
                     )
                 }

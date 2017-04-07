@@ -122,6 +122,11 @@
         },
 
         mounted() {
+            // Someone has been meddling with the route without proper access, naughty!
+            if (this.account.login !== this.owner.login) {
+                console.error("DOIs only for owners, naughty!")
+                this.$router.push({path: "/not-found"})
+            }
             this.update(this.$route.params)
         },
 
@@ -136,7 +141,8 @@
 
         props: {
             repository: { required: true },
-            account: { required: true}
+            account: { required: true },
+            owner: { required: true }
         },
 
         mixins: [ Alert ],
