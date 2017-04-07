@@ -82,12 +82,12 @@
                         <div class="form-group">
                             <label for="select" class="col-sm-2 control-label">Add Collaborator</label>
                             <div class="col-sm-8">
-                                <div class="dropdown">
+                                <div id="collabdd" class="dropdown">
                                     <input type="text" class="form-control" id="select" data-toggle="dropdown"
                                            aria-haspopup="true" aria-expanded="true" v-model="select.text"
                                            @keypress.enter="addShare(select.text)" @keyup.up="selectionUp()"
                                            @keyup.down="selectionDown()">
-                                    <ul v-if="select.all.length > 0" class="dropdown-menu"
+                                    <ul v-if="select.all.length > 0" class="dropdown-menu open"
                                         aria-labelledby="select" style="width: 100%">
                                         <li v-for="acc in select.all" :class="{active: acc.active}">
                                             <a @click="selectShare(acc.login)">
@@ -332,6 +332,10 @@
                                 this.select.match = null
                             }
                             this.select.all = accounts
+
+                            // Make sure collaborator suggestion dropdown is always displayed on reload,
+                            // even if a user toggled dropdown display before.
+                            $('#collabdd.dropdown').toggleClass('open', true)
                         },
                         (error) => {
                             this.alertError(error)
