@@ -203,24 +203,25 @@
                         is also provided. A short run through follows:
                         <hr>
                         <p> <strong>Setup Docker</strong> </p>
-                        First you need a working Docker installation. Find instructions <a href="https://www.docker.com/">here</a>
+                        First you need a working Docker installation. Find instructions <a href="https://www.docker.com/">here</a>.
+                        Furthermore a <a href="https://hub.docker.com/"> dockerhub account </a> is kind of usefull.
                         <hr>
                         
                         <p> <strong>Setup gin-auth</strong> </p>
                         Second you need a working gin authentication server, to store userdata on. For that to work you 
                         also need a running database server with a database setup as gin-auth expects it (see 
                         <a href="https://github.com/G-Node/gin-auth/blob/master/resources/conf/migrations/1_initial-schema.sql">here</a> for details).
-                        You can also download and run our prebuild postgres docker image which has everything you need. 
+                        Instead of setting up a databse yourself, you can also download and run our prebuild postgres docker image which has everything you need. 
                         You can download it to your Server using the following command:
                         <pre><code>docker pull gnode/gin-pgres</code></pre>
                         You can start it with:
                         <pre><code>docker run --name ginpgres -d  gnode/gin-pgres</code></pre>
-                        you can check whether it worked by issuing:
+                        You can check whether it worked by issuing:
                         <pre><code>docker ps</code></pre> 
-                        which should report smth like:
-                        <pre><code>CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES 2bd4e61e37ff        gin-pgres            "/bin/bash."   24 seconds ago      Up 23 seconds       5432   ginpgres
+                        Which should report smth like:
+                        <pre><code>CONTAINER ID        IMAGE               COMMAND                  CREATED             STATUS              PORTS               NAMES 2bd4e61e37ff        gin-pgres            "/bin/bash."   24 seconds ago      Up 23 seconds       5432   gnode/ginpgres
                         </code></pre>
-                        indicating that a docker container by the name gingpgres based on the image gin-pgres is running 
+                        indicating that a docker container by the name "ginpgres" based on the image "gnode/gin-pgres" is running 
                         with a exposed port 5432. You can always issue <code>docker ps</code> to check
                         for running docker container.<p>
                         Now we are ready to pull the gin-auth docker image:
@@ -379,6 +380,12 @@
                         on the docker server however, it might be advisable to start listening to another ssh port.
                         <hr>
                         
+                        <p> <strong>Is this good for production?</strong> </p>
+                        Yes, but it could be even better! This tutorial should give you a good idea on how things work. 
+                        For production we would advise you to at least make sure that your database container actually 
+                        stores the database in a predefined location (see details <a href="https://hub.docker.com/_/postgres/">here</a>). 
+                        Furthermore you might consider logging errors into a specialized logging container.
+                        <hr>
                         <p>If you need any further help setting up your own service, you can contact us at
                             <a :href="mailto">{{ contact }}</a>.</p>
                     </div>
