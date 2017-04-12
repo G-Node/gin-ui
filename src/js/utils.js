@@ -35,7 +35,7 @@ export function pagerPrevious(arr_in, idx, n_ret) {
 
     idx = idx - n_ret < 0 ? 0 : idx - n_ret
 
-    let len = idx + n_ret > arr_in.length ? arr_in.length : idx + n_ret
+    const len = idx + n_ret > arr_in.length ? arr_in.length : idx + n_ret
 
     return { arr: arr_in.slice(idx, len), index: idx }
 }
@@ -60,7 +60,7 @@ export function pagerNext(arr_in, idx, n_ret) {
 
     idx = idx + n_ret
 
-    let len = idx + n_ret > arr_in.length ? arr_in.length : idx + n_ret
+    const len = idx + n_ret > arr_in.length ? arr_in.length : idx + n_ret
 
     return { arr: arr_in.slice(idx, len), index: idx }
 }
@@ -75,14 +75,14 @@ export function pagerNext(arr_in, idx, n_ret) {
  * @returns {Array} Returns array of repositories with added FullName of each repository owner.
  */
 export function addRepoUserFullName(users, repos) {
-    let names_map = new Map()
+    const names_map = new Map()
     for (let j = 0; j < users.length; j++) {
         names_map.set(users[j].login, users[j].first_name+" "+users[j].last_name)
     }
 
-    let repos_modified = []
+    const repos_modified = []
     for (let i = 0; i < repos.length; i++) {
-        let el = Object.assign({}, repos[i], { FullName: names_map.get(repos[i].Owner) })
+        const el = Object.assign({}, repos[i], { FullName: names_map.get(repos[i].Owner) })
         repos_modified.push(el)
     }
 
