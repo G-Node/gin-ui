@@ -20,7 +20,6 @@ export function filesize(input) {
     return `${num.toFixed(1)} ${prefixes[i]}B`
 }
 
-
 /**
  * reLabelCollaborator is a custom filter to map different labels
  * to the collaborator access levels from gin-repo.
@@ -34,7 +33,7 @@ export function filesize(input) {
  */
 export function reLabelCollaborator(lvl) {
     var out
-    switch(lvl) {
+    switch (lvl) {
     case "is-admin":
         out = "is-admin"
         break
