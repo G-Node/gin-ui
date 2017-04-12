@@ -77,7 +77,7 @@ export function pagerNext(arr_in, idx, n_ret) {
 export function addRepoUserFullName(users, repos) {
     const names_map = new Map()
     for (let j = 0; j < users.length; j++) {
-        names_map.set(users[j].login, users[j].first_name+" "+users[j].last_name)
+        names_map.set(users[j].login, `${users[j].first_name} ${users[j].last_name}`)
     }
 
     const repos_modified = []

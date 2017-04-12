@@ -31,7 +31,7 @@ export default class API {
     // A successful request will redirect back to gin-ui/oauth/login for the token validation.
     authorize() {
         const state = stateHash(this.config.client_id, navigator.userAgent)
-        const url = this.config.auth_url + "/oauth/authorize?"
+        const url = `${this.config.auth_url}/oauth/authorize?`
         const params = [
             ["response_type", "token"],
             ["client_id", this.config.client_id],
@@ -39,7 +39,7 @@ export default class API {
             ["scope", "account-read account-write repo-read repo-write"],
             ["state", encodeURIComponent(state)]
         ]
-        const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        const query = params.map((p) => `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}`).join("&")
         window.location.href = url + query
         if (window.event !== undefined) {
             window.event.returnValue = false
@@ -106,7 +106,7 @@ export default class API {
 
     register() {
         const state = stateHash(this.config.client_id, navigator.userAgent)
-        const uri = this.config.auth_url + "/oauth/registration_init?"
+        const uri = `${this.config.auth_url}/oauth/registration_init?`
         const kv = [
             ["response_type", "client"],
             ["client_id", this.config.client_id],
@@ -114,7 +114,7 @@ export default class API {
             ["scope", "account-create"],
             ["state", encodeURIComponent(state)]
         ]
-        const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        const query = kv.map((p) => `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}`).join("&")
         window.location.href = uri + query
         window.event.returnValue = false
     }
@@ -499,13 +499,13 @@ class RepoAPI {
     }
 
     requestDOI(owner, repo, branch) {
-        const uri = this.config.doi_url + "?"
+        const uri = `${this.config.doi_url}?`
         const kv = [
-            ["repo", branch+":"+owner+"/"+repo],
+            ["repo", `${branch}:${owner}/${repo}`],
             ["user", this.config.token.login],
-            ["token", "Bearer "+ this.config.token.jti]
+            ["token", `Bearer ${this.config.token.jti}`]
         ]
-        const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        const query = kv.map((p) => `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}`).join("&")
 
         window.location.href = uri + query
         window.event.returnValue = false

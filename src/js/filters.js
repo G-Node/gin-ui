@@ -19,7 +19,7 @@ export function filesize(input) {
         num = num / 1024
     }
     
-    return num.toFixed(1) + " " + prefixes[i] + "B"
+    return `${num.toFixed(1)} ${prefixes[i]}B`
 }
 
 
@@ -62,7 +62,7 @@ export function privacyLabel(is_public) {
     if (!is_public) {
         out = "private"
     }
-    return "This repository is "+ out
+    return `This repository is ${out}`
 }
 
 /**
