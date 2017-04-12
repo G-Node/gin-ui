@@ -244,7 +244,7 @@ class SSHKeyAPI {
                 headers: { Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(key),
                 dataType: "json",
-                success: (key) => resolve(key),
+                success: (k) => resolve(k),
                 error: (error) => reject(error.responseJSON)
             })
         })
@@ -257,7 +257,7 @@ class SSHKeyAPI {
                 type: "DELETE",
                 headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
-                success: (key) => resolve(key),
+                success: (k) => resolve(k),
                 error: (error) => reject(error.responseJSON)
             })
         })
@@ -464,7 +464,7 @@ class RepoAPI {
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(patch),
                 dataType: "json",
-                success: (patch) => resolve(patch),
+                success: (p) => resolve(p),
                 error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
             })
         })
