@@ -1,9 +1,11 @@
-How to contribute to gin-ui
-===========================
+# How to contribute to gin-ui
+
+## Javascript Style and Code check Toolchain
+
+Only issue a pull request, if `eslint src/**/*.js` does not return any errors.
 
 
-Javascript Style Guide
-----------------------
+## Javascript Style Guide
 
 ### Variables and Parameters
 
@@ -59,8 +61,3 @@ class BigDog {
 * Prefer **for of** loops over **for in**
 * Use colon plus one space between each property and its value
 * Use double quotes around string values
-
-Vue Style Guide
-----------------------
-
-TBD :-)
