@@ -50,10 +50,12 @@ import DOI                  from "./comp/info/DOI.vue"
 
 import config               from "./config.json"
 
-import { filesize }                 from "./filters"
-import { privacyLabel }             from "./filters"
-import { reLabelCollaborator }      from "./filters"
-import { fileSysLabel }             from "./filters"
+import {
+    fileSysLabel,
+    filesize,
+    privacyLabel,
+    reLabelCollaborator
+} from "./filters"
 
 Vue.filter("filesize", filesize)
 Vue.filter("privacyLabel", privacyLabel)
