@@ -11,17 +11,17 @@ import { stateHash } from "./utils.js"
 export default class API {
     constructor(conf) {
         this.config   = { auth_url: conf.auth_url,
-                            repo_url: conf.repo_url,
-                            doi_url: conf.doi_url,
-                            doi_file: conf.doi_file,
-                            doi_example: conf.doi_example,
-                            doid_url: conf.doid_url,
-                            client_dl: conf.client_dl,
-                            client_id: conf.client_id,
-                            client_secret: conf.client_secret,
-                            contact_email: conf.contact_email,
-                            static_content: conf.static_content,
-                            token: null }
+            repo_url: conf.repo_url,
+            doi_url: conf.doi_url,
+            doi_file: conf.doi_file,
+            doi_example: conf.doi_example,
+            doid_url: conf.doid_url,
+            client_dl: conf.client_dl,
+            client_id: conf.client_id,
+            client_secret: conf.client_secret,
+            contact_email: conf.contact_email,
+            static_content: conf.static_content,
+            token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
         this.repos    = new RepoAPI(this.config)
@@ -377,8 +377,8 @@ class RepoAPI {
                 dataType: "json",
                 success: (json) => resolve(json),
                 error: (error) => reject({ code: error.status,
-                                            status: error.statusText,
-                                            message: error.responseText })
+                    status: error.statusText,
+                    message: error.responseText })
             }
 
             if (this.config.token) {
@@ -397,8 +397,8 @@ class RepoAPI {
                 dataType: "json",
                 success: (json) => resolve(json),
                 error: (error) => reject({ code: error.status,
-                                            status: error.statusText,
-                                            message: error.responseText })
+                    status: error.statusText,
+                    message: error.responseText })
             }
 
             if (this.config.token) {
@@ -417,8 +417,8 @@ class RepoAPI {
                 dataType: "text",
                 success: (text) => resolve(text),
                 error: (error) => reject({ code: error.status,
-                                            status: error.statusText,
-                                            message: error.responseText })
+                    status: error.statusText,
+                    message: error.responseText })
             }
 
             if (this.config.token) {

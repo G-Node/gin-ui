@@ -37,14 +37,14 @@ export function filesize(input) {
 export function reLabelCollaborator(lvl) {
     var out
     switch(lvl) {
-        case "is-admin":
-            out = "is-admin"
-            break
-        case "can-push":
-            out = "can-write"
-            break
-        default:
-            out = "can-read"
+    case "is-admin":
+        out = "is-admin"
+        break
+    case "can-push":
+        out = "can-write"
+        break
+    default:
+        out = "can-read"
 
     }
     return out
