@@ -65,7 +65,7 @@ export default class API {
             (token) => {
                 this.config.token = token
                 localStorage.setItem("token", JSON.stringify(token))
-                return this.accounts.get(token.login)   
+                return this.accounts.get(token.login)
             }
         )
     }
@@ -188,7 +188,7 @@ class AccountAPI {
             })
         })
     }
-    
+
     updatePassword(username, password_old, password_new, password_new_repeat) {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -222,7 +222,7 @@ class SSHKeyAPI {
     constructor(config) {
         this.config = config
     }
-    
+
     list(username) {
         return new Promise((resolve, reject) => {
             $.ajax({
