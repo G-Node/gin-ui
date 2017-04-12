@@ -269,7 +269,7 @@ class RepoAPI {
         this.config = config
     }
 
-    filterRepos(search_text=null, repos) {
+    filterRepos(search_text = null, repos) {
         const search_lower = search_text ? search_text.toLowerCase() : ""
         return new Promise((resolve) => {
             const curr_data = Array.from(repos)
