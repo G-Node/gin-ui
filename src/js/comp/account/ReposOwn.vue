@@ -123,6 +123,9 @@
             updatePagerIndex() {
                 this.pidx = Math.floor(this.idx / n_displayed)
                 this.nidx = Math.floor((this.repos.length - this.idx) / n_displayed)
+                if ((this.repos.length - this.idx) === n_displayed) {
+                    this.nidx = 0
+                }
             }
         },
 
