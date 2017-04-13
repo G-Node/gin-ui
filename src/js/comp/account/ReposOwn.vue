@@ -13,8 +13,12 @@
         <!-- pagination -->
         <nav v-if="repos">
             <ul class="pager">
-                <li class="previous"><a @click="prev">Previous</a></li>
-                <li class="next"><a @click="next">Next</a></li>
+                <li class="previous"><a @click="prev">
+                    Previous <span v-if="pidx !== null">({{ pidx }})</span>
+                </a></li>
+                <li class="next"><a @click="next">
+                    Next <span v-if="nidx !== null">({{ nidx }})</span>
+                </a></li>
             </ul>
         </nav>
 
@@ -60,7 +64,9 @@
             return {
                 repos: null,
                 repos_displayed: null,
-                idx: 0
+                idx: 0,
+                pidx: null,
+                nidx: null
             }
         },
 
@@ -89,6 +95,7 @@
 
                                 var len = n_displayed > repos.length ? repos.length : n_displayed
                                 this.repos_displayed = repos.slice(this.idx, len)
+                                this.updatePagerIndex()
                             }
                         },
                         (error) => {
@@ -103,12 +110,22 @@
                 let prev = pagerPrevious(this.repos, this.idx, n_displayed)
                 this.repos_displayed = prev.arr
                 this.idx = prev.index
+                this.updatePagerIndex()
             },
 
             next() {
                 let nxt = pagerNext(this.repos, this.idx, n_displayed)
                 this.repos_displayed = nxt.arr
                 this.idx = nxt.index
+                this.updatePagerIndex()
+            },
+
+            updatePagerIndex() {
+                this.pidx = Math.floor(this.idx / n_displayed)
+                this.nidx = Math.floor((this.repos.length - this.idx) / n_displayed)
+                if ((this.repos.length - this.idx) === n_displayed) {
+                    this.nidx = 0
+                }
             }
         },
 
