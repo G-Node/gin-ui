@@ -64,7 +64,7 @@
                     const ln = this.owner ? this.owner.last_name : null
 
                     if (fn && ln) {
-                        return fn[0] + ". " + ln
+                        return `${fn[0]}. ${ln}`
                     }
 
                     return this.owner.login
@@ -76,7 +76,7 @@
                     if (this.account_is_owner) {
                         return "Your Data"
                     } else {
-                        return this.owner_name + "'s Data"
+                        return `${this.owner_name}'s Data`
                     }
                 }
             },
@@ -86,7 +86,7 @@
                     if (this.account_is_owner) {
                         return "Repositories owned by You"
                     } else {
-                        return "Repositories owned by " + this.owner_name
+                        return `Repositories owned by ${this.owner_name}`
                     }
                 }
             },
@@ -96,7 +96,7 @@
                     if (this.account_is_owner) {
                         return "Repositories shared with You"
                     } else {
-                        return "Repositories shared by " + this.owner_name
+                        return `Repositories shared by ${this.owner_name}`
                     }
                 }
             },
@@ -112,14 +112,14 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             update(params, old) {
                 const is_same_account = old && old.username === params.username
 
                 if (!is_same_account) {
-                    const promise = api.accounts.get(params.username)
+                    const promise = window.api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
                                 this.owner = acc

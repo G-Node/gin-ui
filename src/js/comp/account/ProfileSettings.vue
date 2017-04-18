@@ -87,12 +87,13 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             save() {
                 const copy = Object.assign({}, this.account, this.form)
-                api.accounts.update(copy).then(
+                const promise = window.api.accounts.update(copy)
+                promise.then(
                     () => {
                         event.emit("account-update")
                         this.alertSuccess("Profile successfully updated!")

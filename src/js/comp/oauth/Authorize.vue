@@ -21,6 +21,6 @@
             window.api.authorize()
         },
 
-        mixins: [ Alert ]
+        mixins: [Alert]
     }
 </script>

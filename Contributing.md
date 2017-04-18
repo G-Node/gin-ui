@@ -1,9 +1,14 @@
-How to contribute to gin-ui
-===========================
+# How to contribute to gin-ui
+
+## Javascript Style and Code check Toolchain
+
+Make sure you have `eslint`, `eslint-plugin-vue` and `eslint-config-vue` installed.
+
+Only issue a pull request, if `eslint . src/js/*.vue src/js/comp/*.vue src/js/comp/**/*.vue` 
+run at the root of the project does not return any errors.
 
 
-Javascript Style Guide
-----------------------
+## Javascript Style Guide
 
 ### Variables and Parameters
 
@@ -59,8 +64,3 @@ class BigDog {
 * Prefer **for of** loops over **for in**
 * Use colon plus one space between each property and its value
 * Use double quotes around string values
-
-Vue Style Guide
-----------------------
-
-TBD :-)

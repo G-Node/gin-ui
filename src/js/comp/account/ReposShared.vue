@@ -82,17 +82,17 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
 
             update(params) {
-                console.log(ll +" update")
+                window.log.print("Debug", `${ll} update`)
                 this.repos_modified = null
                 this.repos_displayed = null
 
-                const repos_shared = api.repos.listShared()
-                repos_shared.then(
+                const promise = window.api.repos.listShared()
+                promise.then(
                         (repos) => {
                             if (repos !== undefined && repos !== null && repos.length > 0) {
                                 var repo_list = repos
@@ -100,8 +100,7 @@
                                 // A logged in user can pre-filter repositories shared
                                 // by another repository owner via the route.
                                 if (this.account.login !== params.username) {
-                                    console.log(ll +" pre filter for owner "+ params.username)
-                                    let repo_filter = Array.from(repos)
+                                    const repo_filter = Array.from(repos)
                                             .filter((r) => { return r.Owner === params.username })
                                     if (repo_filter.length > 0) {
                                         repo_list = repo_filter
@@ -111,39 +110,39 @@
                                 }
 
                                 // Update repository list with full name of the repository owners.
-                                const user_search = api.accounts.search()
+                                const user_search = window.api.accounts.search()
                                 user_search.then(
                                         (u) => {
                                             this.repos_modified = addRepoUserFullName(u, repo_list)
 
                                             this.idx = 0
-                                            var len = n_displayed > this.repos_modified.length ?
+                                            const len = n_displayed > this.repos_modified.length ?
                                                     this.repos_modified.length : n_displayed
                                             this.repos_displayed = this.repos_modified.slice(this.idx, len)
 
                                             this.updatePagerIndex()
                                         },
                                         (error) => {
-                                            console.log(ll +" error fetching user for shared repos")
-                                            console.log(error)
+                                            window.log.print("Err", `${ll} error fetching user for shared repos`)
+                                            window.log.print("Err", error)
                                         })
                             }
                         },
                         (error) => {
-                            console.log(ll +" error fetching shared repos")
-                            console.log(error)
+                            window.log.print("Err", `${ll} error fetching shared repos`)
+                            window.log.print("Err", error)
                         })
             },
 
             prev() {
-                let prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
+                const prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = prev.arr
                 this.idx = prev.index
                 this.updatePagerIndex()
             },
 
             next() {
-                let nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
+                const nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = nxt.arr
                 this.idx = nxt.index
                 this.updatePagerIndex()

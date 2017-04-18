@@ -78,43 +78,43 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             update(params) {
-                console.log(ll +" update")
+                window.log.print("Debug", `${ll} update`)
                 this.repos = null
                 this.repos_displayed = null
 
-                const promise_own = api.repos.listUserRepos(params.username)
-                promise_own.then(
+                const promise = window.api.repos.listUserRepos(params.username)
+                promise.then(
                         (repos) => {
                             if (repos !== undefined && repos !== null && repos.length > 0) {
                                 this.repos = repos
                                 this.idx = 0
 
-                                var len = n_displayed > repos.length ? repos.length : n_displayed
+                                const len = n_displayed > repos.length ? repos.length : n_displayed
                                 this.repos_displayed = repos.slice(this.idx, len)
                                 this.updatePagerIndex()
                             }
                         },
                         (error) => {
-                            console.log(ll +" error fetching owner repo list")
-                            console.log(error)
+                            window.log.print("Err", `${ll} error fetching owner repo list`)
+                            window.log.print("Err", error)
                             this.reportError(error)
                         }
                 )
             },
 
             prev() {
-                let prev = pagerPrevious(this.repos, this.idx, n_displayed)
+                const prev = pagerPrevious(this.repos, this.idx, n_displayed)
                 this.repos_displayed = prev.arr
                 this.idx = prev.index
                 this.updatePagerIndex()
             },
 
             next() {
-                let nxt = pagerNext(this.repos, this.idx, n_displayed)
+                const nxt = pagerNext(this.repos, this.idx, n_displayed)
                 this.repos_displayed = nxt.arr
                 this.idx = nxt.index
                 this.updatePagerIndex()

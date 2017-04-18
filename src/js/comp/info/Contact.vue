@@ -55,29 +55,29 @@
 
         computed: {
             mailto: function() {
-                return "mailto:"+ window.api.config.contact_email
+                return `mailto:${window.api.config.contact_email}`
             },
             contact: function() {
                 return window.api.config.contact_email
-            },
+            }
         },
 
         mounted() {
-            console.log(ll + " mounting...")
+            window.log.print("Debug", `${ll} mounting...`)
 
             const stat_cont = window.api.config.static_content
             const cont_url = window.api.config.static_content.contact
 
             if (stat_cont !== undefined && stat_cont !== null && cont_url !== undefined && cont_url !== "") {
-                console.log(ll + " get static file content from "+ cont_url)
-                let f = window.api.getStaticFile(cont_url)
+                window.log.print("Debug", `${ll} get static file content from ${cont_url}`)
+                const f = window.api.getStaticFile(cont_url)
                 f.then(
                         (c) => {
                             this.content = c
                         },
                         (error) => {
-                            console.log(ll + " error fetching static content")
-                            console.log(error)
+                            window.log.print("Err", `${ll} error fetching static content`)
+                            window.log.print("Err", error)
                         }
                 )
             }

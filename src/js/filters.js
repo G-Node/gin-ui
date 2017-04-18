@@ -11,17 +11,14 @@ const prefixes = ["", "k", "M", "G", "T"]
 export function filesize(input) {
     let num = parseInt(input)
 
-    if (!num) {
-        return input
-    }
-    
+    if (!num) { return input }
+
     for (var i = 0; i < prefixes.length && num > 1024; i++) {
         num = num / 1024
     }
-    
-    return num.toFixed(1) + " " + prefixes[i] + "B"
-}
 
+    return `${num.toFixed(1)} ${prefixes[i]}B`
+}
 
 /**
  * reLabelCollaborator is a custom filter to map different labels
@@ -36,15 +33,15 @@ export function filesize(input) {
  */
 export function reLabelCollaborator(lvl) {
     var out
-    switch(lvl) {
-        case "is-admin":
-            out = "is-admin"
-            break
-        case "can-push":
-            out = "can-write"
-            break
-        default:
-            out = "can-read"
+    switch (lvl) {
+    case "is-admin":
+        out = "is-admin"
+        break
+    case "can-push":
+        out = "can-write"
+        break
+    default:
+        out = "can-read"
 
     }
     return out
@@ -62,7 +59,7 @@ export function privacyLabel(is_public) {
     if (!is_public) {
         out = "private"
     }
-    return "This repository is "+ out
+    return `This repository is ${out}`
 }
 
 /**

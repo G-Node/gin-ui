@@ -115,7 +115,7 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             update(params, old) {
@@ -123,14 +123,14 @@
                 if (params !== old) {
                     this.path = cleanPath(params.root)
 
-                    const promise_dir = api.repos.getDirectorySection(params.username, params.repository,
+                    const promise = window.api.repos.getDirectorySection(params.username, params.repository,
                                                                         "master", this.path)
-                    promise_dir.then(
+                    promise.then(
                             (dir) => {
-                                let content = dir.entries
+                                const content = dir.entries
                                 let c_t = []
                                 let c_f = []
-                                for (let item of content) {
+                                for (const item of content) {
                                     if (item.type) {
                                         if (item.type === "tree") {
                                             c_t = c_t.concat(item)
@@ -153,7 +153,7 @@
         },
 
         watch: {
-            "$route.params" : function (params, old) {
+            "$route.params": function (params, old) {
                 this.update(params, old)
             }
         }

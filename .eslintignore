@@ -1,0 +1,16 @@
+# Files ignored by the eslinter
+
+# node folder
+node_modules/
+
+# build folder
+build/
+
+# ignore coverage folder
+coverage/
+
+# idea settings
+.idea/
+
+gulpfile.babel.js
+

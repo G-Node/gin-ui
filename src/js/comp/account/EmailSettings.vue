@@ -61,7 +61,7 @@
 
         methods: {
             save() {
-                const promise = api.accounts.updateEmail(this.account.login, this.email, this.pw)
+                const promise = window.api.accounts.updateEmail(this.account.login, this.email, this.pw)
                 promise.then(
                     () => {
                         this.account.email.email = this.email

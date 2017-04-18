@@ -115,9 +115,9 @@
                 var d = new Date()
                 var y = copyright_first_year
                 if (d.getFullYear() > parseInt(y)) {
-                    y = y +"-"+ d.getFullYear().toString()
+                    y = `${y}-${d.getFullYear().toString()}`
                 }
-                return ", "+ y
+                return `, ${y}`
             }
         },
 
@@ -131,7 +131,7 @@
                 if (route.matched) {
                     let complete_title = default_title
                     if (route.meta !== undefined && route.meta.title) {
-                        complete_title = "GIN: "+ route.meta.title
+                        complete_title = `GIN: ${route.meta.title}`
                     }
                     document.title = complete_title
                 }
@@ -142,10 +142,10 @@
                 promise.then(
                         (account) => {
                             this.account = account
-                            console.log("Info: login successfully restored")
+                            window.log.print("Debug", "Login successfully restored")
                         },
                         (error) => {
-                            console.log("Info: " + error.message)
+                            window.log.print("Err", error.message)
                         }
                 )
             },
@@ -164,7 +164,7 @@
                 setTimeout(() => { this.alert = null }, message_delay)
 
                 if (message.level === "danger" || message.level === "warning") {
-                    console.error(message.content)
+                    window.log.print("Err", message.content)
                 }
             },
 

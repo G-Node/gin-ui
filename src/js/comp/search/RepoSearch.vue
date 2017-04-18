@@ -58,7 +58,6 @@
             addRepoUserFullName
     } from "../../utils.js"
 
-    const ll = "[Repo Search]"
     const n_displayed = 5
 
     export default {
@@ -82,18 +81,17 @@
 
         methods: {
             augment() {
-                console.log(ll +" augment search")
                 this.repos_modified = null
                 this.repos_displayed = null
 
                 if (this.public_repo !== null && this.public_repo !== undefined && this.public_repo.length > 0) {
-                    const user_search = api.accounts.search()
-                    user_search.then(
+                    const promise = window.api.accounts.search()
+                    promise.then(
                             (u) => {
                                 this.repos_modified = addRepoUserFullName(u, this.public_repo)
 
                                 this.idx = 0
-                                var len = n_displayed > this.repos_modified.length ?
+                                const len = n_displayed > this.repos_modified.length ?
                                         this.repos_modified.length : n_displayed
                                 this.repos_displayed = this.repos_modified.slice(this.idx, len)
                                 this.updatePagerIndex()
@@ -103,14 +101,14 @@
             },
 
             prev() {
-                let prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
+                const prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = prev.arr
                 this.idx = prev.index
                 this.updatePagerIndex()
             },
 
             next() {
-                let nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
+                const nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = nxt.arr
                 this.idx = nxt.index
                 this.updatePagerIndex()

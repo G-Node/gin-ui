@@ -11,17 +11,17 @@ import { stateHash } from "./utils.js"
 export default class API {
     constructor(conf) {
         this.config   = { auth_url: conf.auth_url,
-                            repo_url: conf.repo_url,
-                            doi_url: conf.doi_url,
-                            doi_file: conf.doi_file,
-                            doi_example: conf.doi_example,
-                            doid_url: conf.doid_url,
-                            client_dl: conf.client_dl,
-                            client_id: conf.client_id,
-                            client_secret: conf.client_secret,
-                            contact_email: conf.contact_email,
-                            static_content: conf.static_content,
-                            token: null }
+            repo_url: conf.repo_url,
+            doi_url: conf.doi_url,
+            doi_file: conf.doi_file,
+            doi_example: conf.doi_example,
+            doid_url: conf.doid_url,
+            client_dl: conf.client_dl,
+            client_id: conf.client_id,
+            client_secret: conf.client_secret,
+            contact_email: conf.contact_email,
+            static_content: conf.static_content,
+            token: null }
         this.accounts = new AccountAPI(this.config)
         this.keys     = new SSHKeyAPI(this.config)
         this.repos    = new RepoAPI(this.config)
@@ -31,7 +31,7 @@ export default class API {
     // A successful request will redirect back to gin-ui/oauth/login for the token validation.
     authorize() {
         const state = stateHash(this.config.client_id, navigator.userAgent)
-        const url = this.config.auth_url + "/oauth/authorize?"
+        const url = `${this.config.auth_url}/oauth/authorize?`
         const params = [
             ["response_type", "token"],
             ["client_id", this.config.client_id],
@@ -39,7 +39,7 @@ export default class API {
             ["scope", "account-read account-write repo-read repo-write"],
             ["state", encodeURIComponent(state)]
         ]
-        const query = params.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        const query = params.map((p) => { return `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}` }).join("&")
         window.location.href = url + query
         if (window.event !== undefined) {
             window.event.returnValue = false
@@ -65,7 +65,7 @@ export default class API {
             (token) => {
                 this.config.token = token
                 localStorage.setItem("token", JSON.stringify(token))
-                return this.accounts.get(token.login)   
+                return this.accounts.get(token.login)
             }
         )
     }
@@ -92,7 +92,7 @@ export default class API {
                 return
             }
             token = JSON.parse(token)
-            let expires = new Date(token.exp)
+            const expires = new Date(token.exp)
             if (expires < Date.now()) {
                 reject(Error("Token was expired"))
                 return
@@ -106,7 +106,7 @@ export default class API {
 
     register() {
         const state = stateHash(this.config.client_id, navigator.userAgent)
-        const uri = this.config.auth_url + "/oauth/registration_init?"
+        const uri = `${this.config.auth_url}/oauth/registration_init?`
         const kv = [
             ["response_type", "client"],
             ["client_id", this.config.client_id],
@@ -114,7 +114,7 @@ export default class API {
             ["scope", "account-create"],
             ["state", encodeURIComponent(state)]
         ]
-        const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        const query = kv.map((p) => { return `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}` }).join("&")
         window.location.href = uri + query
         window.event.returnValue = false
     }
@@ -131,8 +131,8 @@ export default class API {
                 url: url,
                 type: "GET",
                 contentType: "application/html",
-                success: (text) => resolve(text),
-                error: (error) => reject(error)
+                success: (text) => { return resolve(text) },
+                error: (error) => { return reject(error) }
             })
         })
     }
@@ -148,8 +148,8 @@ class AccountAPI {
             const request = {
                 url: `${this.config.auth_url}/api/accounts/${username}`,
                 dataType: "json",
-                success: (acc) => resolve(acc),
-                error: (error) => reject(error.responseJSON)
+                success: (acc) => { return resolve(acc) },
+                error: (error) => { return reject(error.responseJSON) }
             }
             if (this.config.token) {
                 request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
@@ -164,8 +164,8 @@ class AccountAPI {
                 url: `${this.config.auth_url}/api/accounts`,
                 data: {q: text},
                 dataType: "json",
-                success: (accounts) => resolve(accounts),
-                error: (error) => reject(error.responseJSON)
+                success: (accounts) => { return resolve(accounts) },
+                error: (error) => { return reject(error.responseJSON) }
             }
             if (this.config.token) {
                 request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
@@ -183,12 +183,12 @@ class AccountAPI {
                 headers: { Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(account),
                 dataType: "json",
-                success: (acc) => resolve(acc),
-                error: (error) => reject(error.responseJSON)
+                success: (acc) => { return resolve(acc) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
-    
+
     updatePassword(username, password_old, password_new, password_new_repeat) {
         return new Promise((resolve, reject) => {
             $.ajax({
@@ -197,8 +197,8 @@ class AccountAPI {
                 contentType: "application/json; charset=utf-8",
                 headers: { Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify({password_old, password_new, password_new_repeat}),
-                success: () => resolve("ok"),
-                error: (error) => reject(error.responseJSON)
+                success: () => { return resolve("ok") },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -211,8 +211,8 @@ class AccountAPI {
                 contentType: "application/json; charset=utf-8",
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify({password, email}),
-                success: () => resolve("ok"),
-                error: (error) => reject(error.responseJSON)
+                success: () => { return resolve("ok") },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -222,15 +222,15 @@ class SSHKeyAPI {
     constructor(config) {
         this.config = config
     }
-    
+
     list(username) {
         return new Promise((resolve, reject) => {
             $.ajax({
                 url: `${this.config.auth_url}/api/accounts/${username}/keys`,
                 headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
-                success: (keys) => resolve(keys),
-                error: (error) => reject(error.responseJSON)
+                success: (keys) => { return resolve(keys) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -244,8 +244,8 @@ class SSHKeyAPI {
                 headers: { Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(key),
                 dataType: "json",
-                success: (key) => resolve(key),
-                error: (error) => reject(error.responseJSON)
+                success: (k) => { return resolve(k) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -257,8 +257,8 @@ class SSHKeyAPI {
                 type: "DELETE",
                 headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
-                success: (key) => resolve(key),
-                error: (error) => reject(error.responseJSON)
+                success: (k) => { return resolve(k) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -269,7 +269,7 @@ class RepoAPI {
         this.config = config
     }
 
-    filterRepos(search_text=null, repos) {
+    filterRepos(search_text = null, repos) {
         const search_lower = search_text ? search_text.toLowerCase() : ""
         return new Promise((resolve) => {
             const curr_data = Array.from(repos)
@@ -287,20 +287,20 @@ class RepoAPI {
                 url: `${this.config.repo_url}/repos/public`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                success: (json) => { return resolve(json) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
 
     listShared() {
         return new Promise((resolve, reject) => {
-            let req = {
+            const req = {
                 url: `${this.config.repo_url}/repos/shared`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject(error)
+                success: (json) => { return resolve(json) },
+                error: (error) => { return reject(error) }
             }
 
             if (this.config.token) {
@@ -313,12 +313,12 @@ class RepoAPI {
 
     listUserRepos(username) {
         return new Promise((resolve, reject) => {
-            let req = {
+            const req = {
                 url: `${this.config.repo_url}/users/${username}/repos`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                success: (json) => { return resolve(json) },
+                error: (error) => { return reject(error.responseJSON) }
             }
 
             if (this.config.token) {
@@ -331,14 +331,16 @@ class RepoAPI {
 
     getRepo(repo_owner, repo_name, branch_name) {
         return new Promise((resolve, reject) => {
-            let req = {
+            const req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                    status: error.statusText,
-                    message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -351,14 +353,16 @@ class RepoAPI {
 
     getRepoCollaborators(repo_owner, repo_name) {
         return new Promise((resolve, reject) => {
-            let req = {
+            const req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/collaborators`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                    status: error.statusText,
-                    message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -371,14 +375,16 @@ class RepoAPI {
 
     getBranch(repo_owner, repo_name, branch_name) {
         return new Promise((resolve, reject) => {
-            let req = {
+            const req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/branches/${branch_name}`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                                            status: error.statusText,
-                                            message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -391,14 +397,16 @@ class RepoAPI {
 
     getDirectorySection(repo_owner, repo_name, branch_name, path) {
         return new Promise((resolve, reject) => {
-            let req = {
+            const req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/browse/${branch_name}/${path}`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                                            status: error.statusText,
-                                            message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -411,14 +419,16 @@ class RepoAPI {
 
     getTextFileContent(repo_owner, repo_name, object_id) {
         return new Promise((resolve, reject) => {
-            let req = {
+            const req = {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/objects/${object_id}`,
                 type: "GET",
                 dataType: "text",
-                success: (text) => resolve(text),
-                error: (error) => reject({ code: error.status,
-                                            status: error.statusText,
-                                            message: error.responseText })
+                success: (text) => { return resolve(text) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -431,7 +441,7 @@ class RepoAPI {
 
     create(account_login, repo_form) {
         return new Promise((resolve, reject) => {
-            let name = repo_form.name || ""
+            const name = repo_form.name || ""
             if (!name.match(/^[a-zA-Z0-9\-_.]*$/)) {
                 reject(Error("Use only alphanumeric characters without whitespaces as repository name."))
                 return
@@ -449,8 +459,10 @@ class RepoAPI {
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(repo_form),
                 dataType: "json",
-                success: (repo) => resolve(repo),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: (repo) => { return resolve(repo) },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
@@ -464,8 +476,10 @@ class RepoAPI {
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(patch),
                 dataType: "json",
-                success: (patch) => resolve(patch),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: (p) => { return resolve(p) },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
@@ -479,8 +493,10 @@ class RepoAPI {
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(access_level),
                 dataType: "json",
-                success: () => resolve(),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: () => { return resolve() },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
@@ -492,20 +508,22 @@ class RepoAPI {
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
-                success: () => resolve(),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: () => { return resolve() },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
 
     requestDOI(owner, repo, branch) {
-        const uri = this.config.doi_url + "?"
+        const uri = `${this.config.doi_url}?`
         const kv = [
-            ["repo", branch+":"+owner+"/"+repo],
+            ["repo", `${branch}:${owner}/${repo}`],
             ["user", this.config.token.login],
-            ["token", "Bearer "+ this.config.token.jti]
+            ["token", `Bearer ${this.config.token.jti}`]
         ]
-        const query = kv.map((p) => encodeURIComponent(p[0]) + "=" + encodeURIComponent(p[1])).join("&")
+        const query = kv.map((p) => { return `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}` }).join("&")
 
         window.location.href = uri + query
         window.event.returnValue = false

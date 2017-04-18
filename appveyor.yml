@@ -1,0 +1,25 @@
+# Test against these version of Node.js
+environment:
+  matrix:
+    - nodejs_version: "7"
+    - nodejs_version: "6"
+
+install:
+  # Install additional browsers
+  - choco install firefox
+  - choco install googlechrome
+
+  # Get the latest stable Node.js version
+  - ps: Install-Product node $env:nodejs_version
+  - node --version
+  - npm --version
+  # Install dependencies
+  - npm install
+
+test_script:
+  # Run tests
+  - npm test
+
+# nothing to compile in this project
+build: off
+deploy: off

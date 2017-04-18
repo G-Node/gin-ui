@@ -46,10 +46,10 @@
             repository: {required: true}
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
-            update(){
+            update() {
                 if (this.repository.Description !== undefined && this.repository.Description !== "") {
                     this.description = this.repository.Description
                 }
@@ -57,13 +57,13 @@
                 var t = JSON.parse(localStorage.getItem("token"))
                 this.owner_name = null
                 if (t === undefined || t === null || t.login !== this.$route.params.username) {
-                    const s = api.accounts.get(this.$route.params.username)
-                    s.then(
+                    const promise = window.api.accounts.get(this.$route.params.username)
+                    promise.then(
                         (u) => {
-                            this.owner_name = u.first_name+" "+u.last_name
+                            this.owner_name = `${u.first_name} ${u.last_name}`
                         },
                         (error) => {
-                            console.log("[RepoInfo]"+ error)
+                            window.log.print("Err", `[RepoInfo] ${error}`)
                         }
                     )
                 }

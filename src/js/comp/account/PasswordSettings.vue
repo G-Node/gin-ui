@@ -63,11 +63,14 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             save() {
-                const promise = api.accounts.updatePassword(this.account.login, this.password_old, this.password_new, this.password_new_repeat)
+                const promise = window.api.accounts.updatePassword(this.account.login,
+                        this.password_old,
+                        this.password_new,
+                        this.password_new_repeat)
                 promise.then(
                     () => {
                         this.reset()

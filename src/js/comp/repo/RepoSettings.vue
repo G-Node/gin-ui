@@ -156,7 +156,7 @@
         return parts.length > 0 ? parts.join(" ") : acc.login
     }
 
-    function sortCollaborators(a,b) {
+    function sortCollaborators(a, b) {
         return a.User.localeCompare(b.User)
     }
 
@@ -184,7 +184,7 @@
             // When tampering with the route w/o proper access,
             // the hand shall be rudely removed from the cookie jar.
             if (!this.is_repo_writeable) {
-                console.error("No access, be gone!")
+                window.log.print("Err", "No access, be gone!")
                 this.$router.push({path: "/not-found"})
             }
             this.update()
@@ -195,7 +195,7 @@
             is_repo_writeable: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             update() {
@@ -211,11 +211,11 @@
             },
 
             updateCollaborator(login_name, permission) {
-                const put_promise = api.repos.putCollaborator(this.$route.params.username,
+                const promise = window.api.repos.putCollaborator(this.$route.params.username,
                         this.$route.params.repository,
                         login_name,
                         { Permission: permission })
-                put_promise.then(
+                promise.then(
                         () => {
                             event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                             for (var i = 0; i < this.form.shared.length; i++) {
@@ -233,12 +233,12 @@
             },
 
             removeShare(login_name) {
-                const promise = api.repos.removeCollaborator(this.$route.params.username,
+                const promise = window.api.repos.removeCollaborator(this.$route.params.username,
                         this.$route.params.repository,
                         login_name)
                 promise.then(
                         () => {
-                            this.form.shared = this.form.shared.filter((n) => n.User !== login_name)
+                            this.form.shared = this.form.shared.filter((n) => { return n.User !== login_name })
                             event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                             this.alertSuccess("Collaborator removed")
                         },
@@ -249,17 +249,17 @@
             },
 
             addShare(login_name) {
-                const selected = this.select.all.find(acc => acc.active)
+                const selected = this.select.all.find((acc) => { return acc.active })
                 if (selected) {
                     selected.active = false
                     this.select.text = selected.login
                 } else if (this.select.match === login_name) {
                     // Check if the account is actually available at gin-auth.
-                    const promise = api.accounts.get(login_name)
+                    const promise = window.api.accounts.get(login_name)
                     promise.then(
                         (acc) => {
                             // Put gin-auth account login as collaborator to gin-repo with default access level.
-                            const put_promise = api.repos.putCollaborator(this.$route.params.username,
+                            const put_promise = window.api.repos.putCollaborator(this.$route.params.username,
                                                                             this.$route.params.repository,
                                                                             login_name,
                                                                             { Permission: this.default_permission })
@@ -291,7 +291,7 @@
 
             selectionUp() {
                 if (this.select.all.length > 0) {
-                    let idx = this.select.all.findIndex(acc => acc.active)
+                    let idx = this.select.all.findIndex((acc) => { return acc.active })
                     if (idx < 1) {
                         this.select.all[0].active = false
                         idx = this.select.all.length
@@ -304,7 +304,7 @@
 
             selectionDown() {
                 if (this.select.all.length > 0) {
-                    let idx = this.select.all.findIndex(acc => acc.active)
+                    const idx = this.select.all.findIndex((acc) => { return acc.active })
                     if (idx >= 0) {
                         this.select.all[idx].active = false
                     }
@@ -315,23 +315,25 @@
 
             search(text) {
                 if (text && text.length >= search_collaborators_minlength) {
-                    console.log("[ReposSettings] update search: "+ text)
+                    window.log.print("Debug", `[ReposSettings] update search: ${text}`)
                     // TODO currently every new character entered leads to a request to the auth server.
                     // Check if this could be done more efficiently to reduce either the number of
                     // requests all together or at least the amount of transferred data using an
                     // eTag for the account information.
-                    const promise = api.accounts.search(encodeURIComponent(text))
+                    const promise = window.api.accounts.search(encodeURIComponent(text))
                     promise.then(
                         (accounts) => {
-                            const shared = this.form.shared.map(collab => { return collab.User })
+                            const shared = this.form.shared.map((collab) => { return collab.User })
                             const owner_login = this.repository.Owner
 
                             accounts = accounts
-                                    .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
-                                    .map(acc => { return Object.assign({},
-                                            { label: accountLabel(acc), login: acc.login, active: false })})
+                                    .filter((acc) => { return !shared.includes(acc.login) && owner_login !== acc.login })
+                                    .map((acc) => {
+                                        return Object.assign({},
+                                            { label: accountLabel(acc), login: acc.login, active: false })
+                                    })
 
-                            const idx = accounts.findIndex(acc => acc.login === text)
+                            const idx = accounts.findIndex((acc) => { return acc.login === text })
                             if (idx >= 0) {
                                 this.select.match = text
                             } else {
@@ -341,7 +343,7 @@
 
                             // Make sure collaborator suggestion dropdown is always displayed on reload,
                             // even if a user toggled dropdown display before.
-                            $('#collabdd.dropdown').toggleClass('open', true)
+                            $("#collabdd.dropdown").toggleClass("open", true)
                         },
                         (error) => {
                             this.alertError(error)
@@ -360,11 +362,11 @@
                     if (this.repository.Description !== this.form.description) {
                         data["description"] = this.form.description
                     }
-                    if (this.repository.Public !== this.form.is_public ) {
+                    if (this.repository.Public !== this.form.is_public) {
                         data["public"] = this.form.is_public
                     }
 
-                    const promise = api.repos.update(this.repository.Owner, this.repository.Name, data)
+                    const promise = window.api.repos.update(this.repository.Owner, this.repository.Name, data)
                     promise.then(
                             (patch) => {
                                 this.form.description = patch.Description
@@ -389,14 +391,14 @@
             "select.text": function (search, old) {
                 if (search !== old) {
                     clearTimeout(searchBuffer)
-                    searchBuffer = setTimeout(() => {this.search(search)}, search_collaborators_timeout)
+                    searchBuffer = setTimeout(() => { this.search(search) }, search_collaborators_timeout)
                 }
             },
 
             // Required against race condition in Repo.vue when fetching
             // collaborators via promise.
             "repository.Shared": function (shared, old) {
-                console.log("[RepoSettings] repository collaborators has changed")
+                window.log.print("Debug", "[RepoSettings] repository collaborators has changed")
                 if (shared !== old) {
                     this.update()
                 }

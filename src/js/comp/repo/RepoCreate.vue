@@ -66,11 +66,11 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             save() {
-                let promise = api.repos.create(this.account.login, this.form)
+                const promise = window.api.repos.create(this.account.login, this.form)
                 promise.then(
                     () => {
                         this.alertSuccess("Repository successfully created")

@@ -85,13 +85,15 @@
             account: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             save() {
                 const account_copy = Object.assign({}, this.account)
                 account_copy.affiliation = Object.assign({}, this.form)
-                api.accounts.update(account_copy).then(
+
+                const promise = window.api.accounts.update(account_copy)
+                promise.then(
                     () => {
                         event.emit("account-update")
                         this.alertSuccess("Affiliation successfully updated!")
