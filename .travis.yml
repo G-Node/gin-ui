@@ -1,0 +1,53 @@
+language: node_js
+
+sudo: required
+dist: trusty
+
+branches:
+  only:
+    - master
+
+os:
+  - linux
+  - osx
+
+node_js:
+  - node
+  - "7"
+  - "6"
+
+matrix:
+  include:
+    - os: linux
+      node_js: "7"
+      env: COVERALLS=1
+  exclude:
+    - os: linux
+      node_js: "7"
+  allow_failures:
+    - os: linux
+      node_js: node
+    - os: linux
+      node_js: "6"
+
+addons:
+  firefox: latest
+  apt:
+    sources:
+      - google-chrome
+      - sourceline: "deb http://deb.opera.com/opera/ stable non-free"
+    packages:
+      - google-chrome-stable
+      - opera-stable
+
+before_install:
+  - export DISPLAY=:99.0;
+  - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+      sh -e /etc/init.d/xvfb start;
+    fi
+  - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew cask install google-chrome; fi
+
+after_script:
+  - if [[ "$COVERALLS" == 1 ]]; then
+      cat ./coverage/*irefox*/lcov.info | ./node_modules/coveralls/bin/coveralls.js;
+    fi
