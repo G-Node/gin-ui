@@ -13,7 +13,7 @@
     "babel-runtime": "^6.0.0",
     "md5": "2.2.1",
     "vue": "2.2.6",
-    "vue-router": "2.3.1"
+    "vue-router": "2.4.0"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
@@ -34,7 +34,7 @@
     "vue-cookies": "^1.2.0",
     "vue-loader": "^11.3.0",
     "vue-html-loader": "^1.2.3",
-    "vue-style-loader": "^2.0.0",
+    "vue-style-loader": "^3.0.0",
     "webpack-stream": "^3.2.0"
   }
 }
