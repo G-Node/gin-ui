@@ -82,7 +82,7 @@
 
         methods: {
             augment() {
-                console.log(ll +" augment search")
+                console.log(`${ll} augment search`)
                 this.repos_modified = null
                 this.repos_displayed = null
 

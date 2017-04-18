@@ -67,7 +67,7 @@
                     const ln = this.account.last_name
 
                     if (fn && ln) {
-                        return fn[0] + ". " + ln
+                        return `${fn[0]}. ${ln}`
                     }
 
                     return this.account.login

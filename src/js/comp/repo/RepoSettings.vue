@@ -315,7 +315,7 @@
 
             search(text) {
                 if (text && text.length >= search_collaborators_minlength) {
-                    console.log("[ReposSettings] update search: "+ text)
+                    console.log(`[ReposSettings] update search: ${text}`)
                     // TODO currently every new character entered leads to a request to the auth server.
                     // Check if this could be done more efficiently to reduce either the number of
                     // requests all together or at least the amount of transferred data using an

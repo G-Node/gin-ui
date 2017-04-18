@@ -401,7 +401,7 @@
 
         computed: {
             mailto: function() {
-                return "mailto:"+ window.api.config.contact_email
+                return `mailto:${window.api.config.contact_email}`
             },
             contact: function() {
                 return window.api.config.contact_email

@@ -59,20 +59,20 @@
         },
 
         mounted() {
-            console.log(ll + " mounting...")
+            console.log(`${ll} mounting...`)
 
             const stat_cont = window.api.config.static_content
             const cont_url = window.api.config.static_content.imprint
 
             if (stat_cont !== undefined && stat_cont !== null && cont_url !== undefined && cont_url !== "") {
-                console.log(ll + " get static file content from "+ cont_url)
+                console.log(`${ll} get static file content from ${cont_url}`)
                 let f = window.api.getStaticFile(cont_url)
                 f.then(
                         (c) => {
                             this.content = c
                         },
                         (error) => {
-                            console.log(ll + " error fetching static content")
+                            console.log(`${ll} error fetching static content`)
                             console.log(error)
                         }
                 )

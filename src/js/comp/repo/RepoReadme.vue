@@ -60,10 +60,10 @@
                     const s = api.accounts.get(this.$route.params.username)
                     s.then(
                         (u) => {
-                            this.owner_name = u.first_name+" "+u.last_name
+                            this.owner_name = `${u.first_name} ${u.last_name}`
                         },
                         (error) => {
-                            console.log("[RepoInfo]"+ error)
+                            console.log(`[RepoInfo] ${error}`)
                         }
                     )
                 }
