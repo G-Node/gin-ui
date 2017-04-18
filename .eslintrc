@@ -16,7 +16,7 @@
         "indent": ["error", 4],
         "linebreak-style": ["error", "unix"],
         "array-bracket-spacing": ["error", "never"],
-        "arrow-body-style": ["error"],
+        "arrow-body-style": ["error", "always"],
         "arrow-parens": ["error"],
         "arrow-spacing": ["error"],
         "block-spacing": ["error"],
