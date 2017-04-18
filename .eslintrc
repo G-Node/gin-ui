@@ -32,6 +32,7 @@
         "no-duplicate-imports": ["error"],
         "no-unused-vars": ["error", { "varsIgnorePattern": "^_", "args": "none", "vars": "local" }],
         "no-cond-assign": ["error"],
+        "no-console": ["error", { "allow": ["warn", "error"] }],
         "no-class-assign": ["error"],
         "no-array-constructor": ["error"],
         "no-eval": ["error"],
