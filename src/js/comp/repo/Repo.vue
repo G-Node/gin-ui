@@ -100,7 +100,7 @@
                     var collaborator
                     if (repo.Shared.length !== undefined) {
                         collaborator = repo.Shared
-                                    .filter((coll) => coll.AccessLevel === "is-admin")
+                                    .filter((coll) => { return coll.AccessLevel === "is-admin" })
                                     .map((coll) => { return coll.User })
                     }
 

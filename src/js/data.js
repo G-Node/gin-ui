@@ -39,7 +39,7 @@ export default class API {
             ["scope", "account-read account-write repo-read repo-write"],
             ["state", encodeURIComponent(state)]
         ]
-        const query = params.map((p) => `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}`).join("&")
+        const query = params.map((p) => { return `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}` }).join("&")
         window.location.href = url + query
         if (window.event !== undefined) {
             window.event.returnValue = false
@@ -114,7 +114,7 @@ export default class API {
             ["scope", "account-create"],
             ["state", encodeURIComponent(state)]
         ]
-        const query = kv.map((p) => `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}`).join("&")
+        const query = kv.map((p) => { return `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}` }).join("&")
         window.location.href = uri + query
         window.event.returnValue = false
     }
@@ -131,8 +131,8 @@ export default class API {
                 url: url,
                 type: "GET",
                 contentType: "application/html",
-                success: (text) => resolve(text),
-                error: (error) => reject(error)
+                success: (text) => { return resolve(text) },
+                error: (error) => { return reject(error) }
             })
         })
     }
@@ -148,8 +148,8 @@ class AccountAPI {
             const request = {
                 url: `${this.config.auth_url}/api/accounts/${username}`,
                 dataType: "json",
-                success: (acc) => resolve(acc),
-                error: (error) => reject(error.responseJSON)
+                success: (acc) => { return resolve(acc) },
+                error: (error) => { return reject(error.responseJSON) }
             }
             if (this.config.token) {
                 request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
@@ -164,8 +164,8 @@ class AccountAPI {
                 url: `${this.config.auth_url}/api/accounts`,
                 data: {q: text},
                 dataType: "json",
-                success: (accounts) => resolve(accounts),
-                error: (error) => reject(error.responseJSON)
+                success: (accounts) => { return resolve(accounts) },
+                error: (error) => { return reject(error.responseJSON) }
             }
             if (this.config.token) {
                 request.headers = { Authorization: `Bearer ${this.config.token.jti}` }
@@ -183,8 +183,8 @@ class AccountAPI {
                 headers: { Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(account),
                 dataType: "json",
-                success: (acc) => resolve(acc),
-                error: (error) => reject(error.responseJSON)
+                success: (acc) => { return resolve(acc) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -197,8 +197,8 @@ class AccountAPI {
                 contentType: "application/json; charset=utf-8",
                 headers: { Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify({password_old, password_new, password_new_repeat}),
-                success: () => resolve("ok"),
-                error: (error) => reject(error.responseJSON)
+                success: () => { return resolve("ok") },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -211,8 +211,8 @@ class AccountAPI {
                 contentType: "application/json; charset=utf-8",
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify({password, email}),
-                success: () => resolve("ok"),
-                error: (error) => reject(error.responseJSON)
+                success: () => { return resolve("ok") },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -229,8 +229,8 @@ class SSHKeyAPI {
                 url: `${this.config.auth_url}/api/accounts/${username}/keys`,
                 headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
-                success: (keys) => resolve(keys),
-                error: (error) => reject(error.responseJSON)
+                success: (keys) => { return resolve(keys) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -244,8 +244,8 @@ class SSHKeyAPI {
                 headers: { Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(key),
                 dataType: "json",
-                success: (k) => resolve(k),
-                error: (error) => reject(error.responseJSON)
+                success: (k) => { return resolve(k) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -257,8 +257,8 @@ class SSHKeyAPI {
                 type: "DELETE",
                 headers: { Authorization: `Bearer ${this.config.token.jti}` },
                 dataType: "json",
-                success: (k) => resolve(k),
-                error: (error) => reject(error.responseJSON)
+                success: (k) => { return resolve(k) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -287,8 +287,8 @@ class RepoAPI {
                 url: `${this.config.repo_url}/repos/public`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                success: (json) => { return resolve(json) },
+                error: (error) => { return reject(error.responseJSON) }
             })
         })
     }
@@ -299,8 +299,8 @@ class RepoAPI {
                 url: `${this.config.repo_url}/repos/shared`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject(error)
+                success: (json) => { return resolve(json) },
+                error: (error) => { return reject(error) }
             }
 
             if (this.config.token) {
@@ -317,8 +317,8 @@ class RepoAPI {
                 url: `${this.config.repo_url}/users/${username}/repos`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject(error.responseJSON)
+                success: (json) => { return resolve(json) },
+                error: (error) => { return reject(error.responseJSON) }
             }
 
             if (this.config.token) {
@@ -335,10 +335,12 @@ class RepoAPI {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                    status: error.statusText,
-                    message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -355,10 +357,12 @@ class RepoAPI {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/collaborators`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                    status: error.statusText,
-                    message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -375,10 +379,12 @@ class RepoAPI {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/branches/${branch_name}`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                    status: error.statusText,
-                    message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -395,10 +401,12 @@ class RepoAPI {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/browse/${branch_name}/${path}`,
                 type: "GET",
                 dataType: "json",
-                success: (json) => resolve(json),
-                error: (error) => reject({ code: error.status,
-                    status: error.statusText,
-                    message: error.responseText })
+                success: (json) => { return resolve(json) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -415,10 +423,12 @@ class RepoAPI {
                 url: `${this.config.repo_url}/users/${repo_owner}/repos/${repo_name}/objects/${object_id}`,
                 type: "GET",
                 dataType: "text",
-                success: (text) => resolve(text),
-                error: (error) => reject({ code: error.status,
-                    status: error.statusText,
-                    message: error.responseText })
+                success: (text) => { return resolve(text) },
+                error: (error) => {
+                    return reject({ code: error.status,
+                        status: error.statusText,
+                        message: error.responseText })
+                }
             }
 
             if (this.config.token) {
@@ -449,8 +459,10 @@ class RepoAPI {
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(repo_form),
                 dataType: "json",
-                success: (repo) => resolve(repo),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: (repo) => { return resolve(repo) },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
@@ -464,8 +476,10 @@ class RepoAPI {
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(patch),
                 dataType: "json",
-                success: (p) => resolve(p),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: (p) => { return resolve(p) },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
@@ -479,8 +493,10 @@ class RepoAPI {
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 data: JSON.stringify(access_level),
                 dataType: "json",
-                success: () => resolve(),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: () => { return resolve() },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
@@ -492,8 +508,10 @@ class RepoAPI {
                 type: "DELETE",
                 contentType: "application/json; charset=utf-8",
                 headers: {Authorization: `Bearer ${this.config.token.jti}`},
-                success: () => resolve(),
-                error: (error) => reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                success: () => { return resolve() },
+                error: (error) => {
+                    return reject(error.statusText ? Error(error.statusText) : Error("An internal error occurred"))
+                }
             })
         })
     }
@@ -505,7 +523,7 @@ class RepoAPI {
             ["user", this.config.token.login],
             ["token", `Bearer ${this.config.token.jti}`]
         ]
-        const query = kv.map((p) => `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}`).join("&")
+        const query = kv.map((p) => { return `${encodeURIComponent(p[0])}=${encodeURIComponent(p[1])}` }).join("&")
 
         window.location.href = uri + query
         window.event.returnValue = false
