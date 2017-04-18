@@ -12,6 +12,7 @@
 export default class Logger {
     /**
      * print switches between different log levels and prints messages accordingly.
+     * Log debug only if client secret corresponds to the development system.
      *
      * @param lvl {string}          level at which the message is supposed to be logged.
      * @param message {object}      message to be logged.
@@ -19,13 +20,17 @@ export default class Logger {
     print(lvl, message) {
         switch (lvl) {
         case "Debug":
-            console.log(message)
+            if (window.api.config.client_secret === "secret") {
+                console.warn(message)
+            }
             break
         case "Err":
             console.error(message)
             break
         default:
-            console.log(message)
+            if (window.api.config.client_secret === "secret") {
+                console.warn(message)
+            }
         }
     }
 }
