@@ -249,7 +249,7 @@
             },
 
             addShare(login_name) {
-                const selected = this.select.all.find(acc => acc.active)
+                const selected = this.select.all.find((acc) => acc.active)
                 if (selected) {
                     selected.active = false
                     this.select.text = selected.login
@@ -291,7 +291,7 @@
 
             selectionUp() {
                 if (this.select.all.length > 0) {
-                    let idx = this.select.all.findIndex(acc => acc.active)
+                    let idx = this.select.all.findIndex((acc) => acc.active)
                     if (idx < 1) {
                         this.select.all[0].active = false
                         idx = this.select.all.length
@@ -304,7 +304,7 @@
 
             selectionDown() {
                 if (this.select.all.length > 0) {
-                    const idx = this.select.all.findIndex(acc => acc.active)
+                    const idx = this.select.all.findIndex((acc) => acc.active)
                     if (idx >= 0) {
                         this.select.all[idx].active = false
                     }
@@ -323,15 +323,15 @@
                     const promise = window.api.accounts.search(encodeURIComponent(text))
                     promise.then(
                         (accounts) => {
-                            const shared = this.form.shared.map(collab => { return collab.User })
+                            const shared = this.form.shared.map((collab) => { return collab.User })
                             const owner_login = this.repository.Owner
 
                             accounts = accounts
-                                    .filter(acc => !shared.includes(acc.login) && owner_login != acc.login)
-                                    .map(acc => { return Object.assign({},
+                                    .filter((acc) => !shared.includes(acc.login) && owner_login != acc.login)
+                                    .map((acc) => { return Object.assign({},
                                             { label: accountLabel(acc), login: acc.login, active: false })})
 
-                            const idx = accounts.findIndex(acc => acc.login === text)
+                            const idx = accounts.findIndex((acc) => acc.login === text)
                             if (idx >= 0) {
                                 this.select.match = text
                             } else {
