@@ -28,7 +28,7 @@
                 this.alertError("We encountered an error during login. Please repeat login procedure.")
                 this.$router.push({path: "/"})
             } else {
-                let promise = window.api.login(this.$route.query["access_token"])
+                const promise = window.api.login(this.$route.query["access_token"])
                 promise.then(
                         (account) => {
                             event.emit("account-update")

@@ -304,7 +304,7 @@
 
             selectionDown() {
                 if (this.select.all.length > 0) {
-                    let idx = this.select.all.findIndex(acc => acc.active)
+                    const idx = this.select.all.findIndex(acc => acc.active)
                     if (idx >= 0) {
                         this.select.all[idx].active = false
                     }

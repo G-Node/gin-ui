@@ -93,7 +93,7 @@
                                 this.repos = repos
                                 this.idx = 0
 
-                                var len = n_displayed > repos.length ? repos.length : n_displayed
+                                const len = n_displayed > repos.length ? repos.length : n_displayed
                                 this.repos_displayed = repos.slice(this.idx, len)
                                 this.updatePagerIndex()
                             }
@@ -107,14 +107,14 @@
             },
 
             prev() {
-                let prev = pagerPrevious(this.repos, this.idx, n_displayed)
+                const prev = pagerPrevious(this.repos, this.idx, n_displayed)
                 this.repos_displayed = prev.arr
                 this.idx = prev.index
                 this.updatePagerIndex()
             },
 
             next() {
-                let nxt = pagerNext(this.repos, this.idx, n_displayed)
+                const nxt = pagerNext(this.repos, this.idx, n_displayed)
                 this.repos_displayed = nxt.arr
                 this.idx = nxt.index
                 this.updatePagerIndex()

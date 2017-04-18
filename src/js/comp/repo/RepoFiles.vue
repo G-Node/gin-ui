@@ -127,10 +127,10 @@
                                                                         "master", this.path)
                     promise.then(
                             (dir) => {
-                                let content = dir.entries
+                                const content = dir.entries
                                 let c_t = []
                                 let c_f = []
-                                for (let item of content) {
+                                for (const item of content) {
                                     if (item.type) {
                                         if (item.type === "tree") {
                                             c_t = c_t.concat(item)

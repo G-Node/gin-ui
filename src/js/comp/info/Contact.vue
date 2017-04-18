@@ -70,7 +70,7 @@
 
             if (stat_cont !== undefined && stat_cont !== null && cont_url !== undefined && cont_url !== "") {
                 console.log(`${ll} get static file content from ${cont_url}`)
-                let f = window.api.getStaticFile(cont_url)
+                const f = window.api.getStaticFile(cont_url)
                 f.then(
                         (c) => {
                             this.content = c

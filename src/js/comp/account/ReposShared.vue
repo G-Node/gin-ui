@@ -101,7 +101,7 @@
                                 // by another repository owner via the route.
                                 if (this.account.login !== params.username) {
                                     console.log(`${ll} pre filter for owner ${params.username}`)
-                                    let repo_filter = Array.from(repos)
+                                    const repo_filter = Array.from(repos)
                                             .filter((r) => { return r.Owner === params.username })
                                     if (repo_filter.length > 0) {
                                         repo_list = repo_filter
@@ -117,7 +117,7 @@
                                             this.repos_modified = addRepoUserFullName(u, repo_list)
 
                                             this.idx = 0
-                                            var len = n_displayed > this.repos_modified.length ?
+                                            const len = n_displayed > this.repos_modified.length ?
                                                     this.repos_modified.length : n_displayed
                                             this.repos_displayed = this.repos_modified.slice(this.idx, len)
 
@@ -136,14 +136,14 @@
             },
 
             prev() {
-                let prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
+                const prev = pagerPrevious(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = prev.arr
                 this.idx = prev.index
                 this.updatePagerIndex()
             },
 
             next() {
-                let nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
+                const nxt = pagerNext(this.repos_modified, this.idx, n_displayed)
                 this.repos_displayed = nxt.arr
                 this.idx = nxt.index
                 this.updatePagerIndex()

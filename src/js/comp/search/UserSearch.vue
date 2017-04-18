@@ -85,7 +85,7 @@
                     this.users_displayed = this.users
                     this.idx = 0
 
-                    var len = n_displayed > this.users.length ?
+                    const len = n_displayed > this.users.length ?
                             this.users.length : n_displayed
                     this.users_displayed = this.users.slice(this.idx, len)
                     this.updatePagerIndex()
@@ -93,14 +93,14 @@
             },
 
             prev() {
-                let prev = pagerPrevious(this.users, this.idx, n_displayed)
+                const prev = pagerPrevious(this.users, this.idx, n_displayed)
                 this.users_displayed = prev.arr
                 this.idx = prev.index
                 this.updatePagerIndex()
             },
 
             next() {
-                let nxt = pagerNext(this.users, this.idx, n_displayed)
+                const nxt = pagerNext(this.users, this.idx, n_displayed)
                 this.users_displayed = nxt.arr
                 this.idx = nxt.index
                 this.updatePagerIndex()
