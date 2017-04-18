@@ -79,8 +79,8 @@
                         (repos) => {
                             const filter_public = window.api.repos.filterRepos(this.search_text, repos)
                             filter_public.then(
-                                    (repos) => {
-                                        this.public_repo = repos
+                                    (r) => {
+                                        this.public_repo = r
                                     }
                             )
                         },
