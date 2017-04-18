@@ -126,11 +126,11 @@
 
         methods: {
             update(params, old) {
-                console.log("[Repo] update repo")
+                window.log.print("Debug", "[Repo] update repo")
                 // checking if there is a token in storage is a bugfix to enable display a
                 // repository when a user is not logged in.
                 if ((this.account === undefined || this.account === null) && localStorage.getItem("token") !== null) {
-                    console.log("[Repo] race condition with App lost, no account, cannot update")
+                    window.log.print("Debug", "[Repo] race condition with App lost, no account, cannot update")
                     return
                 }
 
@@ -144,7 +144,7 @@
                                 this.owner = acc
                             },
                             (error) => {
-                                console.error(error)
+                                window.log.print("Err", error)
                                 if (error.code !== 404) {
                                     this.alertError(error)
                                 }
@@ -166,7 +166,7 @@
                                         },
                                         (error) => {
                                             this.repository = null
-                                            console.error(error)
+                                            window.log.print("Err", error)
                                             if (error.code !== 404) {
                                                 this.alertError(error.status)
                                             }
@@ -175,7 +175,7 @@
                             },
                             (error) => {
                                 this.repository = null
-                                console.error(error)
+                                window.log.print("Err", error)
                                 if (error.code !== 404) {
                                     this.alertError(error.status)
                                 }
@@ -191,12 +191,12 @@
 
         watch: {
             "account": function() {
-                console.log("[Repo] account has changed, update")
+                window.log.print("Debug", "[Repo] account has changed, update")
                 this.update(this.$route.params, null)
             },
 
             "$route.params": function (params, old) {
-                console.log("[Repo] route has changed, update")
+                window.log.print("Debug", "[Repo] route has changed, update")
                 this.update(params, old)
             }
         }

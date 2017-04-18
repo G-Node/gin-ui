@@ -58,7 +58,6 @@
             addRepoUserFullName
     } from "../../utils.js"
 
-    const ll = "[Repo Search]"
     const n_displayed = 5
 
     export default {
@@ -82,7 +81,6 @@
 
         methods: {
             augment() {
-                console.log(`${ll} augment search`)
                 this.repos_modified = null
                 this.repos_displayed = null
 

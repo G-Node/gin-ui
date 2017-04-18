@@ -82,7 +82,7 @@
 
         methods: {
             update(params) {
-                console.log(`${ll} update`)
+                window.log.print("Debug", `${ll} update`)
                 this.repos = null
                 this.repos_displayed = null
 
@@ -99,8 +99,8 @@
                             }
                         },
                         (error) => {
-                            console.log(`${ll} error fetching owner repo list`)
-                            console.log(error)
+                            window.log.print("Err", `${ll} error fetching owner repo list`)
+                            window.log.print("Err", error)
                             this.reportError(error)
                         }
                 )

@@ -124,7 +124,7 @@
         mounted() {
             // Someone has been meddling with the route without proper access, naughty!
             if (this.account.login !== this.owner.login) {
-                console.error("DOIs only for owners, naughty!")
+                window.log.print("Err", "DOIs only for owners, naughty!")
                 this.$router.push({path: "/not-found"})
             }
             this.update(this.$route.params)
@@ -149,7 +149,7 @@
 
         methods: {
             request() {
-                console.log("[RepoDOI] create DOI")
+                window.log.print("Debug", "[RepoDOI] create DOI")
                 // TODO Currently only the master branch is handled.
                 // TODO Once different branches are supported, this has to be changed as well.
                 window.api.repos.requestDOI(this.$route.params.username,
@@ -161,22 +161,22 @@
                 this.can_doi = false
                 this.message = "one"
 
-                var acc = (this.account !== undefined && this.account !== null)
-                var rep = this.repository.Public
+                const acc = (this.account !== undefined && this.account !== null)
+                const rep = this.repository.Public
 
                 if (acc && rep) {
-                    console.log("[RepoDOI] basic checks passed, fetch repo root")
+                    window.log.print("Debug", "[RepoDOI] basic checks passed, fetch repo root")
                     const promise = window.api.repos.getDirectorySection(
                             params.username,
                             params.repository,
                             "master", "")
                     promise.then(
                             (root) => {
-                                console.log("[RepoDOI] repo fetched, find required file")
-                                var entries = root.entries
-                                for (var entry of entries) {
+                                window.log.print("Debug", "[RepoDOI] repo fetched, find required file")
+                                const entries = root.entries
+                                for (const entry of entries) {
                                     if (entry.name && entry.name === this.doi_file) {
-                                        console.log("[RepoDOI] required file present")
+                                        window.log.print("Debug", "[RepoDOI] required file present")
                                         this.can_doi = true
                                         break
                                     }
@@ -186,8 +186,8 @@
                                 }
                             },
                             (error) => {
-                                console.log("[RepoDOI] error while trying to fetch repo")
-                                console.log(error)
+                                window.log.print("Err", "[RepoDOI] error while trying to fetch repo")
+                                window.log.print("Err", error)
                                 this.message = "two"
                             }
                     )
@@ -199,12 +199,12 @@
         // when the route is changed directly.
         watch: {
             "account": function () {
-                console.log("[RepoDOI] account has changed, update")
+                window.log.print("Debug", "[RepoDOI] account has changed, update")
                 this.update(this.$route.params)
             },
 
             "$route.params": function () {
-                console.log("[RepoDOI] route has changed, update")
+                window.log.print("Debug", "[RepoDOI] route has changed, update")
                 this.update(this.$route.params)
             }
         }

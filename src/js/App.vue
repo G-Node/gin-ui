@@ -142,10 +142,10 @@
                 promise.then(
                         (account) => {
                             this.account = account
-                            console.log("Info: login successfully restored")
+                            window.log.print("Debug", "Login successfully restored")
                         },
                         (error) => {
-                            console.log(`Info: ${error.message}`)
+                            window.log.print("Err", error.message)
                         }
                 )
             },
@@ -164,7 +164,7 @@
                 setTimeout(() => { this.alert = null }, message_delay)
 
                 if (message.level === "danger" || message.level === "warning") {
-                    console.error(message.content)
+                    window.log.print("Err", message.content)
                 }
             },
 

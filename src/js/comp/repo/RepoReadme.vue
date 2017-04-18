@@ -63,7 +63,7 @@
                             this.owner_name = `${u.first_name} ${u.last_name}`
                         },
                         (error) => {
-                            console.log(`[RepoInfo] ${error}`)
+                            window.log.print("Err", `[RepoInfo] ${error}`)
                         }
                     )
                 }

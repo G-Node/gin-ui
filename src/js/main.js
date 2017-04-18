@@ -14,6 +14,7 @@ import VueRouter            from "vue-router"
 import VueCookies           from "vue-cookies"
 
 import API                  from "./data.js"
+import Logger               from "./log.js"
 import App                  from "./App.vue"
 import Index                from "./comp/Index.vue"
 import NotFound             from "./comp/NotFound.vue"
@@ -66,6 +67,7 @@ Vue.use(VueRouter)
 Vue.use(VueCookies)
 
 window.api = new API(config)
+window.log = new Logger()
 
 const router = new VueRouter({
     mode: "history",

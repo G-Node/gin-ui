@@ -87,7 +87,7 @@
         methods: {
 
             update(params) {
-                console.log(`${ll} update`)
+                window.log.print("Debug", `${ll} update`)
                 this.repos_modified = null
                 this.repos_displayed = null
 
@@ -100,7 +100,6 @@
                                 // A logged in user can pre-filter repositories shared
                                 // by another repository owner via the route.
                                 if (this.account.login !== params.username) {
-                                    console.log(`${ll} pre filter for owner ${params.username}`)
                                     const repo_filter = Array.from(repos)
                                             .filter((r) => { return r.Owner === params.username })
                                     if (repo_filter.length > 0) {
@@ -124,14 +123,14 @@
                                             this.updatePagerIndex()
                                         },
                                         (error) => {
-                                            console.log(`${ll} error fetching user for shared repos`)
-                                            console.log(error)
+                                            window.log.print("Err", `${ll} error fetching user for shared repos`)
+                                            window.log.print("Err", error)
                                         })
                             }
                         },
                         (error) => {
-                            console.log(`${ll} error fetching shared repos`)
-                            console.log(error)
+                            window.log.print("Err", `${ll} error fetching shared repos`)
+                            window.log.print("Err", error)
                         })
             },
 

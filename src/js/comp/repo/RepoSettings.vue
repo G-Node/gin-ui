@@ -184,7 +184,7 @@
             // When tampering with the route w/o proper access,
             // the hand shall be rudely removed from the cookie jar.
             if (!this.is_repo_writeable) {
-                console.error("No access, be gone!")
+                window.log.print("Err", "No access, be gone!")
                 this.$router.push({path: "/not-found"})
             }
             this.update()
@@ -315,7 +315,7 @@
 
             search(text) {
                 if (text && text.length >= search_collaborators_minlength) {
-                    console.log(`[ReposSettings] update search: ${text}`)
+                    window.log.print("Debug", `[ReposSettings] update search: ${text}`)
                     // TODO currently every new character entered leads to a request to the auth server.
                     // Check if this could be done more efficiently to reduce either the number of
                     // requests all together or at least the amount of transferred data using an
@@ -398,7 +398,7 @@
             // Required against race condition in Repo.vue when fetching
             // collaborators via promise.
             "repository.Shared": function (shared, old) {
-                console.log("[RepoSettings] repository collaborators has changed")
+                window.log.print("Debug", "[RepoSettings] repository collaborators has changed")
                 if (shared !== old) {
                     this.update()
                 }
