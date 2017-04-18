@@ -41,7 +41,7 @@
             }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         props: {
             account: { required: true }

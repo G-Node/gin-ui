@@ -195,7 +195,7 @@
             is_repo_writeable: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             update() {

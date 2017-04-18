@@ -145,7 +145,7 @@
             owner: { required: true }
         },
 
-        mixins: [ Alert ],
+        mixins: [Alert],
 
         methods: {
             request() {
