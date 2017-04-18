@@ -59,7 +59,7 @@
             },
             contact: function() {
                 return window.api.config.contact_email
-            },
+            }
         },
 
         mounted() {

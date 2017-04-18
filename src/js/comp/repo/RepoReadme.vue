@@ -49,7 +49,7 @@
         mixins: [Alert],
 
         methods: {
-            update(){
+            update() {
                 if (this.repository.Description !== undefined && this.repository.Description !== "") {
                     this.description = this.repository.Description
                 }

@@ -153,7 +153,7 @@
         },
 
         watch: {
-            "$route.params" : function (params, old) {
+            "$route.params": function (params, old) {
                 this.update(params, old)
             }
         }

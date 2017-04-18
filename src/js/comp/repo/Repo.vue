@@ -115,7 +115,7 @@
 
                     return name && repo && (repo.Owner === name)
                 }
-            },
+            }
         },
 
         props: {

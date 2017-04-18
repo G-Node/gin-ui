@@ -156,7 +156,7 @@
         return parts.length > 0 ? parts.join(" ") : acc.login
     }
 
-    function sortCollaborators(a,b) {
+    function sortCollaborators(a, b) {
         return a.User.localeCompare(b.User)
     }
 
@@ -328,8 +328,10 @@
 
                             accounts = accounts
                                     .filter((acc) => { return !shared.includes(acc.login) && owner_login != acc.login })
-                                    .map((acc) => { return Object.assign({},
-                                            { label: accountLabel(acc), login: acc.login, active: false })})
+                                    .map((acc) => {
+                                        return Object.assign({},
+                                            { label: accountLabel(acc), login: acc.login, active: false })
+                                    })
 
                             const idx = accounts.findIndex((acc) => { return acc.login === text })
                             if (idx >= 0) {
@@ -341,7 +343,7 @@
 
                             // Make sure collaborator suggestion dropdown is always displayed on reload,
                             // even if a user toggled dropdown display before.
-                            $('#collabdd.dropdown').toggleClass('open', true)
+                            $("#collabdd.dropdown").toggleClass("open", true)
                         },
                         (error) => {
                             this.alertError(error)
@@ -360,7 +362,7 @@
                     if (this.repository.Description !== this.form.description) {
                         data["description"] = this.form.description
                     }
-                    if (this.repository.Public !== this.form.is_public ) {
+                    if (this.repository.Public !== this.form.is_public) {
                         data["public"] = this.form.is_public
                     }
 
@@ -389,7 +391,7 @@
             "select.text": function (search, old) {
                 if (search !== old) {
                     clearTimeout(searchBuffer)
-                    searchBuffer = setTimeout(() => {this.search(search)}, search_collaborators_timeout)
+                    searchBuffer = setTimeout(() => { this.search(search) }, search_collaborators_timeout)
                 }
             },
 

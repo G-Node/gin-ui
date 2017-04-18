@@ -164,6 +164,6 @@
             doi_example: function() {
                 return window.api.config.doi_example
             }
-        },
+        }
     }
 </script>
