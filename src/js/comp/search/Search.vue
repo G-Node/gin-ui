@@ -74,10 +74,10 @@
                 // Enable "Users" tab dependent on login.
                 (localStorage.getItem("token") !== null) ? this.has_login = true : this.has_login = false
 
-                const all_public = api.repos.listPublic()
+                const all_public = window.api.repos.listPublic()
                 all_public.then(
                         (repos) => {
-                            const filter_public = api.repos.filterRepos(this.search_text, repos)
+                            const filter_public = window.api.repos.filterRepos(this.search_text, repos)
                             filter_public.then(
                                     (repos) => {
                                         this.public_repo = repos
@@ -89,7 +89,7 @@
                         }
                 )
 
-                const user_search = api.accounts.search(this.search_text)
+                const user_search = window.api.accounts.search(this.search_text)
                 user_search.then(
                         (users) => {
                             this.users = users

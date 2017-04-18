@@ -86,8 +86,8 @@
                 this.repos = null
                 this.repos_displayed = null
 
-                const promise_own = api.repos.listUserRepos(params.username)
-                promise_own.then(
+                const promise = window.api.repos.listUserRepos(params.username)
+                promise.then(
                         (repos) => {
                             if (repos !== undefined && repos !== null && repos.length > 0) {
                                 this.repos = repos

@@ -138,7 +138,7 @@
                 const same_repo  = old && old.repository === params.repository
 
                 if (!same_owner) {
-                    const promise = api.accounts.get(params.username)
+                    const promise = window.api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
                                 this.owner = acc
@@ -155,11 +155,11 @@
                 if (!same_repo || !same_owner) {
                     // If results are returned, this means the repository exists and the current user
                     // has at least pull access.
-                    const promise = api.repos.getRepo(params.username, params.repository)
+                    const promise = window.api.repos.getRepo(params.username, params.repository)
                     promise.then(
                             (repo) => {
                                 this.repository = Object.assign({}, repo, { Shared: {} })
-                                const co_promise = api.repos.getRepoCollaborators(params.username, params.repository)
+                                const co_promise = window.api.repos.getRepoCollaborators(params.username, params.repository)
                                 co_promise.then(
                                         (collaborators) => {
                                             this.repository.Shared = collaborators

@@ -123,9 +123,9 @@
                 if (params !== old) {
                     this.path = cleanPath(params.root)
 
-                    const promise_dir = api.repos.getDirectorySection(params.username, params.repository,
+                    const promise = window.api.repos.getDirectorySection(params.username, params.repository,
                                                                         "master", this.path)
-                    promise_dir.then(
+                    promise.then(
                             (dir) => {
                                 let content = dir.entries
                                 let c_t = []

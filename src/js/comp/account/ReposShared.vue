@@ -91,8 +91,8 @@
                 this.repos_modified = null
                 this.repos_displayed = null
 
-                const repos_shared = api.repos.listShared()
-                repos_shared.then(
+                const promise = window.api.repos.listShared()
+                promise.then(
                         (repos) => {
                             if (repos !== undefined && repos !== null && repos.length > 0) {
                                 var repo_list = repos
@@ -111,7 +111,7 @@
                                 }
 
                                 // Update repository list with full name of the repository owners.
-                                const user_search = api.accounts.search()
+                                const user_search = window.api.accounts.search()
                                 user_search.then(
                                         (u) => {
                                             this.repos_modified = addRepoUserFullName(u, repo_list)

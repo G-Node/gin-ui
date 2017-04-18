@@ -119,7 +119,7 @@
                 const is_same_account = old && old.username === params.username
 
                 if (!is_same_account) {
-                    const promise = api.accounts.get(params.username)
+                    const promise = window.api.accounts.get(params.username)
                     promise.then(
                             (acc) => {
                                 this.owner = acc

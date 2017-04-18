@@ -70,7 +70,7 @@
 
         methods: {
             save() {
-                let promise = api.repos.create(this.account.login, this.form)
+                let promise = window.api.repos.create(this.account.login, this.form)
                 promise.then(
                     () => {
                         this.alertSuccess("Repository successfully created")

@@ -211,11 +211,11 @@
             },
 
             updateCollaborator(login_name, permission) {
-                const put_promise = api.repos.putCollaborator(this.$route.params.username,
+                const promise = window.api.repos.putCollaborator(this.$route.params.username,
                         this.$route.params.repository,
                         login_name,
                         { Permission: permission })
-                put_promise.then(
+                promise.then(
                         () => {
                             event.emit("repo-update", { username: this.$route.params.username, repository: this.repository.Name })
                             for (var i = 0; i < this.form.shared.length; i++) {
@@ -233,7 +233,7 @@
             },
 
             removeShare(login_name) {
-                const promise = api.repos.removeCollaborator(this.$route.params.username,
+                const promise = window.api.repos.removeCollaborator(this.$route.params.username,
                         this.$route.params.repository,
                         login_name)
                 promise.then(
@@ -255,11 +255,11 @@
                     this.select.text = selected.login
                 } else if (this.select.match === login_name) {
                     // Check if the account is actually available at gin-auth.
-                    const promise = api.accounts.get(login_name)
+                    const promise = window.api.accounts.get(login_name)
                     promise.then(
                         (acc) => {
                             // Put gin-auth account login as collaborator to gin-repo with default access level.
-                            const put_promise = api.repos.putCollaborator(this.$route.params.username,
+                            const put_promise = window.api.repos.putCollaborator(this.$route.params.username,
                                                                             this.$route.params.repository,
                                                                             login_name,
                                                                             { Permission: this.default_permission })
@@ -320,7 +320,7 @@
                     // Check if this could be done more efficiently to reduce either the number of
                     // requests all together or at least the amount of transferred data using an
                     // eTag for the account information.
-                    const promise = api.accounts.search(encodeURIComponent(text))
+                    const promise = window.api.accounts.search(encodeURIComponent(text))
                     promise.then(
                         (accounts) => {
                             const shared = this.form.shared.map(collab => { return collab.User })
@@ -364,7 +364,7 @@
                         data["public"] = this.form.is_public
                     }
 
-                    const promise = api.repos.update(this.repository.Owner, this.repository.Name, data)
+                    const promise = window.api.repos.update(this.repository.Owner, this.repository.Name, data)
                     promise.then(
                             (patch) => {
                                 this.form.description = patch.Description

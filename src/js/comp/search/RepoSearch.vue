@@ -87,8 +87,8 @@
                 this.repos_displayed = null
 
                 if (this.public_repo !== null && this.public_repo !== undefined && this.public_repo.length > 0) {
-                    const user_search = api.accounts.search()
-                    user_search.then(
+                    const promise = window.api.accounts.search()
+                    promise.then(
                             (u) => {
                                 this.repos_modified = addRepoUserFullName(u, this.public_repo)
 

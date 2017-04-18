@@ -166,11 +166,11 @@
 
                 if (acc && rep) {
                     console.log("[RepoDOI] basic checks passed, fetch repo root")
-                    const promise_root = api.repos.getDirectorySection(
+                    const promise = window.api.repos.getDirectorySection(
                             params.username,
                             params.repository,
                             "master", "")
-                    promise_root.then(
+                    promise.then(
                             (root) => {
                                 console.log("[RepoDOI] repo fetched, find required file")
                                 var entries = root.entries

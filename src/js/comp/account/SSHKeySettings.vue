@@ -81,7 +81,7 @@
 
         methods: {
             save() {
-                let promise = api.keys.create(this.account.login, this.form)
+                let promise = window.api.keys.create(this.account.login, this.form)
                 promise.then(
                     () => {
                         this.update(this.account.login)
@@ -105,7 +105,7 @@
             },
 
             remove(key) {
-                let promise = api.keys.remove(key)
+                let promise = window.api.keys.remove(key)
                 promise.then(
                     () => {
                         this.update(this.account.login)
@@ -117,7 +117,7 @@
             },
 
             update(username) {
-                let promise = api.keys.list(username)
+                let promise = window.api.keys.list(username)
                 promise.then(
                     (keys) => {
                         this.keys = keys
