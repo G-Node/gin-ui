@@ -2,7 +2,10 @@
 
 ## Javascript Style and Code check Toolchain
 
-Only issue a pull request, if `eslint src/**/*.js` does not return any errors.
+Make sure you have `eslint`, `eslint-plugin-vue` and `eslint-config-vue` installed.
+
+Only issue a pull request, if `eslint . src/js/*.vue src/js/comp/*.vue src/js/comp/**/*.vue` 
+run at the root of the project does not return any errors.
 
 
 ## Javascript Style Guide
