@@ -100,7 +100,7 @@
                         () => {
                             if (this.search_text) {
                                 var tab = "search-repos"
-                                if ((this.public_repo.length == 0) && (this.users.length > 0)) {
+                                if ((this.public_repo.length === 0) && (this.users.length > 0)) {
                                     tab = "search-users"
                                 }
                                 this.$router.push({

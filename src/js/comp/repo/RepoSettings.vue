@@ -327,7 +327,7 @@
                             const owner_login = this.repository.Owner
 
                             accounts = accounts
-                                    .filter((acc) => { return !shared.includes(acc.login) && owner_login != acc.login })
+                                    .filter((acc) => { return !shared.includes(acc.login) && owner_login !== acc.login })
                                     .map((acc) => {
                                         return Object.assign({},
                                             { label: accountLabel(acc), login: acc.login, active: false })

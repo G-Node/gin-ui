@@ -145,7 +145,7 @@
                             },
                             (error) => {
                                 console.error(error)
-                                if (error.code != 404) {
+                                if (error.code !== 404) {
                                     this.alertError(error)
                                 }
                             }
@@ -167,7 +167,7 @@
                                         (error) => {
                                             this.repository = null
                                             console.error(error)
-                                            if (error.code != 404) {
+                                            if (error.code !== 404) {
                                                 this.alertError(error.status)
                                             }
                                         }
@@ -176,7 +176,7 @@
                             (error) => {
                                 this.repository = null
                                 console.error(error)
-                                if (error.code != 404) {
+                                if (error.code !== 404) {
                                     this.alertError(error.status)
                                 }
                             }
