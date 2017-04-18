@@ -4,6 +4,9 @@ node_modules/
 # build destination
 build/
 
+# exclude coverage folder
+coverage/
+
 # dist destination
 dist/
 
