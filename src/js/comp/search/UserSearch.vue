@@ -27,7 +27,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                         <router-link :to="{ name: 'own-repositories', params: { username: user.login } }">
-                            {{ user.first_name }} {{ user.last_name }}
+                            {{ user.first_name }} {{ user.last_name }} ({{ user.login }})
                         </router-link>
                     </div>
                     <div class="panel-body">
