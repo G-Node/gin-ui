@@ -48,7 +48,7 @@
                         <label for="public">
                             <input type="checkbox" id="public" v-model="form.email.is_public">
                             Make Email Public
-                            <span class="glyphicon glyphicon-info-sign glyph-blue" data-toggle="tooltip"
+                            <span class="glyphicon glyphicon-info-sign c-blue-gnode" data-toggle="tooltip"
                                   title="If you make your e-mail address public, it will be visible to other logged in users.">
                             </span>
                         </label>
