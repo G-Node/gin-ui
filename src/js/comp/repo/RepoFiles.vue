@@ -40,7 +40,9 @@
             <table class="table">
                 <tbody>
                     <tr v-for="item in content_tree">
-                        <th scope="row" style="width: 2em"><span class="glyphicon glyphicon-folder-open"></span></th>
+                        <th scope="row" style="width: 2em">
+                            <span class="glyphicon glyphicon-folder-open c-sunflower-dark"></span>
+                        </th>
                         <td>
                             <router-link :to="{ name: 'repository-files',
                                 params: {
@@ -55,7 +57,9 @@
                     </tr>
 
                     <tr v-for="item in content_files">
-                        <th scope="row" style="width: 2em"><span class="glyphicon glyphicon-file"></span></th>
+                        <th scope="row" style="width: 2em">
+                            <span class="glyphicon glyphicon-file c-blue-gnode"></span>
+                        </th>
                         <td>{{ item.name }}</td>
                         <td>{{ item.type | fileSysLabel }}</td>
                         <td>{{ item.id }}</td>
