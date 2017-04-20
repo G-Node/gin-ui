@@ -10,8 +10,8 @@
 
 <template>
     <div>
-        <div v-if="!content_tree && !content_files">
-            This repository does not contain any files.
+        <div class="plainbox bg-info mar-pad-05" v-if="!content_tree && !content_files">
+            <div class="pad-1">This repository does not contain any files.</div>
         </div>
 
         <div class="panel panel-default" v-if="content_tree || content_files">
