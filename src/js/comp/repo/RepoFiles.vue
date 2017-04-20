@@ -15,54 +15,60 @@
 </style>
 
 <template>
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <span>
-                <router-link :to="{ name: 'repository-files',
-                    params: {
-                        root: '/',
-                        username: $route.params.username,
-                        repository: $route.params.repository}}">
-                    root
-                </router-link>
-            </span>
-            <span v-for="(p, n) in path_components">
-                /
-                <router-link :to="{ name: 'repository-files',
-                    params: {
-                        root: p,
-                        username: $route.params.username,
-                        repository: $route.params.repository}}">
-                    {{ n }}
-                </router-link>
-            </span>
+    <div>
+        <div v-if="!content_tree && !content_files">
+            This repository does not contain any files.
         </div>
 
-        <table v-if="content_tree || content_files" class="table">
-            <tbody>
-                <tr v-for="item in content_tree">
-                    <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
-                    <td>
-                        <router-link :to="{ name: 'repository-files',
-                            params: {
-                                username: $route.params.username,
-                                repository: $route.params.repository,
-                                root: path + '/' + item.name}}">
-                            {{ item.name }}
-                        </router-link>
-                    </td>
-                    <td>{{ item.type | fileSysLabel }}</td>
-                    <td>{{ item.id }}</td>
-                </tr>
+        <div class="panel panel-default" v-if="content_tree || content_files">
+            <div class="panel-heading">
+                <span>
+                    <router-link :to="{ name: 'repository-files',
+                        params: {
+                            root: '/',
+                            username: $route.params.username,
+                            repository: $route.params.repository}}">
+                        root
+                    </router-link>
+                </span>
+                <span v-for="(p, n) in path_components">
+                    /
+                    <router-link :to="{ name: 'repository-files',
+                        params: {
+                            root: p,
+                            username: $route.params.username,
+                            repository: $route.params.repository}}">
+                        {{ n }}
+                    </router-link>
+                </span>
+            </div>
 
-                <tr v-for="item in content_files">
-                    <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.type | fileSysLabel }}</td>
-                    <td>{{ item.id }}</td>
-                </tr>
-            </tbody>
-        </table>
+            <table class="table">
+                <tbody>
+                    <tr v-for="item in content_tree">
+                        <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
+                        <td>
+                            <router-link :to="{ name: 'repository-files',
+                                params: {
+                                    username: $route.params.username,
+                                    repository: $route.params.repository,
+                                    root: path + '/' + item.name}}">
+                                {{ item.name }}
+                            </router-link>
+                        </td>
+                        <td>{{ item.type | fileSysLabel }}</td>
+                        <td>{{ item.id }}</td>
+                    </tr>
+
+                    <tr v-for="item in content_files">
+                        <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.type | fileSysLabel }}</td>
+                        <td>{{ item.id }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </template>
 
@@ -87,8 +93,8 @@
         data() {
             return {
                 path: null,
-                content_tree: [],
-                content_files: []
+                content_tree: null,
+                content_files: null
             }
         },
 
@@ -121,6 +127,9 @@
             update(params, old) {
                 // not sure if this check is a good thing to do
                 if (params !== old) {
+                    this.content_tree = null
+                    this.content_files = null
+
                     this.path = cleanPath(params.root)
 
                     const promise = window.api.repos.getDirectorySection(params.username, params.repository,
@@ -142,9 +151,7 @@
                                 this.content_tree = c_t
                                 this.content_files = c_f
                             }).catch((error) => {
-                                if (error.code === 404) {
-                                    this.alertWarning("Repository contains no files")
-                                } else {
+                                if (error.code !== 404) {
                                     this.reportError(error)
                                 }
                             })
