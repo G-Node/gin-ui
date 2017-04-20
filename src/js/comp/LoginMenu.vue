@@ -8,12 +8,6 @@
     LICENSE file in the root of the Project.
 -->
 
-<style>
-    .dropdown-menu {
-        /*padding: 1em;*/
-    }
-</style>
-
 <template>
     <ul class="nav navbar-nav navbar-right">
         <li>
