@@ -8,17 +8,6 @@
     LICENSE file in the root of the Project.
 -->
 
-<style>
-    .plainbox {
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 0.5em;
-    }
-    .contextual-backgrounds div {
-        padding: 1em;
-    }
-</style>
-
 <template>
     <div>
         <header>
@@ -28,8 +17,8 @@
 
         <hr />
 
-        <div class="plainbox contextual-backgrounds" v-if="!repository">
-            <div class="bg-info">Please check the spelling of user and repository name
+        <div class="plainbox mar-pad-05" v-if="!repository">
+            <div class="bg-info pad-1">Please check the spelling of user and repository name
                 if you feel you received this message in error.</div>
         </div>
 
