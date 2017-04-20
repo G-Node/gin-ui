@@ -34,7 +34,7 @@
         </div>
 
         <ul class="nav nav-tabs" v-if="repository && owner">
-            <li role="presentation" :class="{ 'active': $route.name === 'repository' }">
+            <li role="presentation" :class="{ 'active': $route.name === 'repository-info' }">
                 <router-link :to="{ name: 'repository-info',
                             params: { username: $route.params.username, repository: $route.params.repository }}">
                     Info
@@ -46,7 +46,7 @@
                     Files
                 </router-link>
             </li>
-            <li role="presentation" v-if="is_repo_owned">
+            <li role="presentation" v-if="is_repo_owned" :class="{ 'active': $route.name === 'repository-doi' }">
                 <router-link :to="{ name: 'repository-doi',
                         params: { username: $route.params.username, repository: $route.params.repository }}">
                     DOI
