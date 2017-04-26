@@ -1,4 +1,10 @@
 [![Docker Automated build](https://img.shields.io/docker/automated/gnode/gin-ui.svg)](https://hub.docker.com/r/gnode/gin-ui)
+[![Build Status](https://travis-ci.org/G-Node/gin-ui.svg?branch=master)](https://travis-ci.org/G-Node/gin-ui)
+[![Build status](https://ci.appveyor.com/api/projects/status/61im4oai6bada1mn?svg=true)](https://ci.appveyor.com/project/mpsonntag/gin-ui)
+[![Dependencies status](https://david-dm.org/mpsonntag/gin-ui/status.svg)](https://david-dm.org/mpsonntag/gin-ui/status.svg)
+[![DevDependencies status](https://david-dm.org/G-Node/gin-ui/dev-status.svg)](https://david-dm.org/G-Node/gin-ui/dev-status.svg)
+
+
 # About gin-ui
 
 gin-ui is the web interface for the **GIN** (**G**-Node **IN**frastructure) services.

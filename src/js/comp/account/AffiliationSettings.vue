@@ -46,7 +46,11 @@
                 <div class="form-group">
                     <div class="col-sm-9 col-sm-offset-3 checkbox">
                         <label for="public">
-                            <input type="checkbox" id="public" v-model="form.is_public"> Make Affiliation Public
+                            <input type="checkbox" id="public" v-model="form.is_public">
+                            Make Affiliation Public
+                            <span class="glyphicon glyphicon-info-sign glyph-blue" data-toggle="tooltip"
+                                  title="If you make your affiliation public, it will be visible to other logged in users.">
+                            </span>
                         </label>
                     </div>
                 </div>
