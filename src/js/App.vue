@@ -8,12 +8,6 @@
     LICENSE file in the root of the Project.
 -->
 
-<style>
-    .nav-tabs {
-        margin-bottom: 1.6em;
-    }
-</style>
-
 <template>
     <div id="main">
         <nav class="navbar navbar-default navbar-fixed-top">

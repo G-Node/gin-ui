@@ -8,16 +8,10 @@
     LICENSE file in the root of the Project.
 -->
 
-<style>
-    th {
-        width: 2em
-    }
-</style>
-
 <template>
     <div>
-        <div v-if="!content_tree && !content_files">
-            This repository does not contain any files.
+        <div class="plainbox bg-info mar-pad-05" v-if="!content_tree && !content_files">
+            <div class="pad-1">This repository does not contain any files.</div>
         </div>
 
         <div class="panel panel-default" v-if="content_tree || content_files">
@@ -46,7 +40,9 @@
             <table class="table">
                 <tbody>
                     <tr v-for="item in content_tree">
-                        <th scope="row"><span class="glyphicon glyphicon-folder-open"></span></th>
+                        <th scope="row" style="width: 2em">
+                            <span class="glyphicon glyphicon-folder-open c-sunflower-dark"></span>
+                        </th>
                         <td>
                             <router-link :to="{ name: 'repository-files',
                                 params: {
@@ -61,7 +57,9 @@
                     </tr>
 
                     <tr v-for="item in content_files">
-                        <th scope="row"><span class="glyphicon glyphicon-file"></span></th>
+                        <th scope="row" style="width: 2em">
+                            <span class="glyphicon glyphicon-file c-blue-gnode"></span>
+                        </th>
                         <td>{{ item.name }}</td>
                         <td>{{ item.type | fileSysLabel }}</td>
                         <td>{{ item.id }}</td>
