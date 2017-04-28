@@ -10,9 +10,34 @@
 
 <template>
     <div>
-        <h3>Commit history</h3>
+        <h3>Repository history</h3>
         <hr>
-        {{ content }}
+        <span v-if="!content">This repository has no commits yet, lazy!</span>
+
+        <table v-if="content" class="table">
+            <thead>
+                <tr>
+                    <th>Committer</th>
+                    <th>Author</th>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Changes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="k in content">
+                    <td>{{ k.committer }}</td>
+                    <td>{{ k.author }}</td>
+                    <td>{{ k.daterel }}</td>
+                    <td>{{ k.subject }}</td>
+                    <td>
+                        <ul v-for="c in k.changes" class="list-unstyled">
+                            <li>{{ c }}</li>
+                        </ul>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
