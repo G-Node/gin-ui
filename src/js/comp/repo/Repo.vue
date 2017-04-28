@@ -35,6 +35,12 @@
                     Files
                 </router-link>
             </li>
+            <li role="presentation" :class="{ 'active': $route.name === 'repository-history' }">
+                <router-link :to="{ name: 'repository-history',
+                            params: { username: $route.params.username, repository: $route.params.repository }}">
+                    History
+                </router-link>
+            </li>
             <li role="presentation" v-if="is_repo_owned" :class="{ 'active': $route.name === 'repository-doi' }">
                 <router-link :to="{ name: 'repository-doi',
                         params: { username: $route.params.username, repository: $route.params.repository }}">
