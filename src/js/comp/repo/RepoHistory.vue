@@ -10,9 +10,47 @@
 
 <template>
     <div>
-        Implement me
+        <h3>Commit history</h3>
+        <hr>
+        {{ content }}
     </div>
 </template>
 
 <script type="text/ecmascript-6">
+export default {
+    data() {
+        return {
+            content: null
+        }
+    },
+
+    mounted() {
+        this.update(this.$route.params)
+    },
+
+    props: {
+        account: {
+            required: true
+        }
+    },
+
+    methods: {
+        update(params) {
+            this.content = null
+            // we only support branch "master for now"
+            const promise = window.api.repos.listCommits(params.username, params.repository, "master")
+            promise.then(
+                    (c) => {
+                        this.content = c
+                    },
+                    (err) => {
+                        // need to deal with errors properly ... reformat them
+                        // in the data methods.
+                        window.log.print("Err", `[RepoHistory]${err}`)
+                    }
+            )
+        }
+    }
+}
+
 </script>
