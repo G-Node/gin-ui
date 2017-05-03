@@ -14,6 +14,8 @@
         <hr>
         <span v-if="!content">This repository has no commits yet, lazy!</span>
 
+        <p v-if="content" class="text-right">File changes Legend:<br>A ... added, M ... modified, D ... deleted</p>
+
         <table v-if="content" class="table">
             <thead>
                 <tr>
@@ -21,7 +23,7 @@
                     <th>Author</th>
                     <th>Date</th>
                     <th>Subject</th>
-                    <th>Changes</th>
+                    <th>File changes</th>
                 </tr>
             </thead>
             <tbody>
