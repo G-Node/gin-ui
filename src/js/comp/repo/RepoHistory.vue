@@ -10,9 +10,9 @@
 
 <template>
     <div>
-        <h3>Repository history</h3>
-        <hr>
-        <span v-if="!content">This repository has no commits yet, lazy!</span>
+        <div class="plainbox bg-info mar-pad-05" v-if="!content">
+            <div class="pad-1">There is no available history for this repository</div>
+        </div>
 
         <p v-if="content" class="text-right">File changes Legend:<br>A ... added, M ... modified, D ... deleted</p>
 
