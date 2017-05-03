@@ -537,6 +537,7 @@ class RepoAPI {
                 url: `${this.config.repo_url}/users/${owner}/repos/${repo}/commits/${branch}`,
                 type: "GET",
                 dataType: "json",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
                 success: (commits) => { return resolve(commits) },
                 error: (err) => { return reject(err) }
             })
