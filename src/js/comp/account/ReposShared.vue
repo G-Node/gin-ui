@@ -32,7 +32,7 @@
                         </router-link>
 
                         <strong v-if="repo.Public"><span class="label label-success pull-right">public</span></strong>
-                        <strong v-if="!repo.Public"><span class="label label-danger pull-right">private</span></strong>
+                        <strong v-if="!repo.Public"><span class="label label-primary pull-right">private</span></strong>
                     </div>
                     <div class="panel-body">
                         Owner {{ repo.FullName }}<br/><br/>
