@@ -32,8 +32,8 @@
                         </router-link>
 
                         <strong v-if="repo.Public"><span class="label label-success pull-right">public</span></strong>
-                        <strong v-if="!repo.Public"><span class="label label-danger pull-right">private</span></strong>
-                        <strong v-if="repo.Shared"><span class="label label-warning pull-right">shared</span></strong>
+                        <strong v-if="!repo.Public"><span class="label label-primary pull-right">private</span></strong>
+                        <strong v-if="repo.Shared"><span class="label label-info pull-right">shared</span></strong>
                     </div>
                     <div class="panel-body">
                         {{ repo.Description }}
