@@ -528,4 +528,19 @@ class RepoAPI {
         window.location.href = uri + query
         window.event.returnValue = false
     }
+
+    // listCommits returns json containing commit list for the branch
+    // of a specified repository.
+    listCommits(owner, repo, branch) {
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: `${this.config.repo_url}/users/${owner}/repos/${repo}/commits/${branch}`,
+                type: "GET",
+                dataType: "json",
+                headers: {Authorization: `Bearer ${this.config.token.jti}`},
+                success: (commits) => { return resolve(commits) },
+                error: (err) => { return reject(err) }
+            })
+        })
+    }
 }
