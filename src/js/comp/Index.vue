@@ -320,7 +320,7 @@
                         </code></pre>
                         In any case the urls must correspond to addresses reachable from your machine!<p>
                         We can now start the image with
-                        <pre><code>docker run --name ginui -it -p 8080:80 gnode/gin-ui </code></pre>
+                        <pre><code>docker run --name ginui  -v &lt;path to config.json&gt;:/gin-ui/src/js/config.json -it -p 8080:80 gnode/gin-ui </code></pre>
                         The terminal should be attached to the runing ui session now and you can redirect a browser to:
                         <code>http://localhost:8080</code> and be greeted with the gin-ui page.
                         <hr>
@@ -351,7 +351,7 @@
     - account-admin
   RedirectURIs:
     - http://&lt;uiurl&gt;:&lt;uiport&gt;/oauth/login
-    - http://&lt;uiurl&gt;:&lt;uiport&gt;/
+    - http://&lt;uiurl&gt;:&lt;uiport&gt;
                           </code></pre>
                         where &lt;ginsecret&gt; is a unique string that we now need to also put into <code>config.json</code>
                         as value for clientsecret.
