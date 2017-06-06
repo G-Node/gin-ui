@@ -206,7 +206,6 @@
                         First you need a working Docker installation. Find instructions <a href="https://www.docker.com/">here</a>.
                         Furthermore a <a href="https://hub.docker.com/"> dockerhub account </a> is kind of usefull.
                         <hr>
-                        
                         <p> <strong>Setup gin-auth</strong> </p>
                         Second you need a working gin authentication server, to store userdata on. For that to work you 
                         also need a running database server with a database setup as gin-auth expects it (see 
@@ -388,6 +387,15 @@
                         <hr>
                         <p>If you need any further help setting up your own service, you can contact us at
                             <a :href="mailto">{{ contact }}</a>.</p>
+                        
+                        <p> <strong>Setup Instant Gin</strong> </p>
+                        If you are fine with a simple setup with which you cant update the services individually (only all of them together)
+                        you can also use the instant gin docker:
+                        <pre><code>docker pull gnode/gin</code></pre>
+                        <pre><code>docker run --name gin -v &lt;localconf&gt;:/conf -v &lt;data&gt;:/data  -p 8080:8080 -p 8081:8081 -p 8082:8082 -p 2222:22 --link ginpgres:ginpgres  gin gnode/gin</code></pre>
+                        This replaces the installation of the individual images.
+                        Configuration can be done by providing files in a location <code>&lt;localconf&gt;</code> and the repositories will be stored at  <code>&lt;data&gt;</code>
+                        The above run command assumes that you have a docker image wit the name ginpgres running, which serves the database!
                     </div>
                 </div>
             </div>
