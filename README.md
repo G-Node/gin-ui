@@ -7,16 +7,16 @@
 
 # About gin-ui
 
-gin-ui is the web interface for the **GIN** (**G**-Node **IN**frastructure) services.
+gin-ui was the web interface of the **GIN** (**G**-Node **IN**frastructure) services prototype and is no longer actively developed.
 
-Associated projects are
-- [gin-auth](https://github.com/G-Node/gin-auth): The GIN authentication server.
-- [gin-repo](https://github.com/G-Node/gin-repo): The GIN repository server.
-- [gin-cli](https://github.com/G-Node/gin-cli): The GIN command line client.
+The current GIN project is developed at the [gin-gogs github page](https://github.com/G-Node/gogs), the service can be found at [gin.g-node.org](https://gin.g-node.org).
 
-All projects are currently at an early state of development
+A detailed description of the GIN project can be found at the [G-Node projects site](https://g-node.github.io).
 
-A detailed description of the GIN project can be found at the [G-Node projects site](g-node.github.io).
+## References
+- [gin-cli](https://github.com/G-Node/gin-cli): The GIN command line client (actively developed).
+- [gin-auth](https://github.com/G-Node/gin-auth): The GIN authentication server (prototype, no longer actively developed).
+- [gin-repo](https://github.com/G-Node/gin-repo): The GIN repository server (prototype, no longer actively developed).
 
 ## Build Setup
 
